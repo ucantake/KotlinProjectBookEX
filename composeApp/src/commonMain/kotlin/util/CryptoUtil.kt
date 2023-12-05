@@ -11,8 +11,8 @@ expect interface CryptoUtil {
 }
 
 expect interface KeyPair {
-    val publicKey: ByteArray
-    val privateKey: ByteArray
+//    val publicKey: ByteArray
+//    val privateKey: ByteArray
     fun getPublicKey(): ByteArray
     fun getPrivateKey(): ByteArray
     fun getSeedPhrase(): String
