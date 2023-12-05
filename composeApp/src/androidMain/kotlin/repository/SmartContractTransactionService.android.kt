@@ -62,5 +62,7 @@ actual interface SmartContractTransactionService {
     actual suspend fun searchBooksBySmartContractTransactionBookBuyer(smartContractTransactionBookBuyer: String): Book
     actual suspend fun searchBooksBySmartContractTransactionBookSeller(smartContractTransactionBookSeller: String): Book
     actual suspend fun searchBooksBySmartContractTransactionBookTransaction(smartContractTransactionBookTransaction: String): Book
+    actual suspend fun searchUsersByBalance(balance: Any): List<User>
+    actual suspend fun searchUsersByCryptoWalletLink(cryptoWalletLink: String): List<User>
 
 }
