@@ -7,5 +7,5 @@ actual interface User {
     actual val password: String
     actual val balance: Any
     actual val cryptoWalletLink: String
-    actual val books: List<Any>
+    actual val books: List<Book>
 }
