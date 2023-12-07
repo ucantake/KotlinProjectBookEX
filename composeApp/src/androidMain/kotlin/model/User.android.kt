@@ -1,6 +1,7 @@
 package model
 
 actual interface User {
+    actual val id: String
     actual val firstName: String
     actual val lastName: String
     actual val username: String
