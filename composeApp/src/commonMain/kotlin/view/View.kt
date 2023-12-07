@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 
 
 @Composable
-expect fun LoginScreen()
+expect fun LoginScreen(onLoginClicked: () -> Unit)
 @Composable
-expect fun MainScreen()
+expect fun MainScreen(function: () -> Unit)

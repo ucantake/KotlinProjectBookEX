@@ -90,6 +90,9 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
+dependencies {
+    implementation("androidx.navigation:navigation-compose:2.6.0-alpha07")
+}
 
 compose.desktop {
     application {

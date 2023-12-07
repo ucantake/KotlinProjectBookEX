@@ -1,9 +1,12 @@
 package view
 
-actual fun LoginScreen() {
+import androidx.compose.runtime.Composable
+
+
+actual fun MainScreen(function: () -> Unit) {
     TODO("Not yet implemented")
 }
 
-actual fun MainScreen() {
-    TODO("Not yet implemented")
+@Composable
+actual fun LoginScreen(onLoginClicked: () -> Unit) {
 }

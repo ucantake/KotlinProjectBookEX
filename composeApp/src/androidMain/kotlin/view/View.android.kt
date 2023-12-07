@@ -13,17 +13,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.example.project.R
+import view.bottonNavigation.NavGraph
 
- /*
-    LoginScreen() - функция для отображения экрана входа в приложение
-    TODO: спрятать поле пароля
-    TODO: добавить кнопку "Забыли пароль?"
-    TODO: добавить кнопку "Регистрация"
-    TODO: ?добавить кнопку "Вход через Google"?
-    TODO: добавить логотип приложения вверху полей ввода
- */
+/*
+   LoginScreen() - функция для отображения экрана входа в приложение
+   TODO: спрятать поле пароля
+   TODO: добавить кнопку "Забыли пароль?"
+   TODO: добавить кнопку "Регистрация"
+   TODO: ?добавить кнопку "Вход через Google"?
+   TODO: добавить логотип приложения вверху полей ввода
+*/
 @Composable
-actual fun LoginScreen(){
+actual fun LoginScreen(onLoginClicked: () -> Unit){
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -51,7 +52,9 @@ actual fun LoginScreen(){
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { onLoginClicked(username, password) },
+                onClick = {
+                          onLoginClicked()
+                },//место возникновения ошибки, место перехода на новый экран
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.login))
@@ -65,29 +68,39 @@ actual fun LoginScreen(){
 
  */
 @Composable
-actual fun MainScreen() {
-    TODO("Not yet implemented")
-}
+actual fun MainScreen(function: () -> Unit) {
+    val navController = androidx.navigation.compose.rememberNavController()
+    Scaffold (
+        bottomBar = {
+            view.bottonNavigation.BottomNavigation(navController = navController)
+        }
+    )
+    {
+        PaddingValues(  //добавляет отступы
+            bottom = it.calculateBottomPadding()
+        )
+        NavGraph(navHostController = navController)
+    }
 
-//@Composable
-//fun PreviewLoginScreen() {
-//    LoginScreen(onLoginClicked = {})
-//}
+}
 
 /*
     Функция для обработки нажатия на кнопку "Войти"
     TODO: добавить обработку ошибок
     TODO: добавить обработку
+    TODO: вход по логину и паролю
  */
-fun onLoginClicked(username: String, password: String) {
+@Composable
+fun onLoginClicked() {
     // Выполнить вход пользователя с использованием введенного им логина и пароля
     // Например, отправить данные на сервер для проверки или выполнить проверку локально
 
-    if (username.isNotEmpty() && password.isNotEmpty()) {
-        // Допустим, в этом месте мы отправляем запрос на сервер для проверки данных пользователя
-        // Если данные верны, можно перейти на следующий экран или выполнить другие действия
-        // Иначе показать сообщение об ошибке
-    } else {
-        // Показать сообщение об ошибке пользователю о пустых полях
-    }
+//    if (username.isNotEmpty() && password.isNotEmpty()) {
+//        // Допустим, в этом месте мы отправляем запрос на сервер для проверки данных пользователя
+//        // Если данные верны, можно перейти на следующий экран или выполнить другие действия
+//        // Иначе показать сообщение об ошибке
+//        MainScreen()
+//    } else {
+//        // Показать сообщение об ошибке пользователю о пустых полях
+//    }
 }
