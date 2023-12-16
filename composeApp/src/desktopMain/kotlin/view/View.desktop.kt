@@ -1,12 +1,33 @@
 package view
 
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
+object AppState {
+    var isLoggedIn by mutableStateOf(false)
+}
 
 
-actual fun MainScreen(function: () -> Unit) {
-    TODO("Not yet implemented")
+
+@Composable
+fun MainScreen(state: WindowState) {
+    Main(state)
 }
 
 @Composable
-actual fun LoginScreen(onLoginClicked: () -> Unit) {
+fun LoginScreen(state: WindowState) {
+    Login(state)
 }
+
+@Composable
+fun MainScreenDesktop(state: WindowState) {
+    return MainScreen(state)
+}
+
+
+
+
+
