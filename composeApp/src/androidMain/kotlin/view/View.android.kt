@@ -24,7 +24,7 @@ import view.bottonNavigation.NavGraph
    TODO: добавить логотип приложения вверху полей ввода
 */
 @Composable
-actual fun LoginScreen(onLoginClicked: () -> Unit){
+fun LoginScreen(onLoginClicked: () -> Unit){
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -68,7 +68,7 @@ actual fun LoginScreen(onLoginClicked: () -> Unit){
 
  */
 @Composable
-actual fun MainScreen(function: () -> Unit) {
+fun MainScreen(function: () -> Unit) {
     val navController = androidx.navigation.compose.rememberNavController()
     Scaffold (
         bottomBar = {
