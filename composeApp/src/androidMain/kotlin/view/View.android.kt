@@ -53,7 +53,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                          onLoginClicked()
+//                          onLoginClicked()
                 },//место возникновения ошибки, место перехода на новый экран
                 modifier = Modifier.fillMaxWidth()
             ) {
