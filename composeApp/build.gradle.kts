@@ -1,5 +1,5 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -91,7 +91,44 @@ android {
     }
 }
 dependencies {
+
+
+//    implementation("io.ktor:ktor-client:2.3.2")
+//    implementation("io.ktor:ktor-client-cio:2.3.2")
+
+
     implementation("androidx.navigation:navigation-compose:2.6.0-alpha07")
+//    implementation("io.ktor:ktor:2.3.2")
+//    implementation("io.ktor:ktor-client:2.3.2")
+//    implementation("io.ktor:ktor-client-cio:2.3.2") //web engine
+//    implementation("io.ktor:ktor-client-core:2.3.2") //web engine commonMain
+//    implementation("io.ktor:ktor-client-content-negotiation:2.3.2")
+//    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("org.jetbrains.compose.material:material-icons-extended-desktop:1.5.0-dev1049")
+//    implementation("com.mikepenz:materialdrawer-nav:9.0.1")
+//    implementation("com.auth0:java-jwt:4.3.0")
+//    implementation("de.sfuhrm:message-digest-assembly-handler:0.9.3")
+//    implementation("org.jetbrains.exposed:exposed:0.17.14")
+//    implementation("org.jetbrains.exposed:exposed-core:0.41.1")
+//    implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
+//    implementation("org.ktorm:ktorm-core:2.3.2")
+//    implementation("org.ktorm:ktorm-support-postgresql:2.3.2")
+//
+//    //decompose library
+//    implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental")
+//
+//    //library insetsx
+//    implementation ("com.github.florent37.insetsx:insetsx-compose:0.27.0")
+//
+//
+//
+//    //dependencies Exposed and PostgreSQL
+//    implementation("org.jetbrains.exposed:exposed-core:0.35.1")
+//    implementation("org.jetbrains.exposed:exposed-dao:0.35.1")
+//    implementation("org.jetbrains.exposed:exposed-jdbc:0.35.1")
+//    implementation("org.postgresql:postgresql:42.3.1")
+
+
 }
 
 compose.desktop {
@@ -103,5 +140,14 @@ compose.desktop {
             packageName = "org.example.project"
             packageVersion = "1.0.0"
         }
+    }
+    dependencies {
+        implementation(libs.compose.ui)
+        implementation(libs.compose.ui.tooling.preview)
+        implementation(libs.compose.material)
+//        implementation("org.postgresql:postgresql:42.3.1")
+//        implementation("io.ktor:ktor-client:2.3.2")
+//        implementation("io.ktor:ktor-client-cio:2.3.2") //web engine
+
     }
 }

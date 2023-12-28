@@ -1,22 +1,49 @@
 package org.example.project
 
-import Greeting
-import SERVER_PORT
+import BASE_LINK_GET
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.LoggerFactory
 
-fun main() {
-    embeddedServer(Netty, port = SERVER_PORT, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
-}
+private val logger = LoggerFactory.getLogger("NettyLogger")
 
+
+
+fun main (args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(args)
+
+//TODO а как обрабатывать заросы которые были отправлены но не входят в роутинг?
+//TODO обработка исключений SSL (когда кто-то пытается получить доступ без сертификата)
+
+//TODO может шифровать сами сообщения? (просто для интереса) ?оконечное шифрование?
 fun Application.module() {
-    routing {
-        get("/") {
-            call.respondText("Ktor: ${Greeting().greet()}")
+    try {
+        routing {
+            get("/$BASE_LINK_GET") {
+                call.respondText(" Ktor: base link ")
+                logger.info("responding to /")
+            }
+
+            //данные пользователя при входе в приложение
+            get("/$BASE_LINK_GET/name/{name}&password/{password}") {
+                val name = call.parameters["name"]
+                val password = call.parameters["password"]
+
+                //TODO добавить чтение из базы данных и поиск по имени и паролю
+
+//                call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
+                call.respondText("true") //возвращаемое значение
+//                call.respond(true) //возвращаемое значение
+                logger.info("responding to user sign in")
+            }
+
+            //регистрация в логе всех остальных запросов
+            get("*"){
+                logger.info(" responding to different request " + call.request.uri)
+            }
         }
+    }catch (e : Exception){
+        logger.info("exception in Application.module() = " + e.printStackTrace())
     }
 }

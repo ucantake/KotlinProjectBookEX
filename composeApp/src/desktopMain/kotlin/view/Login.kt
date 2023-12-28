@@ -6,8 +6,14 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
@@ -35,6 +41,7 @@ fun Login(state: WindowState){
         drawerContent={
             Text("Авторизируйтесь для отображения пунктов меню", fontSize = 28.sp)
         },
+        drawerShape = customShape(),
         content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,7 +86,8 @@ fun Login(state: WindowState){
                     onClick = {
                         enabled = false
                         scope.launch {
-                            if (checkLoginUser(textFieldStateEmail)) {//корректный ввод, отображение нового окна (авторизация)
+                            //проверка имени и пароля
+                            if (checkLoginUser(textFieldStateEmail, textFieldStatePassword)) {//корректный ввод, отображение нового окна (авторизация)
                                 scaffoldState.snackbarHostState.showSnackbar("Button Clicked $textFieldStateEmail")
                                 state.title = "Main"
                                 state.openNewWindow()
@@ -110,4 +118,16 @@ fun Login(state: WindowState){
             topAppBar(state, scaffoldState)
         }
     )
+}
+
+//уменьшение размера вылетающей левой панели через контуры фигуры
+//TODO разоабраться с размерами выпадающего окна (половина размера экрана в ширину)
+fun customShape() =  object : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Rectangle(Rect(0f,0f,15f /* ширина */, 1000f /* длина */))
+    }
 }
