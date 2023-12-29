@@ -88,6 +88,7 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9") //для много поточности на андроид
     }
 }
 dependencies {
@@ -98,6 +99,7 @@ dependencies {
 
 
     implementation("androidx.navigation:navigation-compose:2.6.0-alpha07")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9") //для многопоточности
 //    implementation("io.ktor:ktor:2.3.2")
 //    implementation("io.ktor:ktor-client:2.3.2")
 //    implementation("io.ktor:ktor-client-cio:2.3.2") //web engine

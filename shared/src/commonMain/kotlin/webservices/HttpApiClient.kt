@@ -13,9 +13,11 @@ import kotlinx.coroutines.runBlocking
 
 //error
 //private val sslSettingsCommon : SslSettingsCommon = SslSettings()
+
+//отправка данных на сервер
 class HttpApiClient  {
 
-    val ip = SERVER_IP
+    private val ip = SERVER_IP
 
     //соединение с сервером
     //TODO возможности HTTPS
@@ -40,11 +42,9 @@ class HttpApiClient  {
         link: String,
         client: HttpClient = connect(),
     ) : String {
-        val response = runBlocking {
-            client.get(link)
-        }
+        val response = client.get(link).bodyAsText()
 
-        return response.bodyAsText()
+        return response
 
     }
     //формирование ссылки для отправки данных
