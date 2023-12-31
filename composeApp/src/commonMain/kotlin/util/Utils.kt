@@ -1,14 +1,15 @@
 package util
 
 import kotlinx.coroutines.runBlocking
-import webservices.HttpApiClient
+import webservices.GetHttpApiClient
+import webservices.HttpApiClientInterface
 
 
 //проверка на введенный логин и пароль
 //TODO добавить проверку пароля
 //TODO сделать отправку на сервер
 suspend fun checkLoginUser(textFieldStateEmail: String, textFieldStatePassword : String): Boolean {
-    val httpsClietn = HttpApiClient()
+    val httpsClietn = GetHttpApiClient()
 
     val stri = httpsClietn.authLinkForman(textFieldStateEmail, textFieldStatePassword)
     println(stri)

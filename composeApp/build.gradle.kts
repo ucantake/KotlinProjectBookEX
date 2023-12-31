@@ -31,22 +31,26 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
+        val ktorVersion = "2.3.2"
         
         androidMain.dependencies {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
         commonMain.dependencies {
+
             implementation(projects.shared)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation("io.ktor:ktor-client-mock:$ktorVersion")
         }
     }
 }

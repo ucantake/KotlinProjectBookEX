@@ -1,15 +1,18 @@
-import webservices.SslSettingsInterface
+package webservices
+
+import PRIVATE_PASSWORD
+import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
-//эталонный класс для получения настроек SSL, не используется в проекте
-object SslSettings : SslSettingsInterface {
+actual object SslSettings : SslSettingsInterface {
     private fun getKeyStore(): KeyStore {
-        val keyStoreFile = FileInputStream("keystore.jks")//читаем файт
-        val keyStorePassword = "foobar".toCharArray()//переводим пароль в массив символов
+        val File = File("").absolutePath
+        val keyStoreFile = FileInputStream("$File\\resources\\keystore.jks")//читаем файт
+        val keyStorePassword = PRIVATE_PASSWORD.toCharArray()//переводим пароль в массив символов
         val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
         keyStore.load(keyStoreFile, keyStorePassword)
         return keyStore
@@ -35,6 +38,7 @@ object SslSettings : SslSettingsInterface {
     * используется для получения TrustManagerFactory от разных блоков
     *
     */
+
     override fun getTrustManagerFactory(): TrustManagerFactory? {
         return TrustManagerFactory()
 

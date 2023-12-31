@@ -57,12 +57,15 @@ dependencies {
     implementation("io.ktor:ktor-client-json:1.6.8")
     implementation("io.ktor:ktor-client-features:1.6.8")
     implementation("io.ktor:ktor-client-cio:2.3.2")
+    implementation("io.ktor:ktor-network-tls-certificates:2.3.2")
 
     //dependencies Exposed and PostgreSQL
     implementation("org.jetbrains.exposed:exposed-core:0.35.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.35.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
     implementation("org.postgresql:postgresql:42.2.23")
+
+
 //    implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental")
 //    implementation(project(":shared"))
 
