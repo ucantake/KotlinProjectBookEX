@@ -12,11 +12,11 @@ import javax.net.ssl.TrustManager
 //отправка данных на сервер
 actual class HttpApiClient : HttpApiClientInterface {
 
-    private val ip = SERVER_IP
+
     private val client = HttpClient(CIO) { //создаем HTTPS клиент
         engine {
             https {
-                serverName = ip
+                serverName = SERVER_IP
                 trustManager = getSslSettings().getTrustManager() as TrustManager?
             }
         }
@@ -33,7 +33,7 @@ actual class HttpApiClient : HttpApiClientInterface {
 
     }
     //формирование ссылки для отправки данных
-    private fun linkFormatterHttp (link : String) : String = "https://$ip:$SERVER_PORT/$BASE_LINK_GET/$link"
+    private fun linkFormatterHttp (link : String) : String = "https://$SERVER_IP:$SERVER_PORT/$BASE_LINK_GET/$link"
 
     //публичная функция для отправки данных на сервер
     //для авторизации пользователя

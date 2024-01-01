@@ -4,7 +4,7 @@
 */
 package view
 
-import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -13,10 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.example.project.R
 import view.bottonNavigation.NavGraph
 import webservices.HttpApiClient
+import java.io.File
 
 /*
    LoginScreen() - функция для отображения экрана входа в приложение
@@ -57,7 +60,11 @@ fun LoginScreen(onLoginClicked: () -> Unit){
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    test()
+                    scope.launch {
+                        val httpsClietn = HttpApiClient()
+                        val stri = httpsClietn.authLinkForman(username, password)
+                        Log.i("Login", "stri = $stri")
+                    }
                     onLoginClicked()
                 },//место возникновения ошибки, место перехода на новый экран
                 modifier = Modifier.fillMaxWidth()
@@ -118,16 +125,19 @@ suspend fun checlLogib(name : String = "des", password : String = "al"  ): Strin
 }
 
 fun test () : String {
+
+    val File = File("").absolutePath
+    Log.i("SslSettings", "getKeyStore: File $File")
+
     val scope = CoroutineScope(Dispatchers.IO)
     val stri = "true"
     try {
-        val def = scope.async{
+        val def = scope.launch{
             val httpsClietn = HttpApiClient()
 
             val stri = httpsClietn.authLinkForman("textFieldStateEmail", "textFieldStatePassword")
-            println(stri)
+            Log.i("Login", "stri = $stri")
 
-            return@async stri
         }
         //контрукция которая на сильно закрывает поток, как только он закончит выполнение
         while (def.isActive){

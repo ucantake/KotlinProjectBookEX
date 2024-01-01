@@ -44,11 +44,11 @@ actual object SslSettings : SslSettingsInterface {
 
     }
 
-    override fun getSSLContext(): Any? {
+    override fun getSSLContext(): SSLContext? {
         return SslContext()
     }
 
-    override fun getTrustManager(): Any? {
+    override fun getTrustManager(): X509TrustManager? {
         return TrustManager()
     }
 }
