@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Main(state: WindowState){
+fun Main(state: WindowState) {
     val scaffoldState = rememberScaffoldState() //сохранение состояния Scaffold
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -75,7 +75,7 @@ fun Main(state: WindowState){
 }
 
 @Composable
-fun drawableMenuLeft(searchedText: String, onValueChange: (String) -> Unit){
+fun drawableMenuLeft(searchedText: String, onValueChange: (String) -> Unit) {
     Image(
         painter = painterResource("icons/books-svgrepo-com.svg"),
         contentDescription = "Icons",

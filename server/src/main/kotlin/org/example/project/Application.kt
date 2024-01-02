@@ -5,6 +5,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.example.project.DAL.ExposedPostgres
+import org.example.project.DAL.tables.Users
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("NettyLogger")
@@ -21,7 +23,11 @@ fun Application.module() {
     try {
         routing {
             get("/$BASE_LINK_GET") {
-                call.respondText(" Ktor: base link ")
+                val exposedPostgres = ExposedPostgres()
+
+                val dataTable  = exposedPostgres.getTableDataAsJson(Users)
+
+                call.respondText("$dataTable \n Ktor: base link ")
                 logger.info("responding to /")
             }
 
@@ -32,8 +38,12 @@ fun Application.module() {
 
                 //TODO добавить чтение из базы данных и поиск по имени и паролю
 
+                val data = ExposedPostgres().getDataTableUsers(name = name!!, password = password!!)
+
+                println("Data getDataTableUsers = " + data + "\n")
+
 //                call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
-                call.respondText("true") //возвращаемое значение
+                call.respondText(data.hashCode().toString()) //возвращаемое значение
 //                call.respond(true) //возвращаемое значение
                 logger.info("responding to user sign in")
             }

@@ -13,9 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.example.project.R
 import view.bottonNavigation.NavGraph
 import webservices.HttpApiClient
@@ -60,12 +58,30 @@ fun LoginScreen(onLoginClicked: () -> Unit){
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    scope.launch {
-                        val httpsClietn = HttpApiClient()
-                        val stri = httpsClietn.authLinkForman(username, password)
+
+                    val login = scope.async {
+                        val loginComplite : Boolean
+                        val stri = HttpApiClient().authLinkForman(username, password)
+
+                        val hashNamePassword = ""+username+password+""
+
+                        Log.i("Login", "stri = " +  stri + "| username password = " + hashNamePassword.hashCode())
+                        if (stri.toInt() == hashNamePassword.hashCode()){
+                            Log.i("Login", " success")
+                            loginComplite = true
+                        }else{
+                            Log.i("Login", " error")
+                            loginComplite = false
+                        }
+                            return@async loginComplite
                         Log.i("Login", "stri = $stri")
+
                     }
-                    onLoginClicked()
+                    runBlocking {
+                        if (login.await() as Boolean) onLoginClicked()
+                    }
+
+
                 },//место возникновения ошибки, место перехода на новый экран
                 modifier = Modifier.fillMaxWidth()
             ) {

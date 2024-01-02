@@ -4,17 +4,19 @@ import NAME_DB
 import USER_NAME
 import USER_PASSWORD
 import org.example.project.DAL.tables.Users
-import org.example.project.DAL.tables.Users.name
-import org.example.project.DAL.tables.Users.password
-import org.slf4j.LoggerFactory
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.slf4j.LoggerFactory
+
 //import com.google.gson.Gson
 
 
 class ExposedPostgres {
     private val logger = LoggerFactory.getLogger("NettyLogger")
+    private var result = "no data"
 
     init {
         try {
@@ -51,6 +53,32 @@ class ExposedPostgres {
                 query.forEach {
                     println("RESULT query forEach = " + it + "\n")
                     println("USER name = " + it.get(Users.name) + "\n")
+
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return result
+        }
+    }
+
+
+    fun getDataTableUsers(tableName: Table = Users, name : String, password : String): String? {
+
+        try {
+            transaction {
+                val query = tableName.selectAll()
+                val resultSet = query.toList()
+                println("RESULT query toList = " + resultSet + "\n")
+                query.forEach {
+                    println("Users.name  = " + it.get(Users.name) + "\n")
+                    if (name == it.get(Users.name).toString()) {
+                        println("RESULT query forEach = " + it.get(Users.name) + "\n")
+                        println("Data hashCode = " + it.get(Users.name).hashCode() + " and " + name.hashCode() + "\n")
+                        result = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
+                    }
 
                 }
 
