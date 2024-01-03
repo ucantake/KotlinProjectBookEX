@@ -25,10 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import view.ApplicationWindowsState
+import view.state.ApplicationWindowsState
 import view.LoginScreen
 import view.MainScreen
-import view.WindowState
+import view.state.WindowState
 
 /*
 TODO сделать передачу состояния окна:

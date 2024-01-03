@@ -1,4 +1,4 @@
-package view
+package view.state
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Size

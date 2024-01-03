@@ -1,4 +1,4 @@
-package view.bottonNavigation
+package view
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight

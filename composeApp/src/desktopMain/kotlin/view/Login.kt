@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import util.checkLoginUser
+import view.state.WindowState
 
 @Composable
 fun Login(state: WindowState){
@@ -83,7 +84,6 @@ fun Login(state: WindowState){
                 // Кнопка входа
                 Button(
                     modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
                     shape = RoundedCornerShape(size = 20.dp),//закругление углов
                     elevation = ButtonDefaults.elevation(//отображение тени
                         defaultElevation = 20.dp
@@ -111,7 +111,7 @@ fun Login(state: WindowState){
                 ) {
                     Text("Войти",
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,)
+                        color = Color.Black)
                 }
             }
         },
