@@ -4,20 +4,18 @@
 */
 package view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.*
-import org.example.project.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import util.checkLoginUser
 import view.bottonNavigation.NavGraph
-import webservices.HttpApiClient
-import java.io.File
 
 /*
    LoginScreen() - функция для отображения экрана входа в приложение
@@ -27,68 +25,77 @@ import java.io.File
    TODO: ?добавить кнопку "Вход через Google"?
    TODO: добавить логотип приложения вверху полей ввода
 */
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(onLoginClicked: () -> Unit){
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val scope = CoroutineScope(Dispatchers.IO)
-
-    Surface(color = MaterialTheme.colors.background) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text(text = stringResource(id = R.string.username)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(text = stringResource(id = R.string.password)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-
-                    val login = scope.async {
-                        val loginComplite : Boolean
-                        val stri = HttpApiClient().authLinkForman(username, password)
-
-                        val hashNamePassword = ""+username+password+""
-
-                        Log.i("Login", "stri = " +  stri + "| username password = " + hashNamePassword.hashCode())
-                        if (stri.toInt() == hashNamePassword.hashCode()){
-                            Log.i("Login", " success")
-                            loginComplite = true
-                        }else{
-                            Log.i("Login", " error")
-                            loginComplite = false
-                        }
-                            return@async loginComplite
-                        Log.i("Login", "stri = $stri")
-
-                    }
-                    runBlocking {
-                        if (login.await() as Boolean) onLoginClicked()
-                    }
+    val scaffoldState = rememberScaffoldState()
+    val scopeRemember = rememberCoroutineScope()
 
 
-                },//место возникновения ошибки, место перехода на новый экран
-                modifier = Modifier.fillMaxWidth()
+    Scaffold (
+        scaffoldState = scaffoldState,
+        content = {
+            Column(
+                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = androidx.compose.ui.Modifier.fillMaxSize().padding(horizontal = 24.dp)
             ) {
-                Text(text = stringResource(id = R.string.login))
+                // Текстовое поле для ввода email
+                TextField(
+                    value = username,
+                    label = {
+                        Text("Username")
+                    },
+                    onValueChange = {
+                        username = it
+                    }
+                )
+
+                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                // Текстовое поле для ввода email
+                TextField(
+                    value = password,
+                    label = {
+                        Text("Password")
+                    },
+                    onValueChange = {
+                        password = it
+                    }
+                )
+
+                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+
+                // Кнопка для входа в приложение
+                Button(
+                    onClick = {
+                        scope.launch {
+                            val checlLogib = checkLoginUser(username, password)
+                            Log.i("Login", "checlLogib = $checlLogib")
+                            if (checlLogib == true){
+                                scopeRemember.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
+                                    onLoginClicked()
+                                }
+                            }else {
+                                scopeRemember.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Неверный логин или пароль")
+                                }
+                            }
+                        }
+                    },
+                    enabled = username.isNotEmpty() && password.isNotEmpty(),
+                    modifier = androidx.compose.ui.Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                    ) {
+                        Text("Войти")
+                    }
+
             }
         }
-    }
+    )
 }
 
 /*
@@ -120,49 +127,5 @@ fun MainScreen(function: () -> Unit) {
  */
 @Composable
 fun onLoginClickedT() {
-    // Выполнить вход пользователя с использованием введенного им логина и пароля
-    // Например, отправить данные на сервер для проверки или выполнить проверку локально
-
     MainScreen {  }
-//    if (username.isNotEmpty() && password.isNotEmpty()) {
-//        // Допустим, в этом месте мы отправляем запрос на сервер для проверки данных пользователя
-//        // Если данные верны, можно перейти на следующий экран или выполнить другие действия
-//        // Иначе показать сообщение об ошибке
-//        MainScreen(context)
-//    } else {
-//        // Показать сообщение об ошибке пользователю о пустых полях
-//    }
-}
-
-
-suspend fun checlLogib(name : String = "des", password : String = "al"  ): String {
-    val client = HttpApiClient()
-    return client.authLinkForman()
-}
-
-fun test () : String {
-
-    val File = File("").absolutePath
-    Log.i("SslSettings", "getKeyStore: File $File")
-
-    val scope = CoroutineScope(Dispatchers.IO)
-    val stri = "true"
-    try {
-        val def = scope.launch{
-            val httpsClietn = HttpApiClient()
-
-            val stri = httpsClietn.authLinkForman("textFieldStateEmail", "textFieldStatePassword")
-            Log.i("Login", "stri = $stri")
-
-        }
-        //контрукция которая на сильно закрывает поток, как только он закончит выполнение
-        while (def.isActive){
-            if (def.isActive) Thread.sleep(1)
-            else def.cancel()
-        }
-    }catch (e : Exception){
-        println("E "  + e)
-    }
-
-    return stri
 }

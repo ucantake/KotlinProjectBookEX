@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import util.checkLoginUser
 
@@ -89,12 +88,12 @@ fun Login(state: WindowState){
                         scope.launch {
                             //проверка имени и пароля
                             if (checkLoginUser(textFieldStateEmail, textFieldStatePassword)) {//корректный ввод, отображение нового окна (авторизация)
-                                scaffoldState.snackbarHostState.showSnackbar("Button Clicked $textFieldStateEmail")
+                                scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $textFieldStateEmail")
                                 state.title = "Main"
                                 state.openNewWindow()
                             }
                             else {
-                                scaffoldState.snackbarHostState.showSnackbar("Error email or password")//отображение ошибки
+                                scaffoldState.snackbarHostState.showSnackbar("не верный логин или пароль")//отображение ошибки
                                 enabled = true
 
                             }

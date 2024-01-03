@@ -36,7 +36,7 @@ fun Application.module() {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
 
-                //TODO добавить чтение из базы данных и поиск по имени и паролю
+                //TODO сохранять что этот вошедшего пользователя для дальнейшей работы с ним
 
                 val data = ExposedPostgres().getDataTableUsers(name = name!!, password = password!!)
 
