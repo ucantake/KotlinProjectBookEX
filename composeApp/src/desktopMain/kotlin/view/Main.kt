@@ -20,9 +20,9 @@ fun Main(state: WindowState) {
     val scope = rememberCoroutineScope()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        drawerShape = customShape(state.getSize()), //форма выпадающего меню
         drawerContent = { //выпадающее меню Scaffold
-            Text("ASD")
-
+            drawableMenuLeft()
         },
         scaffoldState = scaffoldState, //состояние Scaffold
         content = {
@@ -42,11 +42,11 @@ fun Main(state: WindowState) {
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
 
-                        //отображение левого меню
-                        drawableMenuLeft(
-                            searchedText,
-                            onValueChange = { searchedText = it }
-                        )
+//                        //отображение левого меню
+//                        drawableMenuLeft(
+//                            searchedText,
+//                            onValueChange = { searchedText = it }
+//                        )
 
                     }
                 }
@@ -75,7 +75,9 @@ fun Main(state: WindowState) {
 }
 
 @Composable
-fun drawableMenuLeft(searchedText: String, onValueChange: (String) -> Unit) {
+fun drawableMenuLeft() {
+    var searchedText by remember { mutableStateOf("") }
+
     Image(
         painter = painterResource("icons/books-svgrepo-com.svg"),
         contentDescription = "Icons",
@@ -92,7 +94,7 @@ fun drawableMenuLeft(searchedText: String, onValueChange: (String) -> Unit) {
         },
         value = searchedText,
         onValueChange = {
-            searchedText
+            searchedText = it
         },
         trailingIcon = {
             IconButton(

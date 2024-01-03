@@ -22,4 +22,6 @@ class WindowState (
             println("Main")
         }
     }
+
+    fun getSize() = size
 }

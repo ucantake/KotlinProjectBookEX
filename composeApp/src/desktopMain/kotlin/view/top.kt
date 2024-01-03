@@ -54,7 +54,8 @@ fun topAppBar(state: WindowState, scaffoldState: ScaffoldState,) {
                     )
                 }
             }) {
-                Icon(Icons.Default.Menu, contentDescription = "Menu")//TODO сделать выпадающий список из иконок меню - новое окно, выход, закрыть
+                if (state.title == "Main")
+                    Icon(Icons.Default.Menu, contentDescription = "Menu")
             }
         },
         actions = {

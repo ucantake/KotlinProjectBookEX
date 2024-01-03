@@ -5,7 +5,6 @@
 package view
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -73,9 +72,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                 Button(
                     onClick = {
                         scope.launch {
-                            val checlLogib = checkLoginUser(username, password)
-                            Log.i("Login", "checlLogib = $checlLogib")
-                            if (checlLogib == true){
+                            if (checkLoginUser(username, password)){
                                 scopeRemember.launch {
                                     scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
                                     onLoginClicked()
@@ -87,7 +84,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             }
                         }
                     },
-                    enabled = username.isNotEmpty() && password.isNotEmpty(),
+                    enabled = username.isNotEmpty() && password.isNotEmpty(), //если поля пустые то кнопка не активна
                     modifier = androidx.compose.ui.Modifier.fillMaxWidth().padding(horizontal = 24.dp)
                     ) {
                         Text("Войти")
