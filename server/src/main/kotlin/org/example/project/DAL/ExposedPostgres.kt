@@ -70,13 +70,14 @@ class ExposedPostgres {
         try {
             transaction {
                 val query = tableName.selectAll()
-                val resultSet = query.toList()
-                println("RESULT query toList = " + resultSet + "\n")
+//                val resultSet = query.toList()
+//                println("RESULT query toList = " + resultSet + "\n")
                 query.forEach {
-                    println("Users.name  = " + it.get(Users.name) + "\n")
+//                    println("Users.name  = " + it.get(Users.name) + "\n")
                     if (name == it.get(Users.name).toString()) {
-                        println("RESULT query forEach = " + it.get(Users.name) + "\n")
-                        println("Data hashCode = " + it.get(Users.name).hashCode() + " and " + name.hashCode() + "\n")
+//                        println("RESULT query forEach = " + it.get(Users.name) + "\n")
+//                        val hashNamePassword = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
+//                        println("Data hashCode = " + hashNamePassword.hashCode() + "\n")
                         result = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
                     }
 

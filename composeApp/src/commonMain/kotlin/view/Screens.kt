@@ -1,5 +1,6 @@
 package view
 
+import NAMEUSER
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
@@ -38,7 +39,7 @@ class Screens {
             modifier = Modifier
                 .fillMaxSize()
                 .wrapContentHeight(),
-            text = "ProfileScreen",
+            text = "ProfileScreen in $NAMEUSER",
             textAlign = TextAlign.Center
         )
     }

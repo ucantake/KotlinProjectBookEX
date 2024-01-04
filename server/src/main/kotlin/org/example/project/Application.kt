@@ -8,9 +8,12 @@ import io.ktor.server.routing.*
 import org.example.project.DAL.ExposedPostgres
 import org.example.project.DAL.tables.Users
 import org.slf4j.LoggerFactory
+import util.tokenCreate
+import webservices.TokenUsersObject
 
 private val logger = LoggerFactory.getLogger("NettyLogger")
 
+private val tokensUsersList = TokenUsersObject
 
 
 fun main (args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -36,16 +39,39 @@ fun Application.module() {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
 
-                //TODO сохранять что этот вошедшего пользователя для дальнейшей работы с ним
+                if (name == null || password == null) return@get //проверка на пустые значения
 
+                //TODO сохранять что этот вошедшего пользователя для дальнейшей работы с ним
                 val data = ExposedPostgres().getDataTableUsers(name = name!!, password = password!!)
 
                 println("Data getDataTableUsers = " + data + "\n")
+
+                //добавление токена в список
+                if (data != null) {
+                    tokensUsersList.addData(tokenCreate(data))
+                }else return@get
+
+                println(tokensUsersList.getAllData())
 
 //                call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
                 call.respondText(data.hashCode().toString()) //возвращаемое значение
 //                call.respond(true) //возвращаемое значение
                 logger.info("responding to user sign in")
+            }
+
+            get("/$BASE_LINK_GET/name/{name}&password/{password}&token/{token}") {
+                val name = call.parameters["name"]
+                val password = call.parameters["password"]
+                val token = call.parameters["token"]
+
+                if (name == null || password == null || token == null) return@get //проверка на пустые значения
+
+                if (tokensUsersList.compareWithString(token!!)) {
+                    call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
+                    logger.info("responding to user sign in")
+                } else return@get
+
+
             }
 
             //регистрация в логе всех остальных запросов

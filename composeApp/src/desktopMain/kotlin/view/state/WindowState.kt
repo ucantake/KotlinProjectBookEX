@@ -12,7 +12,6 @@ class WindowState (
     private val name : String,
     private val size: Size
 ) {
-    fun close() = close(this)
 
     //TODO сделать проверку на неправильное имя окна - отобразить диалогове окно с ошибкой "неправильное имя окна"
     fun name() {

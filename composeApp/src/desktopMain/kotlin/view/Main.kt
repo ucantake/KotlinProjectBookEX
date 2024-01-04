@@ -29,10 +29,14 @@ class MainScreen() {
     @Composable
     fun drawableMenuLeft(onItemClick: (Item) -> Unit) {
         val scaffoldState = rememberScaffoldState()
+
         Image(
             painter = painterResource("icons/books-svgrepo-com.svg"),
             contentDescription = "Icons",
-            modifier = Modifier.fillMaxWidth().height(200.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp)
         )
         TextButton(
             onClick = {
@@ -43,7 +47,10 @@ class MainScreen() {
             Text(
                 "Profile",
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth().height(70.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(16.dp)
             )
         }
         TextButton(
@@ -54,7 +61,10 @@ class MainScreen() {
             Text(
                 "Home",
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth().height(70.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(16.dp)
             )
         }
         TextButton(
@@ -65,7 +75,10 @@ class MainScreen() {
             Text(
                 "Search",
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth().height(70.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(16.dp)
             )
         }
     }

@@ -10,3 +10,5 @@ const val BASE_LINK_GET = "YdQsW0JUbekCAT86jHb0ZH6FhoCSxEeQa72TFIX1nCpJRecjKX"
 //const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/keyC/v3/$NAME_CERTIFICATE.jks"
 const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/$NAME_CERTIFICATE"
 const val SERVER_IP = "193.108.114.117"
+lateinit var NAMEUSER: String
+lateinit var PASSWORDUSER: String
