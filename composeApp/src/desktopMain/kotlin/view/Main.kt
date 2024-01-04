@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import view.navigation.Item
 import view.state.WindowState
 
@@ -24,8 +25,10 @@ class MainScreen() {
 
     private var currentItem: Item by mutableStateOf(Item.Home)
 
+
     @Composable
-    fun drawableMenuLeft() {
+    fun drawableMenuLeft(onItemClick: (Item) -> Unit) {
+        val scaffoldState = rememberScaffoldState()
         Image(
             painter = painterResource("icons/books-svgrepo-com.svg"),
             contentDescription = "Icons",
@@ -33,7 +36,8 @@ class MainScreen() {
         )
         TextButton(
             onClick = {
-                currentItem = Item.Profile
+                onItemClick(Item.Profile)
+
             }
         ) {
             Text(
@@ -44,7 +48,7 @@ class MainScreen() {
         }
         TextButton(
             onClick = {
-                currentItem = Item.Home
+                onItemClick(Item.Home)
             }
         ) {
             Text(
@@ -55,7 +59,7 @@ class MainScreen() {
         }
         TextButton(
             onClick = {
-                currentItem = Item.Search
+                onItemClick(Item.Search)
             }
         ) {
             Text(
@@ -75,7 +79,12 @@ class MainScreen() {
             modifier = Modifier.fillMaxSize(),
             drawerShape = customShape(state.getSize()), //форма выпадающего меню
             drawerContent = { //выпадающее меню Scaffold
-                drawableMenuLeft()
+                drawableMenuLeft { item ->
+                    currentItem = item
+                    scope.launch {
+                        scaffoldState.drawerState.close() // Закрыть выдвижное меню после выбора элемента
+                    }
+                }
             },
             scaffoldState = scaffoldState, //состояние Scaffold
             content = {
