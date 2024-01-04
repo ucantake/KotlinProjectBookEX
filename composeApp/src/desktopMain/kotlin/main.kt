@@ -1,23 +1,3 @@
-
-
-//fun main() = application {
-//    //иконка приложения
-//    //TODO переписать на вызов в одном месте
-//    //TODO нет обработки закрытия окна
-//    val icon = painterResource("icons/books-svgrepo-com.svg")
-//
-//    //создание трея
-//    Tray(
-//        icon = icon,//иконка
-//    )
-//
-////    showScreen()
-//    Window(onCloseRequest = ::exitApplication, icon = icon) {
-//        MyApp()
-//    }
-//}
-
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
@@ -25,9 +5,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import view.state.ApplicationWindowsState
 import view.LoginScreen
 import view.MainScreen
+import view.state.ApplicationWindowsState
 import view.state.WindowState
 
 /*

@@ -15,7 +15,8 @@ object AppState {
 
 @Composable
 fun MainScreen(state: WindowState) {
-    Main(state)
+    val Main = MainScreen()
+    Main.Main(state)
 }
 
 @Composable
