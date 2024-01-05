@@ -129,14 +129,12 @@ fun Login(state: WindowState){
 //уменьшение размера вылетающей левой панели через контуры фигуры
 //TODO разоабраться с размерами выпадающего окна (половина размера экрана в ширину)
 fun customShape(size : Size) =  object : Shape {
-    val width = size.width * 20
-    val height = size.height * 2.5f
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density
     ): Outline {
-        return Outline.Rectangle(Rect(0f,0f,height /* ширина */, width /* длина */))
+        return Outline.Rectangle(Rect(0f,0f,size.height / 2 /* ширина */, size.width /* длина */))
     }
 }
 

@@ -1,11 +1,11 @@
 package view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,78 +26,101 @@ class MainScreen() {
     private var currentItem: Item by mutableStateOf(Item.Home)
 
 
+    //TODO отрегулировать ширину окна
+    //кажется проблема в передаче скефолда
     @Composable
-    fun drawableMenuLeft(onItemClick: (Item) -> Unit) {
-        val scaffoldState = rememberScaffoldState()
-
-        Image(
-            painter = painterResource("icons/books-svgrepo-com.svg"),
-            contentDescription = "Icons",
+    fun drawableMenuLeft(onItemClick: (Item) -> Unit, scaffold : ScaffoldState, state : WindowState) {
+        val width = state.getSize().width / 3 //TODO сделать отдельную функцию для вычисления ширины окна
+        Scaffold (
             modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(16.dp)
-        )
-        TextButton(
-            onClick = {
-                onItemClick(Item.Profile)
+                .width(width.dp), //TODO отрегулировать чтобы было красиво между элементами внутри панели
+//                .padding(6.dp),
 
+            scaffoldState = scaffold, //состояние Scaffold
+
+            content = {
+                Column(
+                    modifier = Modifier
+                        .width(width.dp)
+                        .padding(6.dp),
+                    Arrangement.SpaceEvenly
+                ) {
+                    Image(
+                        painter = painterResource("icons/books-svgrepo-com.svg"),
+                        contentDescription = "Icons",
+                        modifier = Modifier
+                            .width(width.dp)
+
+                    )
+                    TextButton(
+                        onClick = {
+                            onItemClick(Item.Profile)
+
+                        }
+                    ) {
+                        Text(
+                            "Profile",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp)
+                                .padding(16.dp)
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            onItemClick(Item.Home)
+                        }
+                    ) {
+                        Text(
+                            "Home",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp)
+                                .padding(16.dp)
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            onItemClick(Item.Search)
+                        }
+                    ) {
+                        Text(
+                            "Search",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp)
+                                .padding(16.dp)
+                        )
+                    }
+                }
             }
-        ) {
-            Text(
-                "Profile",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .padding(16.dp)
-            )
-        }
-        TextButton(
-            onClick = {
-                onItemClick(Item.Home)
-            }
-        ) {
-            Text(
-                "Home",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .padding(16.dp)
-            )
-        }
-        TextButton(
-            onClick = {
-                onItemClick(Item.Search)
-            }
-        ) {
-            Text(
-                "Search",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .padding(16.dp)
-            )
-        }
+        )
     }
 
+    /*
+    * основной экран
+     */
     @Composable
     fun Main(state: WindowState) {
         val scaffoldState = rememberScaffoldState() //сохранение состояния Scaffold
         val scope = rememberCoroutineScope()
         val screens = Screens()
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(), //TODO добавить полосу прокрутки
             drawerShape = customShape(state.getSize()), //форма выпадающего меню
             drawerContent = { //выпадающее меню Scaffold
-                drawableMenuLeft { item ->
-                    currentItem = item
-                    scope.launch {
-                        scaffoldState.drawerState.close() // Закрыть выдвижное меню после выбора элемента
-                    }
-                }
+                drawableMenuLeft(
+                    { item ->
+                        currentItem = item
+                        scope.launch {
+                            scaffoldState.drawerState.close() // Закрыть выдвижное меню после выбора элемента
+                        }
+                    },
+                scaffold = scaffoldState, state = state)
             },
             scaffoldState = scaffoldState, //состояние Scaffold
             content = {
@@ -126,6 +149,9 @@ class MainScreen() {
         )
     }
 
+    /*
+    * окна экрана
+     */
     @Composable
     fun MyScreenContent(currentItem: Item) {
         val screens = Screens()
