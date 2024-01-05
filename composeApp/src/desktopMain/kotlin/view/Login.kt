@@ -3,6 +3,7 @@ package view
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,10 @@ fun Login(state: WindowState){
     var enabled by remember {
         mutableStateOf(true)
     }
+
+    //для отображения пароля
+    var passwordVisible by remember { mutableStateOf(false) }
+    val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -66,20 +73,30 @@ fun Login(state: WindowState){
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Текстовое поле для ввода пароля
-                TextField(
-                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                    value = password,
-                    label = {
-                        Text("Password")
-                    },
-                    onValueChange = {
-                        password = it
-                    },
+                Row ()
+                {
 
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = password,
+                        visualTransformation = visualTransformation,
+                        label = {
+                            Text("Password")
+                        },
+                        onValueChange = {
+                            password = it
+                        },
 
-                )
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    )
+                    IconButton( //TODO добавить иконку для отображения пароля
+                        onClick = { passwordVisible = !passwordVisible }
+                    ) {
+
+                    }
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 // Кнопка входа
                 Button(
