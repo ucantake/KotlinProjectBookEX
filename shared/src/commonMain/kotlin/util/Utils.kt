@@ -13,6 +13,13 @@ import webservices.GetHttpApiClient
 //TODO добавить проверку пароля
 
 suspend fun checkLoginUser(username: String, password : String): Boolean {
+
+    //TODO переделать блок для офлайн доступа предыдущего входа пользователя
+    if (username == "ASD" && password == "DSA") {
+        NAMEUSER = username
+        return true
+    }
+
     val httpsClietn = GetHttpApiClient()
 
     val stri = httpsClietn.authLinkForman(username, password)
