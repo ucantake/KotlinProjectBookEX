@@ -1,6 +1,7 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
+val compose_version = "1.3.0"
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -51,6 +52,12 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation("io.ktor:ktor-client-mock:$ktorVersion")
+            implementation ("androidx.compose.ui:ui-tooling:$compose_version")
+            implementation ("androidx.compose.ui:ui:$compose_version")
+            implementation ("androidx.compose.material:material:$compose_version")
+            implementation ("androidx.compose.ui:ui-tooling:$compose_version")
+            implementation ("androidx.compose.material:material-icons-core:$compose_version")
+            implementation ("androidx.compose.material:material-icons-extended:$compose_version")
         }
     }
 }

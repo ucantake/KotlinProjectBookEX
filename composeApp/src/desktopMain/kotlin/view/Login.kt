@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import util.checkLoginUser
 import view.state.WindowState
+import androidx.compose.material.icons.sharp.Lock
 
 @Composable
 fun Login(state: WindowState){
@@ -52,28 +55,31 @@ fun Login(state: WindowState){
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
             ) {
+                Row() {
+                    // Текстовое поле для ввода email
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = username,
+                        label = {
+                            Text("Username")
+                        },
 
-                // Текстовое поле для ввода email
-                TextField(
-                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                    value = username,
-                    label = {
-                        Text("Username")
-                    },
+                        onValueChange = {
+                            username = it
+                        },
 
-                    onValueChange = {
-                        username = it
-                    },
+                        modifier = Modifier
+                            .fillMaxWidth()
 
-                    modifier = Modifier
-                        .fillMaxWidth()
-
-                )
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Текстовое поле для ввода пароля
-                Row ()
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                )
                 {
 
                     TextField(
@@ -87,14 +93,16 @@ fun Login(state: WindowState){
                             password = it
                         },
 
-                        modifier = Modifier
-                            .fillMaxWidth()
+                        modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth(0.9f)
+
 
                     )
-                    IconButton( //TODO добавить иконку для отображения пароля
+                    IconButton(
+                        modifier = Modifier.fillMaxWidth(1f),
                         onClick = { passwordVisible = !passwordVisible }
                     ) {
-
+                        val icon = if (passwordVisible) Icons.Filled.Edit else Icons.Filled.Lock
+                        Icon(icon, contentDescription = "Toggle password visibility")
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
