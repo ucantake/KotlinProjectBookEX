@@ -6,9 +6,16 @@ package view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +41,9 @@ fun LoginScreen(onLoginClicked: () -> Unit){
     val scaffoldState = rememberScaffoldState()
     val scopeRemember = rememberCoroutineScope()
 
+    var passwordVisible by remember { mutableStateOf(false) }
+    val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+
 
     Scaffold (
         scaffoldState = scaffoldState,
@@ -43,28 +53,50 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                 verticalArrangement = Arrangement.Center,
                 modifier = androidx.compose.ui.Modifier.fillMaxSize().padding(horizontal = 24.dp)
             ) {
-                // Текстовое поле для ввода email
-                TextField(
-                    value = username,
-                    label = {
-                        Text("Username")
-                    },
-                    onValueChange = {
-                        username = it
+                Column (
+                    modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Row () {
+                        // Текстовое поле для ввода email
+                        TextField(
+                            value = username,
+                            label = {
+                                Text("Username")
+                            },
+                            onValueChange = {
+                                username = it
+                            }
+                        )
                     }
-                )
 
-                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
-                // Текстовое поле для ввода email
-                TextField(
-                    value = password,
-                    label = {
-                        Text("Password")
-                    },
-                    onValueChange = {
-                        password = it
+                    Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                    // Текстовое поле для ввода пароля
+                    Row(){
+                        TextField(
+                            value = password,
+                            label = {
+                                Text("Password")
+                            },
+                            onValueChange = {
+                                password = it
+                            },
+                            visualTransformation = visualTransformation,
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Password
+                            )
+                        )
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible }
+                        ) {
+                            val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                            Icon(icon, contentDescription = "Toggle password visibility")
+                        }
+
                     }
-                )
+                }
+
+
 
                 Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
 
