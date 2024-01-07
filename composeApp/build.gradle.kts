@@ -51,13 +51,6 @@ kotlin {
             implementation(compose.material)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
-            implementation("io.ktor:ktor-client-mock:$ktorVersion")
-            implementation ("androidx.compose.ui:ui-tooling:$compose_version")
-            implementation ("androidx.compose.ui:ui:$compose_version")
-            implementation ("androidx.compose.material:material:$compose_version")
-            implementation ("androidx.compose.ui:ui-tooling:$compose_version")
-            implementation ("androidx.compose.material:material-icons-core:$compose_version")
-            implementation ("androidx.compose.material:material-icons-extended:$compose_version")
         }
     }
 }

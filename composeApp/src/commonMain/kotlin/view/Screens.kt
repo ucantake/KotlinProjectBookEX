@@ -46,6 +46,7 @@ class Screens {
 
     @Composable
     fun ProfileScreen() {
+        //TODO добавить кнопку выхода на экране входа (выход)
         Text(
             modifier = Modifier
                 .fillMaxSize()

@@ -12,6 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import util.checkLoginUser
 import view.bottonNavigation.NavGraph
+
 
 /*
    LoginScreen() - функция для отображения экрана входа в приложение
@@ -48,16 +51,18 @@ fun LoginScreen(onLoginClicked: () -> Unit){
     Scaffold (
         scaffoldState = scaffoldState,
         content = {
-            Column(
-                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+            Column( //для всего окна
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = androidx.compose.ui.Modifier.fillMaxSize().padding(horizontal = 24.dp)
+                modifier = Modifier.fillMaxSize().padding(horizontal = 5.dp)
             ) {
-                Column (
-                    modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+                Column ( //для строк ввода
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Row () {
+                    Row (
+                        modifier = Modifier.fillMaxWidth(1f),
+                    ) {
                         // Текстовое поле для ввода email
                         TextField(
                             value = username,
@@ -70,10 +75,11 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                         )
                     }
 
-                    Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     // Текстовое поле для ввода пароля
                     Row(){
                         TextField(
+                            modifier = Modifier.fillMaxWidth(0.9f),
                             value = password,
                             label = {
                                 Text("Password")
@@ -87,6 +93,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             )
                         )
                         IconButton(
+                            modifier = Modifier.fillMaxWidth(1f),
                             onClick = { passwordVisible = !passwordVisible }
                         ) {
                             val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
@@ -96,9 +103,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                     }
                 }
 
-
-
-                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Кнопка для входа в приложение
                 Button(
@@ -117,7 +122,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                         }
                     },
                     enabled = username.isNotEmpty() && password.isNotEmpty(), //если поля пустые то кнопка не активна
-                    modifier = androidx.compose.ui.Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
                     ) {
                         Text("Войти")
                     }

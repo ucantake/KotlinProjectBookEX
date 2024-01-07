@@ -25,4 +25,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:0.35.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
     implementation("org.postgresql:postgresql:42.2.23")
+
+    //gson serrialization
+    implementation("com.google.code.gson:gson:2.10.1")
 }

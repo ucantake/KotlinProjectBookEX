@@ -23,7 +23,10 @@ object TokenUsersObject {
         return true
     }
 
-    //проверяет наличие данных в объекте
+    /*
+    * проверяет наличие данных в объекте
+    * возвращает true или false в зависимости от наличия данных
+    */
     fun compareWithString(data: String): Boolean {
         return dataSet.contains(data)
     }

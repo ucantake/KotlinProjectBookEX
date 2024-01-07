@@ -3,11 +3,11 @@ package org.example.project.DAL
 import NAME_DB
 import USER_NAME
 import USER_PASSWORD
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import org.example.project.DAL.tables.Users
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
@@ -43,16 +43,47 @@ class ExposedPostgres {
         }
     }
 
-    fun getTableDataAsJson(tableName: Table): String? {
-        var result = ""
+    //возвращает значение имени пользователя
+    fun getTableDataUsersAsJson(name : String) : JsonObject {
+        var userId = searchUserId(name)
+        var combinedJson = JsonObject()
+
+        try {
+            transaction {
+                val json = Gson()
+
+                var columnData = ""
+                Users.select { Users.id eq userId }.forEach {
+                    Users.columns.forEach { column ->
+                        //выбранные поля добавляет в json объект возвращаемый в ответе
+                        if (column.name == "name" || column.name == "email" || column.name == "role") {
+                            columnData = it.get(column).toString()
+                            combinedJson.add(column.name, json.toJsonTree(columnData))
+                        }
+                    }
+
+                }
+            }
+
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
+        }
+
+    }
+
+
+    fun getDataTableUserPassword(tableName: Table = Users, name : String): String? {
+
         try {
             transaction {
                 val query = tableName.selectAll()
-                val resultSet = query.toList()
-                println("RESULT query toList = " + resultSet + "\n")
                 query.forEach {
-                    println("RESULT query forEach = " + it + "\n")
-                    println("USER name = " + it.get(Users.name) + "\n")
+                    if (name == it.get(Users.name).toString()) {
+                        result = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
+                        return@transaction
+                    }
 
                 }
 
@@ -65,29 +96,23 @@ class ExposedPostgres {
     }
 
 
-    fun getDataTableUsers(tableName: Table = Users, name : String, password : String): String? {
-
+    fun searchUserId (name : String) : Int {
+        var userId = 0
         try {
             transaction {
+                val tableName : Table = Users
                 val query = tableName.selectAll()
-//                val resultSet = query.toList()
-//                println("RESULT query toList = " + resultSet + "\n")
                 query.forEach {
-//                    println("Users.name  = " + it.get(Users.name) + "\n")
                     if (name == it.get(Users.name).toString()) {
-//                        println("RESULT query forEach = " + it.get(Users.name) + "\n")
-//                        val hashNamePassword = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
-//                        println("Data hashCode = " + hashNamePassword.hashCode() + "\n")
-                        result = ""+it.get(Users.name).toString()+it.get(Users.password).toString()+""
+                        userId = it.get(Users.id)
                     }
-
                 }
 
             }
         }catch (e : Exception) {
             logger.error("EXEPCTION " + e.message)
         }finally {
-            return result
+            return userId
         }
     }
 }

@@ -1,12 +1,14 @@
 package org.example.project
 
 import BASE_LINK_GET
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.example.project.DAL.ExposedPostgres
-import org.example.project.DAL.tables.Users
+import org.example.project.secure.checksUsersAccessConditions
 import org.slf4j.LoggerFactory
 import util.tokenCreate
 import webservices.TokenUsersObject
@@ -25,61 +27,51 @@ fun main (args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(arg
 fun Application.module() {
     try {
         routing {
-            get("/$BASE_LINK_GET") {
-                val exposedPostgres = ExposedPostgres()
-
-                val dataTable  = exposedPostgres.getTableDataAsJson(Users)
-
-                call.respondText("$dataTable \n Ktor: base link ")
-                logger.info("responding to /")
+            //регистрация в логе всех остальных запросов
+            get("*"){
+                logger.error(" responding to different request " + call.request.uri)
             }
+
+            //возвращает json для страницы профиля
+            get("/$BASE_LINK_GET/name/{name}&password/{password}&token/{token}/profile") {
+                val name = call.parameters["name"]
+                val password = call.parameters["password"]
+                val token = call.parameters["token"]
+
+                if (!checksUsersAccessConditions(token.toString(), name.toString(), password.toString())) return@get
+
+                val data = ExposedPostgres().getTableDataUsersAsJson(name!!.toString())
+
+                call.respondText(data.toString()) //возвращаемое значение
+            }
+
 
             //данные пользователя при входе в приложение
             get("/$BASE_LINK_GET/name/{name}&password/{password}") {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
 
-                if (name == null || password == null) return@get //проверка на пустые значения
+                //проверка на пустые значения
+                if (!checksUsersAccessConditions(name = name.toString(), password = password.toString(), auth = true)) return@get
 
-                //TODO сохранять что этот вошедшего пользователя для дальнейшей работы с ним
-                val data = ExposedPostgres().getDataTableUsers(name = name!!, password = password!!)
+                //поиск данных в базе сохраненных пользователей
+                val data = ExposedPostgres().getDataTableUserPassword(name = name!!)
 
-                println("Data getDataTableUsers = " + data + "\n")
-
-                //добавление токена в список
+                //добавление токена в список, после проверки на наличие данные в базе данных
                 if (data != null) {
                     tokensUsersList.addData(tokenCreate(data))
                 }else return@get
 
-                println(tokensUsersList.getAllData())
-
-//                call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
-                call.respondText(data.hashCode().toString()) //возвращаемое значение
-//                call.respond(true) //возвращаемое значение
-                logger.info("responding to user sign in")
+                //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
+                call.respondText(data.hashCode().toString())
+                logger.info("responding to user sign in name = $name")
             }
 
-            get("/$BASE_LINK_GET/name/{name}&password/{password}&token/{token}") {
-                val name = call.parameters["name"]
-                val password = call.parameters["password"]
-                val token = call.parameters["token"]
 
-                if (name == null || password == null || token == null) return@get //проверка на пустые значения
-
-                if (tokensUsersList.compareWithString(token!!)) {
-                    call.respondText(" Ktor: base link $name $password - user sign in") //возвращаемое значение
-                    logger.info("responding to user sign in")
-                } else return@get
-
-
-            }
-
-            //регистрация в логе всех остальных запросов
-            get("*"){
-                logger.info(" responding to different request " + call.request.uri)
-            }
         }
     }catch (e : Exception){
-        logger.info("exception in Application.module() = " + e.printStackTrace())
+        logger.error("exception in Application.module() = " + e.printStackTrace())
     }
 }
+
+data class Address (val city : String, val country : String)
