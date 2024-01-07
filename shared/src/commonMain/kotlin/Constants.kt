@@ -12,3 +12,4 @@ const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/$NA
 const val SERVER_IP = "193.108.114.117"
 lateinit var NAMEUSER: String
 lateinit var PASSWORDUSER: String
+lateinit var EMAIL : String

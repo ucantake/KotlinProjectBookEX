@@ -1,9 +1,11 @@
 package webservices
 
 import BASE_LINK_GET
+import PASSWORDUSER
 import SERVER_IP
 import SERVER_PORT
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -13,6 +15,10 @@ import javax.net.ssl.TrustManager
 actual class HttpApiClient : HttpApiClientInterface {
 
 
+    /*
+    * Создание HTTPS клиента
+    * Для отправки данных на сервер
+     */
     private val client = HttpClient(CIO) { //создаем HTTPS клиент
         engine {
             https {
@@ -22,22 +28,55 @@ actual class HttpApiClient : HttpApiClientInterface {
         }
     }
 
-    //отправка данных методом get
-    private suspend fun getLink(
+    /*
+    * Функция получения тела ответа на запрос
+    * Входные данные :
+    *   ссылка - на которую отправляется запрос
+    *   клиент - клиент который отправляет запрос (по умолчанию созданный в классе)
+    * Выходные данные :
+    *   тело ответа на запрос
+     */
+    private suspend fun getLinkBody (
         link: String,
-        client: HttpClient = this.client,
-    ) : String {
-        val response = client.get(link).bodyAsText()
+        client: HttpClient = this.client
+    ) : HttpResponse = client.get(link).body()
 
-        return response
+    /*
+    * Функция получения тела в текст ответа на запрос
+    * Входные данные :
+    *   ссылка - на которую отправляется запрос
+    *   клиент - клиент который отправляет запрос (по умолчанию созданный в классе)
+    * Выходные данные :
+    *   тело ответа на запрос в виде текста
+     */
+    private suspend fun getLinkBodyAsText(
+        link: String,
+        client: HttpClient = this.client
+    ) : String = client.get(link).bodyAsText()
 
-    }
-    //формирование ссылки для отправки данных
+    /*
+    * Функция форматирования базовой ссылки
+    * выходные данные передаются в функцию getLinkBodyAsText или getLinkBody как ссылка
+    * Входные данные :
+    *   берутся из констант
+    *   ссылка - на которую отправляется запрос
+    * Выходные данные :
+    *   ссылка в формате https://ip:port/baseLinkGet/link
+     */
     private fun linkFormatterHttp (link : String) : String = "https://$SERVER_IP:$SERVER_PORT/$BASE_LINK_GET/$link"
 
-    //публичная функция для отправки данных на сервер
-    //для авторизации пользователя
-    override suspend fun authLinkForman (name : String, password : String) : String = getLink(linkFormatterHttp("name/$name&password/$password"))
+    /*
+    * Функция форматирования ссылки для авторизации
+     */
+    override suspend fun authLinkForman (
+        name : String,
+        password : String
+    ) : String = getLinkBodyAsText(linkFormatterHttp("name/$name&password/$password"))
+
+    override suspend fun getDataProfile(name: String): String {
+        return getLinkBodyAsText(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile"))
+    }
+
 
 
 }

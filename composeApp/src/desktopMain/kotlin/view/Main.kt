@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
 import view.navigation.Item
 import view.state.WindowState
@@ -107,6 +108,7 @@ class MainScreen() {
     fun Main(state: WindowState) {
         val scaffoldState = rememberScaffoldState() //сохранение состояния Scaffold
         val scope = rememberCoroutineScope()
+        val js = JsonObject()
         val screens = Screens()
         Scaffold(
             modifier = Modifier

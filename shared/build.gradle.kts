@@ -23,6 +23,9 @@ kotlin {
             // put your Multiplatform dependencies here
             implementation("io.ktor:ktor-client-core:2.3.2")
             implementation("io.ktor:ktor-client-cio:2.3.2")
+
+            //gson serrialization
+            implementation("io.ktor:ktor-client-gson:2.3.2")
         }
     }
 }

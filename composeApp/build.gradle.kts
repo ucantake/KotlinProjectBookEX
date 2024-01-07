@@ -42,6 +42,8 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            //gson serrialization
+            implementation("com.google.code.gson:gson:2.10.1")
         }
         commonMain.dependencies {
 
@@ -51,6 +53,9 @@ kotlin {
             implementation(compose.material)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+
+            //gson serrialization
+            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
         }
     }
 }
@@ -92,7 +97,7 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9") //для много поточности на андроид
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9") //для многопоточности на андроид
     }
 }
 dependencies {

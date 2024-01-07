@@ -1,8 +1,7 @@
 package org.example.project
 
 import BASE_LINK_GET
-import com.google.gson.Gson
-import com.google.gson.JsonObject
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -33,7 +32,7 @@ fun Application.module() {
             }
 
             //возвращает json для страницы профиля
-            get("/$BASE_LINK_GET/name/{name}&password/{password}&token/{token}/profile") {
+            get("/$BASE_LINK_GET/name/{name}&token/{token}/profile") {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
                 val token = call.parameters["token"]
@@ -42,7 +41,7 @@ fun Application.module() {
 
                 val data = ExposedPostgres().getTableDataUsersAsJson(name!!.toString())
 
-                call.respondText(data.toString()) //возвращаемое значение
+                call.respondText(data.toString(), ContentType.Application.Json) //возвращаемое значение
             }
 
 
