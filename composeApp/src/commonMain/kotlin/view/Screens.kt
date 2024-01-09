@@ -59,11 +59,12 @@ class Screens {
         var role = ""
         var name = ""
         var account = ""
+        var balance = ""
 
         Scaffold {
                 runBlocking {
                     var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
-                    println(json)
+//                    println(json)
                     // Получение значений из вложенных объектов
                     val userName = json.jsonObject["user"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull
                     val userEmail = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull
@@ -72,9 +73,12 @@ class Screens {
                     val walletAccount = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull
                     val walletKey = json.jsonObject["wallet"]?.jsonObject?.get("key")?.jsonPrimitive?.contentOrNull
 
+                    val balanceEth = json.jsonObject["balance"]?.jsonObject?.get("balanceEth")?.jsonPrimitive?.contentOrNull
+
                     role = userRole.toString()
                     name = userName.toString()
                     account = walletAccount.toString()
+                    balance = balanceEth.toString()
 
                     EMAIL = userEmail.toString()
                     ACCOUNT = walletAccount.toString()
@@ -85,7 +89,7 @@ class Screens {
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight(),
-                text = "ProfileScreen in Role = $role \n name = $name \n wallet = $account" ,
+                text = "ProfileScreen in Role = $role \n name = $name \n wallet = $account \n balance = $balance",
                 textAlign = TextAlign.Center
             )
 

@@ -1,6 +1,7 @@
 package org.example.project
 
 import BASE_LINK_GET
+import GANACHE_RPC_SERVER
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
@@ -11,6 +12,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.example.project.DAL.ExposedPostgres
 import org.example.project.secure.checksUsersAccessConditions
+import org.example.project.web3j.BasicOperations
 import org.slf4j.LoggerFactory
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -66,18 +68,11 @@ fun Application.module() {
 
                 // Получение значений из вложенных объектов
                 val key = walletData.get("key").asString
-                println(key)
+                val account = walletData.get("account").asString
 
-                val web3j = Web3j.build(HttpService("http://127.0.0.1:8545"))
-
-                println("\n WALLET DATA ${key} \n")
-
-                val credentials = Credentials.create(key)
-//
-                val balanceWei = web3j.ethGetBalance(credentials.address, DefaultBlockParameterName.LATEST).send().balance
-                val balanceEth = balanceWei.divide(BigInteger.TEN.pow(18))
-//
-                println("\n BALANCE ETH $balanceEth \n")
+                //получение баланса с помощью web3j из блокчейна
+                val balance = BasicOperations().jsonObject(key, account)
+                data.add("balance", balance)
 
                 call.respondText(data.toString(), ContentType.Application.Json) //возвращаемое значение
             }
