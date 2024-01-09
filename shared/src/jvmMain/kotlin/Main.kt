@@ -1,31 +1,17 @@
 import kotlinx.coroutines.*
 import webservices.HttpApiClient
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 fun main() {
+    val inputText = "abcdefghigklmnopqrstuvwxyz0123456789"
+    val algorithm = "AES/CBC/PKCS5Padding"
+    val key = SecretKeySpec("1234567890123456".toByteArray(), "AES")
+    val iv = IvParameterSpec(ByteArray(16))
 
-    println("A")
+    println(encrypt(algorithm, inputText, key, iv))
 
-//    val scope = CoroutineScope(Dispatchers.Default)
-//
-//    try {
-//        val def = scope.async{
-//            get()
-////            test()
-//        }
-//        //контрукция которая на сильно закрывает поток, как только он закончит выполнение
-//        while (def.isActive){
-//            if (def.isActive) Thread.sleep(1)
-//            else def.cancel()
-//        }
-//    }catch (e : Exception){
-//        println("E "  + e)
-//    }
-
-runHttpData()
-
-
-
-    println("B")
+    println(decrypt(algorithm, encrypt(algorithm, inputText, key, iv), key, iv))
 }
 
 suspend fun get(){

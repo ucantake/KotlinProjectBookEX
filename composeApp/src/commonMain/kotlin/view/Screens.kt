@@ -1,5 +1,6 @@
 package view
 
+import ACCOUNT
 import EMAIL
 import NAMEUSER
 import androidx.compose.foundation.background
@@ -15,11 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.*
 import webservices.GetHttpApiClient
 
 class Screens {
@@ -59,19 +57,35 @@ class Screens {
         val scope = rememberCoroutineScope()
         var json : JsonObject
         var role = ""
+        var name = ""
+        var account = ""
 
         Scaffold {
                 runBlocking {
                     var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
                     println(json)
-                    EMAIL = json.jsonObject.get("email").toString()
-                    role = json.jsonObject.get("role").toString()
+                    // Получение значений из вложенных объектов
+                    val userName = json.jsonObject["user"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull
+                    val userEmail = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull
+                    val userRole = json.jsonObject["user"]?.jsonObject?.get("role")?.jsonPrimitive?.contentOrNull
+
+                    val walletAccount = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull
+                    val walletKey = json.jsonObject["wallet"]?.jsonObject?.get("key")?.jsonPrimitive?.contentOrNull
+
+                    role = userRole.toString()
+                    name = userName.toString()
+                    account = walletAccount.toString()
+
+                    EMAIL = userEmail.toString()
+                    ACCOUNT = walletAccount.toString()
+
+
                 }
             Text(
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight(),
-                text = "ProfileScreen in Role = $role" ,
+                text = "ProfileScreen in Role = $role \n name = $name \n wallet = $account" ,
                 textAlign = TextAlign.Center
             )
 
@@ -80,3 +94,4 @@ class Screens {
 //        val stri = httpsClietn.getDataProfile($NAMEUSER)
     }
 }
+

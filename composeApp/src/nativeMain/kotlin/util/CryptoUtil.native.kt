@@ -10,10 +10,21 @@ actual interface CryptoUtil {
 
 }
 actual interface KeyPair {
-    actual val publicKey: ByteArray
-    actual val privateKey: ByteArray
+//    actual val publicKey: ByteArray
+//    actual val privateKey: ByteArray
     actual fun getPublicKey(): ByteArray
     actual fun getPrivateKey(): ByteArray
     actual fun getSeedPhrase(): String
+
+}
+
+actual class Crypt actual constructor() {
+    actual fun encrypt(data: ByteArray, publicKey: ByteArray): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    actual fun decrypt(data: ByteArray, privateKey: ByteArray): ByteArray {
+        TODO("Not yet implemented")
+    }
 
 }

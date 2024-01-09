@@ -18,3 +18,11 @@ expect interface KeyPair {
     fun getSeedPhrase(): String
 
 }
+
+expect class Crypt() {
+    fun encrypt(data: ByteArray, publicKey: ByteArray): ByteArray
+    fun decrypt(data: ByteArray, privateKey: ByteArray): ByteArray
+
+}
+
+

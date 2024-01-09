@@ -162,6 +162,7 @@ class MainScreen() {
             is Item.Home -> screens.HomeScreen()
             is Item.Search -> screens.SearchScreen()
             is Item.Profile -> screens.ProfileScreen()
+            else -> {}
         }
     }
 }

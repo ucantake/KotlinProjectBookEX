@@ -9,6 +9,7 @@ private val logger = LoggerFactory.getLogger("NettyLogger")
 //доступ к списку токенов
 private val tokensUsersList = TokenUsersObject
 
+//TODO сделать проверки на все веб методы от Application
 /*
     * Функция проверок соединения
     * Проверки на :

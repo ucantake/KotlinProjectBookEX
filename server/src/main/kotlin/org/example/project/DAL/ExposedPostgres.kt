@@ -4,8 +4,8 @@ import NAME_DB
 import USER_NAME
 import USER_PASSWORD
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import org.example.project.DAL.tables.Ganache
 import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -18,6 +18,9 @@ class ExposedPostgres {
     private val logger = LoggerFactory.getLogger("NettyLogger")
     private var result = "no data"
 
+    /*
+    * При инициализации класса подключается к базе данных
+     */
     init {
         try {
             val db = Database.connect(
@@ -73,6 +76,34 @@ class ExposedPostgres {
 
     }
 
+    fun getUserDataGanache (name : String) : JsonObject {
+        var userId = searchUserId(name)
+        var combinedJson = JsonObject()
+
+        try {
+            transaction {
+                val json = Gson()
+
+                var columnData = ""
+                Ganache.select { Ganache.customerId eq userId }.forEach {
+                    Ganache.columns.forEach { column ->
+                        //выбранные поля добавляет в json объект возвращаемый в ответе
+                        if (column.name == "account" || column.name == "key") {
+                            columnData = it.get(column).toString()
+                            combinedJson.add(column.name, json.toJsonTree(columnData))
+                        }
+                    }
+
+                }
+            }
+
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
+        }
+
+    }
 
     fun getDataTableUserPassword(tableName: Table = Users, name : String): String? {
 
