@@ -28,4 +28,7 @@ dependencies {
 
     //gson serrialization
     implementation("com.google.code.gson:gson:2.10.1")
+
+    //solidity smart contract and blockchain ethereum
+    implementation("org.web3j:web3j-openapi-core:4.10.1")
 }

@@ -3,6 +3,7 @@ package org.example.project
 import BASE_LINK_GET
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -11,8 +12,13 @@ import io.ktor.server.routing.*
 import org.example.project.DAL.ExposedPostgres
 import org.example.project.secure.checksUsersAccessConditions
 import org.slf4j.LoggerFactory
+import org.web3j.crypto.Credentials
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.DefaultBlockParameterName
+import org.web3j.protocol.http.HttpService
 import util.tokenCreate
 import webservices.TokenUsersObject
+import java.math.BigInteger
 
 private val logger = LoggerFactory.getLogger("NettyLogger")
 
@@ -56,6 +62,22 @@ fun Application.module() {
                 val walletData = dbConnect.getUserDataGanache(name!!.toString())
                 data.add("user", userData)
                 data.add("wallet", walletData)
+
+
+                // Получение значений из вложенных объектов
+                val key = walletData.get("key").asString
+                println(key)
+
+                val web3j = Web3j.build(HttpService("http://127.0.0.1:8545"))
+
+                println("\n WALLET DATA ${key} \n")
+
+                val credentials = Credentials.create(key)
+//
+                val balanceWei = web3j.ethGetBalance(credentials.address, DefaultBlockParameterName.LATEST).send().balance
+                val balanceEth = balanceWei.divide(BigInteger.TEN.pow(18))
+//
+                println("\n BALANCE ETH $balanceEth \n")
 
                 call.respondText(data.toString(), ContentType.Application.Json) //возвращаемое значение
             }
