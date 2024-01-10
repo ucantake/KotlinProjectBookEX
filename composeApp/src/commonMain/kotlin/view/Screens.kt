@@ -3,6 +3,7 @@ package view
 import ACCOUNT
 import BALANCE
 import EMAIL
+import JSON
 import NAMEUSER
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.*
+import model.JsonData
 import webservices.GetHttpApiClient
 
 class Screens {
@@ -92,26 +94,8 @@ class Screens {
         Scaffold {
                 runBlocking {
                     //TODO сделать загрузку основных данных в момент открытия приложения
-                    var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
-//                    println(json)
-                    // Получение значений из вложенных объектов
-                    val userName = json.jsonObject["user"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull
-                    val userEmail = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull
-                    val userRole = json.jsonObject["user"]?.jsonObject?.get("role")?.jsonPrimitive?.contentOrNull
+                    val js = Json.decodeFromString<JsonData>(JSON)
 
-                    val walletAccount = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull
-                    val walletKey = json.jsonObject["wallet"]?.jsonObject?.get("key")?.jsonPrimitive?.contentOrNull
-
-                    val balanceEth = json.jsonObject["balance"]?.jsonObject?.get("balanceEth")?.jsonPrimitive?.contentOrNull
-
-                    role = userRole.toString()
-                    name = userName.toString()
-                    account = walletAccount.toString()
-                    balance = balanceEth.toString()
-
-                    EMAIL = userEmail.toString()
-                    ACCOUNT = walletAccount.toString()
-                    BALANCE = balanceEth.toString()
 
 
                 }
@@ -119,7 +103,7 @@ class Screens {
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight(),
-                text = "ProfileScreen in Role = $role \n name = $name \n wallet = $account \n balance = $balance",
+                text = "ProfileScreen in Role = $role \n name = $NAMEUSER \n wallet = ${ACCOUNT.substring(0,10)} \n balance = $BALANCE",
                 textAlign = TextAlign.Center
             )
 

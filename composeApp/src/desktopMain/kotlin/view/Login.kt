@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import util.checkLoginUser
 import view.state.WindowState
 import androidx.compose.material.icons.sharp.Lock
+import repository.DownloadJsonData
 
 @Composable
 fun Login(state: WindowState){
@@ -120,6 +121,7 @@ fun Login(state: WindowState){
                             //проверка имени и пароля
                             if (checkLoginUser(username, password)) {//корректный ввод, отображение нового окна (авторизация)
                                 scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
+
                                 state.title = "Main"
                                 state.openNewWindow()
                             }

@@ -16,7 +16,9 @@ import kotlinx.serialization.json.jsonPrimitive
 import model.JsonData
 import webservices.GetHttpApiClient
 
-//TODO при переключении окон использовать эту функцию (или переделать на класс) для работы с данными
+
+//TODO проверять данные на изменение и если они изменились то обновлять их
+//TODO сделать запуск из файла Utils функции checkLoginUser
 fun DownloadJsonData () {
 
     val job = CoroutineScope(Dispatchers.Default).launch {
@@ -29,6 +31,7 @@ fun DownloadJsonData () {
 
         JSON = json.toString()
 
-        val js = Json.decodeFromString<JsonData>(JSON)
+        //преобразование строки JSON обратно в объект
+//        val js = Json.decodeFromString<JsonData>(JSON)
     }
 }

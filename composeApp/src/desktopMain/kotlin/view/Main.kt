@@ -125,21 +125,7 @@ class MainScreen() {
         val js = JsonObject()
         val screens = Screens()
 
-        runBlocking {
-            //TODO сделать проверку на онлайн
-            val httpsClietn = GetHttpApiClient()
-            var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
 
-            EMAIL = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull.toString()
-            ACCOUNT = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull.toString()
-            BALANCE = json.jsonObject["balance"]?.jsonObject?.get("balanceEth")?.jsonPrimitive?.contentOrNull.toString()
-
-            JSON = json.toString()
-
-            val js = Json.decodeFromString<JsonData>(JSON)
-
-            println(js)
-        }
 
         Scaffold(
             modifier = Modifier
