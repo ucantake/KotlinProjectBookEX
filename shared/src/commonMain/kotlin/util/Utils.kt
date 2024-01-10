@@ -28,6 +28,7 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
         //присваиваются данные константы для дальнейшего использования
         NAMEUSER = username
         PASSWORDUSER = hash.toString() //токен пользователя, который генерируется на основе логина и пароля
+
         return true
     }else {
         return false

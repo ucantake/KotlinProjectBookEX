@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import repository.DownloadJsonData
 import util.checkLoginUser
 import view.bottonNavigation.NavGraph
 
@@ -112,6 +113,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             if (checkLoginUser(username, password)){
                                 scopeRemember.launch {
                                     scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
+                                    DownloadJsonData()
                                     onLoginClicked()
                                 }
                             }else {
