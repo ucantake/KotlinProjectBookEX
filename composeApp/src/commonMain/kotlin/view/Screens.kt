@@ -2,15 +2,10 @@ package view
 
 import ACCOUNT
 import BALANCE
-import EMAIL
-import JSON
 import NAMEUSER
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,11 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.*
-import model.JsonData
-import model.SmartContract
 import repository.SynchronizedJsonData
 import webservices.GetHttpApiClient
 
@@ -55,93 +48,118 @@ class Screens {
         val httpsClietn = GetHttpApiClient()
         val scope = rememberCoroutineScope()
         var json : JsonObject
-        var showText by remember { mutableStateOf(true) }
+
+        //TODO один экран для создания смарт контрактов, другой для просмотра своих смарт контрактов
+        var switchViewSmartContract by remember { mutableStateOf(true) }
+
+        var progress by remember { mutableStateOf(0.0f) }
+
+        var items = listOf("")
+        var selectedValue: String = ""
 
 
-        Scaffold {
-            if (showText) {
+        Scaffold (modifier = Modifier.padding(6.dp)) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceAround
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+
                 )
                 {
                     //отображение данных
-                    Box(modifier = Modifier.background(Color.Red).fillMaxWidth().weight(1f)) {
-                        Row() {
+                    Box(
+                        modifier = Modifier.background(Color.Red).fillMaxWidth().weight(1f),
+                        contentAlignment = Alignment.Center){
+                            if (switchViewSmartContract) {
 
+                                //выпадающее меню
+                                DropdownExample { selectedItem ->
+                                    selectedValue = selectedItem
+                                    // здесь можно выполнить дополнительные действия при выборе элемента
+                                }
+
+                            }else {
                                 Text("Это текст, который может измениться")
-
-                        }
-
+                            }
                     }
+
+                    //кнопка для получения данных
                     Box(
                         modifier = Modifier.background(Color.Green).fillMaxWidth().weight(0.5f),
                         contentAlignment = Alignment.Center
                     ) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly)
-                        {
-                            Button(
-                                modifier = Modifier
-                                    .wrapContentHeight()
-                                    .padding(6.dp),
-                                onClick = {
-                                    showText = false
 
-                                }
-                            ) {
-                                Text(
-                                    text = "Get Data2",
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center
-                                    )
+                        if (switchViewSmartContract) {
+
+                            Column (modifier = Modifier.padding(6.dp)) {
+                                CircularProgressIndicator(
+                                    progress = progress,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
-                            }
-                        }
-                    }
+                                Button(
+                                    modifier = Modifier
+                                        .wrapContentHeight()
+                                        .padding(6.dp),
+                                    onClick = {
+                                        scope.launch {
+                                            while (progress < 1f) {
+                                                progress += 0.1f
+                                                delay(1000L)
+                                            }
+                                        }
 
+                                        progress = 0.0f
+                                        switchViewSmartContract = false
 
-                }
-            }else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceAround
-                )
-                {
-                    //отображение данных
-                    Box(modifier = Modifier.background(Color.Red).fillMaxWidth().weight(1f)) {
-                        Row() {
-
-                            Text("ntrcn")
-
-                        }
-
-                    }
-                    Box(
-                        modifier = Modifier.background(Color.Green).fillMaxWidth().weight(0.5f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly)
-                        {
-                            Button(
-                                modifier = Modifier
-                                    .wrapContentHeight()
-                                    .padding(6.dp),
-                                onClick = {
-                                    showText = true
-
-                                }
-                            ) {
-                                Text(
-                                    text = "Get Data",
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center
+                                    }
+                                ) {
+                                    Text(
+                                        text = "Get Data2",
+                                        style = TextStyle(
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center
+                                        )
                                     )
-                                )
+                                }
+                                Spacer(modifier = Modifier.height(16.dp))
                             }
+
+
+                        }else {
+                            Column (modifier = Modifier.padding(6.dp)) {
+                                CircularProgressIndicator(
+                                    progress = progress,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally))
+                                Button(
+                                    modifier = Modifier
+                                        .wrapContentHeight()
+                                        .padding(6.dp),
+                                    onClick = {
+                                        scope.launch {
+                                            while (progress < 1f) {
+                                                progress += 0.1f
+                                                delay(1000L)
+                                            }
+
+                                        }
+                                        progress = 0.0f
+                                        switchViewSmartContract = true
+
+                                    }
+                                ) {
+                                    Text(
+                                        text = "Get Data",
+                                        style = TextStyle(
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
+
                         }
                     }
 
@@ -150,7 +168,7 @@ class Screens {
             }
         }
 
-    }
+
 
     @Composable
     fun ProfileScreen() {
@@ -176,6 +194,52 @@ class Screens {
 
         }
 
+    }
+
+    //контекстное меню
+    //TODO этим отрисовывать полученные данные о книгах и пользователях, причем сначала пользователь, потом книга
+    @Composable
+    fun DropdownExample(onItemSelected: (String) -> Unit) {
+        var expanded by remember { mutableStateOf(false) }
+        val items = listOf("Item 1", "Item 2", "Item 3", "Item 4")
+        var selectedItem by remember { mutableStateOf("") }
+
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text("Selected item: $selectedItem")
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .width(200.dp)
+                    .wrapContentSize(Alignment.TopStart)
+            ) {
+                OutlinedButton(
+                    onClick = { expanded = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Select an item")
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedItem = item
+                                onItemSelected(item) // вызов callback при выборе элемента
+                                expanded = false
+                            }
+                        ) {
+                            Text(item)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
