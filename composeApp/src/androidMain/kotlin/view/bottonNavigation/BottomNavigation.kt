@@ -16,7 +16,7 @@ fun BottomNavigation (
     //создаем список элементов нижней навигации, для перебирания экранов
     val listItems = listOf(
         BottomItem.Home,
-        BottomItem.Search,
+        BottomItem.SmartContract,
         BottomItem.Profile
     )
     androidx.compose.material.BottomNavigation(//создает пустую панель вокруг кнопок внизу

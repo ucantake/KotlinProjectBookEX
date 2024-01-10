@@ -1,10 +1,7 @@
 package view
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,7 +17,7 @@ import view.state.WindowState
 class MainScreen() {
     private val listItems = listOf(
     Item.Home,
-    Item.Search,
+    Item.SmartContract,
     Item.Profile
     )
 
@@ -84,11 +81,11 @@ class MainScreen() {
                     }
                     TextButton(
                         onClick = {
-                            onItemClick(Item.Search)
+                            onItemClick(Item.SmartContract)
                         }
                     ) {
                         Text(
-                            "Search",
+                            "Smart Contractrs",
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -160,7 +157,7 @@ class MainScreen() {
 
         when (currentItem) {
             is Item.Home -> screens.HomeScreen()
-            is Item.Search -> screens.SearchScreen()
+            is Item.SmartContract -> screens.SmartContract()
             is Item.Profile -> screens.ProfileScreen()
             else -> {}
         }

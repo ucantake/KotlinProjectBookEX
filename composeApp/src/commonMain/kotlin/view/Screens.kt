@@ -41,12 +41,12 @@ class Screens {
     }
 
     @Composable
-    fun SearchScreen() {
+    fun SmartContract() {
         Text(
             modifier = Modifier
                 .fillMaxSize()
                 .wrapContentHeight(),
-            text = "SearchScreen",
+            text = "Smart Contracts",
             textAlign = TextAlign.Center
         )
     }

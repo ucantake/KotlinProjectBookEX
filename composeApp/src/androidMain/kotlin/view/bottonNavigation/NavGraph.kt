@@ -15,7 +15,7 @@ fun NavGraph (
     //создаем список элементов нижней навигации, для перебирания экранов
     val listItems = listOf(
         BottomItem.Home,
-        BottomItem.Search,
+        BottomItem.SmartContract,
         BottomItem.Profile
     )
 
@@ -24,7 +24,7 @@ fun NavGraph (
             composable(screen.route) {
                 when (screen) {
                     BottomItem.Home -> Screens().HomeScreen()
-                    BottomItem.Search -> Screens().SearchScreen()
+                    BottomItem.SmartContract -> Screens().SmartContract()
                     BottomItem.Profile -> Screens().ProfileScreen()
                 }
             }
