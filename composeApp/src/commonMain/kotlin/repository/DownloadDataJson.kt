@@ -5,10 +5,7 @@ import BALANCE
 import EMAIL
 import JSON
 import NAMEUSER
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
@@ -21,7 +18,7 @@ import webservices.GetHttpApiClient
 //TODO сделать запуск из файла Utils функции checkLoginUser
 fun DownloadJsonData () {
 
-    val job = CoroutineScope(Dispatchers.Default).launch {
+    val job = CoroutineScope(Dispatchers.Default).async {
         val httpsClietn = GetHttpApiClient()
         var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
 
@@ -34,4 +31,9 @@ fun DownloadJsonData () {
         //преобразование строки JSON обратно в объект
 //        val js = Json.decodeFromString<JsonData>(JSON)
     }
+}
+
+//функция для синхронизации данных с сервера
+fun SynchronizedJsonData (){
+    CoroutineScope(Dispatchers.IO).async { DownloadJsonData() }
 }

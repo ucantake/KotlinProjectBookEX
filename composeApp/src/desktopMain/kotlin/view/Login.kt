@@ -121,7 +121,7 @@ fun Login(state: WindowState){
                             //проверка имени и пароля
                             if (checkLoginUser(username, password)) {//корректный ввод, отображение нового окна (авторизация)
                                 scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
-
+                                DownloadJsonData()
                                 state.title = "Main"
                                 state.openNewWindow()
                             }
