@@ -15,3 +15,5 @@ lateinit var PASSWORDUSER: String
 lateinit var EMAIL : String
 lateinit var ACCOUNT : String
 const val GANACHE_RPC_SERVER : String = "http://127.0.0.1:8545"
+lateinit var BALANCE : String
+lateinit var JSON : String

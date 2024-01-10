@@ -1,5 +1,10 @@
 package view
 
+import ACCOUNT
+import BALANCE
+import EMAIL
+import JSON
+import NAMEUSER
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,8 +16,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import model.BalanceJson
+import model.JsonData
+import model.UserJson
+import model.WalletJson
 import view.navigation.Item
 import view.state.WindowState
+import webservices.GetHttpApiClient
 
 class MainScreen() {
     private val listItems = listOf(
@@ -107,6 +124,23 @@ class MainScreen() {
         val scope = rememberCoroutineScope()
         val js = JsonObject()
         val screens = Screens()
+
+        runBlocking {
+            //TODO сделать проверку на онлайн
+            val httpsClietn = GetHttpApiClient()
+            var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
+
+            EMAIL = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull.toString()
+            ACCOUNT = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull.toString()
+            BALANCE = json.jsonObject["balance"]?.jsonObject?.get("balanceEth")?.jsonPrimitive?.contentOrNull.toString()
+
+            JSON = json.toString()
+
+            val js = Json.decodeFromString<JsonData>(JSON)
+
+            println(js)
+        }
+
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(), //TODO добавить полосу прокрутки

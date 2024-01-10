@@ -1,6 +1,7 @@
 package view
 
 import ACCOUNT
+import BALANCE
 import EMAIL
 import NAMEUSER
 import androidx.compose.foundation.background
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -42,13 +45,38 @@ class Screens {
 
     @Composable
     fun SmartContract() {
-        Text(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentHeight(),
-            text = "Smart Contracts",
-            textAlign = TextAlign.Center
-        )
+        val httpsClietn = GetHttpApiClient()
+        val scope = rememberCoroutineScope()
+        var json : JsonObject
+
+        Scaffold {
+
+
+            TextButton(
+                onClick = {
+                    runBlocking {
+                        json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER))) as JsonObject
+                        println(json)
+                    }
+                }
+            ) {
+                Text(
+                    "Create smart contract",
+                    textAlign = TextAlign.Center
+                )
+            }
+
+
+            Text(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentHeight(),
+                text = "Smart Contracts",
+                textAlign = TextAlign.Center
+            )
+        }
+
+
     }
 
     @Composable
@@ -63,6 +91,7 @@ class Screens {
 
         Scaffold {
                 runBlocking {
+                    //TODO сделать загрузку основных данных в момент открытия приложения
                     var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
 //                    println(json)
                     // Получение значений из вложенных объектов
@@ -82,6 +111,7 @@ class Screens {
 
                     EMAIL = userEmail.toString()
                     ACCOUNT = walletAccount.toString()
+                    BALANCE = balanceEth.toString()
 
 
                 }
