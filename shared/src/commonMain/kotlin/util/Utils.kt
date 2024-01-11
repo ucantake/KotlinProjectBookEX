@@ -56,6 +56,7 @@ suspend fun createUser (name : String, password : String, email : String, accoun
     val hash = tokenCreate(name, password).toString()
     println("hash = $hash stri= $stri")
     if (stri == hash) {
+        DATADOWNLOADING = true
         return true
     }else {
         return false

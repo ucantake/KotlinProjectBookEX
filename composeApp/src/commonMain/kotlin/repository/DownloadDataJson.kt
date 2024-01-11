@@ -32,9 +32,7 @@ fun DownloadJsonData () {
         JSON = json.toString()
 
         DATADOWNLOADING = true
-        println(json)
-        //преобразование строки JSON обратно в объект
-//        val js = Json.decodeFromString<JsonData>(JSON)
+        println(JSON)
     }
 }
 

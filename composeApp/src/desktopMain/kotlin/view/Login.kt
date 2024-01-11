@@ -136,6 +136,7 @@ fun Login(state: WindowState){
                                         while (progress < 1f) {
                                             progress += 0.1f
                                             delay(1000L)
+                                            if (DATADOWNLOADING) break
                                         }
                                         if (!DATADOWNLOADING) progress = 0f
                                     }

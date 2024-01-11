@@ -345,12 +345,12 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                         } else {
                             DATADOWNLOADING = false
                             scope.launch {
-                                while (true) {
+                                while (!DATADOWNLOADING) {
                                     val data = createUser(username, password, email, account, key)
                                     while (progress < 1f) {
                                         progress += 0.1f
                                         delay(1000L)
-                                        if (data) break
+                                        if (DATADOWNLOADING) break
                                     }
                                     println("DATA = $data")
 

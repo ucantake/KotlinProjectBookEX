@@ -2,28 +2,43 @@ package view
 
 import ACCOUNT
 import BALANCE
+import JSON
 import NAMEUSER
 import ROLE
 import USER_NAME
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.*
+import model.JsonData
 import repository.SynchronizedJsonData
 import webservices.GetHttpApiClient
 
 class Screens {
 
-
+    var viewProfile = "profile"
 
     @Composable
     fun HomeScreen() {
@@ -170,19 +185,265 @@ class Screens {
 
 
     @Composable
-    fun ProfileScreen() {
+    fun ProfileScreen()     {
 
-        Scaffold {
+        var switchViewProfile by remember { mutableStateOf("profile") }
 
-            SynchronizedJsonData()
+        val json = Json.decodeFromString<JsonData>(JSON)
+        val booksQuality = json.books.quantity.toInt()
 
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentHeight(),
-                text = "ProfileScreen in Role = $ROLE \n name = $NAMEUSER \n wallet = ${ACCOUNT.substring(0,10)} \n balance = $BALANCE",
-                textAlign = TextAlign.Center
-            )
+        var title by remember {
+            mutableStateOf("")
+        }
+        var author by remember {
+            mutableStateOf("")
+        }
+        //TODO переводить price в ETH
+        var price by remember {
+            mutableStateOf("")
+        }
+        var isbn by remember {
+            mutableStateOf("")
+        }
+        var ubc by remember {
+            mutableStateOf("")
+        }
+        var bbk by remember {
+            mutableStateOf("")
+        }
+
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+
+
+        Scaffold (
+            modifier = Modifier.padding(6.dp),
+            scaffoldState = scaffoldState,
+            bottomBar = {Box (modifier = Modifier.height(40.dp))}
+            ) {
+            if (switchViewProfile == "profile"){
+                SynchronizedJsonData()
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .border(1.dp, MaterialTheme.colors.primary),
+                            text = "Профиль = $NAMEUSER  кошелек = ${ACCOUNT.substring(0, 10)}  баланс = $BALANCE ETH\n" +
+                                    "Количество книг $booksQuality",
+                            textAlign = TextAlign.Start,
+                            textDecoration = TextDecoration.Underline,
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        )
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                        if (booksQuality != 0) {
+                            for (i in 0 until booksQuality) {
+                                Column() {
+                                    Row() {
+                                        Text(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .wrapContentHeight()
+                                                .border(1.dp, MaterialTheme.colors.primary),
+                                            text = json.books.title.toString(),
+                                            textAlign = TextAlign.Start,
+                                            textDecoration = TextDecoration.Underline,
+                                            style = TextStyle(
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        )
+                                        Text(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .wrapContentHeight()
+                                                .border(1.dp, MaterialTheme.colors.primary),
+                                            text = json.books.author.toString(),
+                                            textAlign = TextAlign.Start,
+                                            textDecoration = TextDecoration.Underline,
+                                            style = TextStyle(
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        )
+                                        Text(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .wrapContentHeight()
+                                                .border(1.dp, MaterialTheme.colors.primary),
+                                            text = json.books.price.toString().substring(0, 10),
+                                            textAlign = TextAlign.Start,
+                                            textDecoration = TextDecoration.Underline,
+                                            style = TextStyle(
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
+                        Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.End) {
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(6.dp),
+                                onClick = {
+                                    title = ""
+                                    author = ""
+                                    price = ""
+                                    isbn = ""
+                                    ubc = ""
+                                    bbk = ""
+                                    switchViewProfile = "addBook"
+                                }
+                            ) {
+                                Text(
+                                    text = "Книги",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+
+                }
+            } else if (switchViewProfile == "addBook") {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    content = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
+                        ) {
+                            Row() {
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = title,
+                                    label = {
+                                        Text("Название книги")
+                                    },
+                                    onValueChange = {
+                                        title = it
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Row() {
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = author,
+                                    label = {
+                                        Text("Автор книги")
+                                    },
+                                    onValueChange = {
+                                        author = it
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = isbn,
+                                    label = {
+                                        Text("ISBN")
+                                    },
+                                    onValueChange = {
+                                        isbn = it
+                                    },
+                                    modifier = Modifier.width(200.dp)
+                                )
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = ubc,
+                                    label = {
+                                        Text("УБК")
+                                    },
+                                    onValueChange = {
+                                        ubc = it
+                                    },
+                                    modifier = Modifier
+                                        .width(200.dp)
+                                )
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = bbk,
+                                    label = {
+                                        Text("ББК")
+                                    },
+                                    onValueChange = {
+                                        bbk = it
+                                    },
+                                    modifier = Modifier.width(200.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Row() {
+                                TextField(
+                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                    value = price,
+                                    label = {
+                                        Text("Цена книги в ETH")
+                                    },
+                                    onValueChange = {
+                                        price = it
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Button(
+                                onClick = {
+                                    if (title == "" || author == "" || price == "") {
+                                        scope.launch {
+                                            scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
+                                        }
+                                    }else if (isbn == "" && ubc == "" && bbk == "") {
+                                        scope.launch {
+                                            scaffoldState.snackbarHostState.showSnackbar("Заполните хотя бы одно из полей ISBN, УБК, ББК")
+                                        }
+                                    }else if (!checkPrice(price)) {
+                                        scope.launch {
+                                            scaffoldState.snackbarHostState.showSnackbar("Введена не корректная цена")
+                                        }
+                                    }else {
+                                        switchViewProfile = "profile"
+                                    }
+                                },
+                            ) {
+                                Text("Добавить книгу")
+                            }
+                        }
+                    }
+                )
+            }
+
 
         }
 
@@ -191,7 +452,7 @@ class Screens {
     //контекстное меню
     //TODO этим отрисовывать полученные данные о книгах и пользователях, причем сначала пользователь, потом книга
     @Composable
-    fun DropdownExample(onItemSelected: (String) -> Unit) {
+    private fun DropdownExample(onItemSelected: (String) -> Unit) {
         var expanded by remember { mutableStateOf(false) }
         val items = listOf("Item 1", "Item 2", "Item 3", "Item 4")
         var selectedItem by remember { mutableStateOf("") }
@@ -233,5 +494,14 @@ class Screens {
             }
         }
     }
-}
 
+    private fun checkPrice (price : String) :Boolean {
+        try {
+            val num = price.toDouble()
+        }catch (e : Exception){
+            return false
+        }
+        return true
+
+    }
+}

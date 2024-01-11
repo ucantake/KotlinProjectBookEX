@@ -5,6 +5,7 @@ import USER_NAME
 import USER_PASSWORD
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
 import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
@@ -206,6 +207,66 @@ class ExposedPostgres {
             }
         }catch (e : Exception) {
             logger.error("EXEPCTION " + e.message)
+        }
+    }
+
+    fun searchBookQuantity(name : String) : Int {
+        val userId = searchUserId(name).toString()
+        var bookQuantity = 0
+        try {
+            transaction {
+                val query = Books.selectAll()
+                query.forEach {
+                    if (userId == it.get(Books.userId).toString()) {
+                        bookQuantity++
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return bookQuantity
+        }
+    }
+
+    fun getBooksData (name : String) : JsonObject{
+        var userId = searchUserId(name)
+        var combinedJson = JsonObject()
+
+        try {
+            transaction {
+                val json = Gson()
+                var quantity = 0
+
+                var columnData = ""
+                Books.select { Books.userId eq userId }.forEach {
+                    Books.columns.forEach { column ->
+                        //выбранные поля добавляет в json объект возвращаемый в ответе
+                        if (column.name == "title" || column.name == "author" || column.name == "price") {
+                            columnData = it.get(column).toString()
+                            combinedJson.add(column.name, json.toJsonTree(columnData))
+                            quantity++
+                        }
+                    }
+
+                }
+
+                if (quantity == 0) {
+                    combinedJson.addProperty("title", "0")
+                    combinedJson.addProperty("author", "0")
+                    combinedJson.addProperty("price", "0")
+                    combinedJson.addProperty("quantity", quantity)
+                }
+
+                combinedJson.addProperty("quantity", quantity)
+
+            }
+
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
         }
     }
 }

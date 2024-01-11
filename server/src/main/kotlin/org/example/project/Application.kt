@@ -62,8 +62,11 @@ fun Application.module() {
                 val userData = dbConnect.getTableDataUsersAsJson(name!!.toString())
 
                 val walletData = dbConnect.getUserDataGanache(name!!.toString())
+
+                val booksData = dbConnect.getBooksData(name!!.toString())
                 data.add("user", userData)
                 data.add("wallet", walletData)
+                data.add("books", booksData)
 
 
                 // Получение значений из вложенных объектов
@@ -142,6 +145,8 @@ fun Application.module() {
                 call.respondText(data.hashCode().toString())
                 logger.info("responding to user registration name = $name")
             }
+
+
 
             /*
             * запрос для поиска пользователей
