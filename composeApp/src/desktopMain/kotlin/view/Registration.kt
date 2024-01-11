@@ -1,6 +1,5 @@
 package view
 
-import DATADOWNLOADING
 import WindowsName
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,28 +10,26 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import repository.DownloadJsonData
 import util.checkLoginUser
 import view.state.WindowState
-import androidx.compose.material.icons.sharp.Lock
-import kotlinx.coroutines.delay
-import repository.DownloadJsonData
+
 
 @Composable
-fun Login(state: WindowState){
+fun Registration (state: WindowState){
     val scaffoldState = rememberScaffoldState()// для отображения левой панели
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
     var username by remember {
         mutableStateOf("")
     }
@@ -40,9 +37,8 @@ fun Login(state: WindowState){
         mutableStateOf("")
     }
 
-    //для отображения нажатия кнопки Login
-    var enabled by remember {
-        mutableStateOf(true)
+    var password2 by remember {
+        mutableStateOf("")
     }
 
     //для отображения пароля
@@ -114,55 +110,31 @@ fun Login(state: WindowState){
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                // Кнопка входа
 
-                Button(
-                    modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
-                    shape = RoundedCornerShape(size = 20.dp),//закругление углов
-                    elevation = ButtonDefaults.elevation(//отображение тени
-                        defaultElevation = 20.dp
-                    ),
-                    enabled = username.isNotEmpty() && password.isNotEmpty(), //если поля пустые то кнопка не активна
-                    onClick = {
-                        enabled = false
-                        scope.launch {
 
-                            //проверка имени и пароля
-                            if (checkLoginUser(username, password)) {//корректный ввод, отображение нового окна (авторизация)
-                                DownloadJsonData()
-                                while (!DATADOWNLOADING) {
-                                    if (DATADOWNLOADING) break
-                                    else {
-                                        while (progress < 1f) {
-                                            progress += 0.1f
-                                            delay(1000L)
-                                        }
-                                        if (!DATADOWNLOADING) progress = 0f
-                                    }
-                                }
+                // Текстовое поле для ввода пароля
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
 
-                                scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = password2,
+                        visualTransformation = visualTransformation,
+                        label = {
+                            Text("Пароль")
+                        },
+                        onValueChange = {
+                            password2 = it
+                        },
 
-                                state.title = "Main"
-                                WindowsName = "Main"
-                                state.openNewWindow()
+                        modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth(0.9f)
 
-                            }
-                            else {
-                                scaffoldState.snackbarHostState.showSnackbar("Не верный логин или пароль")//отображение ошибки
-                                enabled = true
 
-                            }
-                            AppState.isLoggedIn = true
-
-                        }
-
-                    }
-                ) {
-                    Text("Войти",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black)
+                    )
                 }
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Кнопка регистрации
                 Button(
@@ -172,8 +144,8 @@ fun Login(state: WindowState){
                         defaultElevation = 20.dp
                     ),
                     onClick = {
-                        state.title = "Registration"
-                        WindowsName = "Registration"
+                        state.title = "Login"
+                        WindowsName = "Login"
                         state.openNewWindow()
                     }
                 ) {
@@ -199,16 +171,3 @@ fun Login(state: WindowState){
         }
     )
 }
-
-//уменьшение размера вылетающей левой панели через контуры фигуры
-//TODO разоабраться с размерами выпадающего окна (половина размера экрана в ширину)
-fun customShape(size : Size) =  object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        return Outline.Rectangle(Rect(0f,0f,size.height / 2 /* ширина */, size.width /* длина */))
-    }
-}
-

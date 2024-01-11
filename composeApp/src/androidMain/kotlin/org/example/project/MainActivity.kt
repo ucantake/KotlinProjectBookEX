@@ -1,6 +1,7 @@
 package org.example.project
 
 import App
+import WindowsName
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import view.LoginScreen
 import view.MainScreen
+import view.RegistrationScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,31 +26,26 @@ class MainActivity : ComponentActivity() {
                 startDestination = "login"//начальный экран
             ) {
                 composable("login") {//создание экрана
-                    LoginScreen{
-                        navController.navigate("main")//переход на другой экран
-
-                    }//вызов функции для отображения экрана входа в приложение
+                    LoginScreen() {
+                        if (WindowsName == "Main") {
+                            navController.navigate("main")
+                        } else if (WindowsName == "Registration") {
+                            navController.navigate("registration")
+                        } else {
+                            navController.navigate("login")
+                        }
+                    }//вызов функции для отображения экрана входа
                 }
                 //TODO: подумать над стеком, чтобы при нажатии кнопки "назад" выходить из приложения полностью
                 composable("main") {//создание экрана
-                    MainScreen(){
-                            //вариант закрытия стека
-//                        navController.navigate("home")//переход на другой экран
-//                        {
-//                            popUpTo("home")//удаление из стека экранов
-//                            {
-//                                inclusive = true//удаление всех экранов
-//
-//                            }
-//                        }
-                    }//вызов функции для отображения главного экрана приложения
-
+                    MainScreen(){}//вызов функции для отображения главного экрана приложения
                 }
-                //для варианта с закрытием стека экранов
-//                composable("home") {//создание экрана
-//                    val screens = Screens()
-//                    screens.HomeScreen()//вызов функции для отображения главного экрана приложения
-//                }
+                composable("registration") {//переключение обратно на экран входа, с возможность заново вызвать окно регистрации
+                    RegistrationScreen{
+                        navController.navigate("login")
+                    }
+                }
+
 
             }
 

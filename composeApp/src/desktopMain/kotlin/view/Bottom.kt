@@ -32,7 +32,7 @@ fun bottomAppBar(state: WindowState) {
 fun contentButtonBar (state: WindowState)  {
     Column {
         Text(
-            text = "Bottom Bar",
+            text = "Мультилатформенное приложения для обмена книг",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp)

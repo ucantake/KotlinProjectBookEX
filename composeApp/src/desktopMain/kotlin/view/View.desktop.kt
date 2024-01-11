@@ -25,8 +25,8 @@ fun LoginScreen(state: WindowState) {
 }
 
 @Composable
-fun MainScreenDesktop(state: WindowState) {
-    return MainScreen(state)
+fun RegistrationScreen(state: WindowState) {
+    Registration(state)
 }
 
 

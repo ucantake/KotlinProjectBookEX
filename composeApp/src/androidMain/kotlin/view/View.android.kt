@@ -4,6 +4,8 @@
 */
 package view
 
+import DATADOWNLOADING
+import WindowsName
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,12 +23,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import repository.DownloadJsonData
 import util.checkLoginUser
 import view.bottonNavigation.NavGraph
 
 
+private var screen = "Login"
 /*
    LoginScreen() - функция для отображения экрана входа в приложение
    TODO: спрятать поле пароля
@@ -49,6 +53,8 @@ fun LoginScreen(onLoginClicked: () -> Unit){
     val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
 
 
+    //для меню загрузки
+    var progress by remember { mutableStateOf(0.0f) }
     Scaffold (
         scaffoldState = scaffoldState,
         content = {
@@ -68,7 +74,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                         TextField(
                             value = username,
                             label = {
-                                Text("Username")
+                                Text("Имя пользователя")
                             },
                             onValueChange = {
                                 username = it
@@ -83,7 +89,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             modifier = Modifier.fillMaxWidth(0.9f),
                             value = password,
                             label = {
-                                Text("Password")
+                                Text("Пароль")
                             },
                             onValueChange = {
                                 password = it
@@ -111,9 +117,21 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                     onClick = {
                         scope.launch {
                             if (checkLoginUser(username, password)){
+                                DownloadJsonData()
+                                while (!DATADOWNLOADING) {
+                                    if (DATADOWNLOADING) break
+                                    else {
+                                        while (progress < 1f) {
+                                            progress += 0.1f
+                                            delay(1000L)
+                                        }
+                                        if (!DATADOWNLOADING) progress = 0f
+                                    }
+                                }
+
                                 scopeRemember.launch {
                                     scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
-                                    DownloadJsonData()
+                                    WindowsName = "Main"
                                     onLoginClicked()
                                 }
                             }else {
@@ -128,6 +146,23 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                     ) {
                         Text("Войти")
                     }
+
+                // Кнопка для регистрации
+                Button(
+                    onClick = {
+                        WindowsName = "Registration"
+                        onLoginClicked()
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                ) {
+                    Text("Зарегистрироваться")
+                }
+
+                //отображение меню загрузки
+                CircularProgressIndicator(
+                    progress = progress,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
             }
         }
@@ -155,13 +190,99 @@ fun MainScreen(function: () -> Unit) {
 
 }
 
-/*
-    Функция для обработки нажатия на кнопку "Войти"
-    TODO: добавить обработку ошибок
-    TODO: добавить обработку
-    TODO: вход по логину и паролю
- */
+//TODO написать функцию для регистрации
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun onLoginClickedT() {
-    MainScreen {  }
+fun RegistrationScreen(onLoginClicked: () -> Unit) {
+    val context = LocalContext.current
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var password2 by remember { mutableStateOf("") }
+    val scope = CoroutineScope(Dispatchers.IO)
+    val scaffoldState = rememberScaffoldState()
+    val scopeRemember = rememberCoroutineScope()
+
+    var passwordVisible by remember { mutableStateOf(false) }
+    val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+
+
+    Scaffold {
+        Column (
+            modifier = Modifier.fillMaxSize().padding(horizontal = 5.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center){
+
+            // Текстовое поле для ввода email
+            TextField(
+                value = username,
+                label = {
+                    Text("Имя пользователя")
+                },
+                onValueChange = {
+                    username = it
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            // Текстовое поле для ввода пароля
+            Row (
+                modifier = Modifier.fillMaxWidth()
+            )
+            {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = password,
+                    label = {
+                        Text("Пароль")
+                    },
+                    onValueChange = {
+                        password = it
+                    },
+                    visualTransformation = visualTransformation,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Password
+                    )
+                )
+                IconButton(
+                    modifier = Modifier.fillMaxWidth(1f),
+                    onClick = { passwordVisible = !passwordVisible }
+                ) {
+                    val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                    Icon(icon, contentDescription = "Toggle password visibility")
+                }
+            }
+
+            Row (
+                modifier = Modifier.fillMaxWidth()
+            )
+            {
+                // Текстовое поле для ввода пароля
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = password2,
+                    label = {
+                        Text("Пароль")
+                    },
+                    onValueChange = {
+                        password2 = it
+                    },
+                    visualTransformation = visualTransformation,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Password
+                    )
+                )
+            }
+
+            Button(
+                onClick = {
+                    WindowsName = "Login"
+                    onLoginClicked()
+                },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+            ) {
+                Text("Зарегистрироваться")
+            }
+        }
+    }
+
 }

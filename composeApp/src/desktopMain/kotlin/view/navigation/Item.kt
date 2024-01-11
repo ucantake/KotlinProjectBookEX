@@ -5,7 +5,7 @@ package view.navigation
 
 sealed class Item(val route: String, val title: String) {
 
-    object Home : Item("home", "Home")
-    object SmartContract : Item("smartContract", "Smart Contracts")
-    object Profile : Item("profile", "Profile")
+    object Home : Item("home", "Домашняя")
+    object SmartContract : Item("smartContract", "Обмен")
+    object Profile : Item("profile", "Профиль")
 }

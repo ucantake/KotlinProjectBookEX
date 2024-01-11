@@ -7,6 +7,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import view.LoginScreen
 import view.MainScreen
+import view.RegistrationScreen
 import view.state.ApplicationWindowsState
 import view.state.WindowState
 
@@ -19,6 +20,7 @@ TODO сделать передачу состояния окна:
   для каждого окна, свой размер
 */
 fun main() = application {
+    WindowsName = "Login"
     val applicationWindowsState = remember { ApplicationWindowsState() }
 
     for (window in applicationWindowsState.windows) {
@@ -41,7 +43,9 @@ private fun ApplicationScope.MyWindow(
     //вот тут переключается окно, перезаписью
     if (state.title == "Login") {
         LoginScreen (state)
-    } else {
+    } else if (state.title == "Main") {
         MainScreen(state)
+    }else if (state.title == "Registration") {
+        RegistrationScreen(state)
     }
 }

@@ -24,7 +24,7 @@ fun contenTopBar (state: WindowState, scaffoldState: ScaffoldState)  {
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = {
             scope.launch {
-                scaffoldState.snackbarHostState.showSnackbar("Booksexchange v1.0")
+                scaffoldState.snackbarHostState.showSnackbar("Книжный обменник v1.0")
             }
         } ) {
             Icon(Icons.Default.Info, contentDescription = "Help")
@@ -46,7 +46,7 @@ fun contenTopBar (state: WindowState, scaffoldState: ScaffoldState)  {
 fun topAppBar(state: WindowState, scaffoldState: ScaffoldState,) {
     val scope = rememberCoroutineScope()
     TopAppBar(
-        title = { Text("Your App Title") },
+        title = { Text("Книжный обменник") },
         navigationIcon = {
             IconButton(onClick = {
                 scope.launch{

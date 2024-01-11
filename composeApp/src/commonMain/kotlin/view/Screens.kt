@@ -3,13 +3,13 @@ package view
 import ACCOUNT
 import BALANCE
 import NAMEUSER
-import androidx.compose.foundation.background
+import ROLE
+import USER_NAME
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,13 +31,12 @@ class Screens {
           modifier = Modifier
               .fillMaxSize()
               .padding(6.dp)
-              .background(color = Color.Yellow )
         ){
             Text(
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight(),
-                text = "HomeScreen",
+                text = "Здравствуйте  у $NAMEUSER  на $ACCOUNT счете $BALANCE  ETH",
                 textAlign = TextAlign.Center
             )
         }
@@ -68,7 +67,7 @@ class Screens {
                 {
                     //отображение данных
                     Box(
-                        modifier = Modifier.background(Color.Red).fillMaxWidth().weight(1f),
+                        modifier = Modifier.fillMaxWidth().weight(1f),
                         contentAlignment = Alignment.Center){
                             if (switchViewSmartContract) {
 
@@ -85,7 +84,7 @@ class Screens {
 
                     //кнопка для получения данных
                     Box(
-                        modifier = Modifier.background(Color.Green).fillMaxWidth().weight(0.5f),
+                        modifier = Modifier.fillMaxWidth().weight(0.5f),
                         contentAlignment = Alignment.Center
                     ) {
 
@@ -172,13 +171,6 @@ class Screens {
 
     @Composable
     fun ProfileScreen() {
-        val httpsClietn = GetHttpApiClient()
-        val scope = rememberCoroutineScope()
-        var json : JsonObject
-        var role = ""
-        var name = ""
-        var account = ""
-        var balance = ""
 
         Scaffold {
 
@@ -188,7 +180,7 @@ class Screens {
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentHeight(),
-                text = "ProfileScreen in Role = $role \n name = $NAMEUSER \n wallet = ${ACCOUNT.substring(0,10)} \n balance = $BALANCE",
+                text = "ProfileScreen in Role = $ROLE \n name = $NAMEUSER \n wallet = ${ACCOUNT.substring(0,10)} \n balance = $BALANCE",
                 textAlign = TextAlign.Center
             )
 
