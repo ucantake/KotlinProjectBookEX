@@ -77,6 +77,8 @@ actual class HttpApiClient : HttpApiClientInterface {
         return getLinkBodyAsText(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile"))
     }
 
-
+    override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
+        return getLinkBodyAsText(linkFormatterHttp("registration/name/$name/password/$password/email/$email/$account/$key"))
+    }
 
 }

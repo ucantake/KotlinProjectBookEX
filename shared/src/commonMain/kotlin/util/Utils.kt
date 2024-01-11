@@ -1,5 +1,6 @@
 package util
 
+import DATADOWNLOADING
 import NAMEUSER
 import PASSWORDUSER
 import webservices.GetHttpApiClient
@@ -47,4 +48,16 @@ fun tokenCreate (name : String, password : String) : Int {
 fun tokenCreate (string : String) : String {
     val hashNamePassword = ""+string+"" //TODO придумать более сложную генерацию токена
     return hashNamePassword.hashCode().toString()
+}
+
+suspend fun createUser (name : String, password : String, email : String, account : String, key : String) : Boolean {
+    val httpsClietn = GetHttpApiClient()
+    val stri = httpsClietn.createUser(name, password, email, account, key)
+    val hash = tokenCreate(name, password).toString()
+    println("hash = $hash stri= $stri")
+    if (stri == hash) {
+        return true
+    }else {
+        return false
+    }
 }

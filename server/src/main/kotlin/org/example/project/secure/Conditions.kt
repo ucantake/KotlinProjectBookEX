@@ -50,14 +50,13 @@ fun checksUsersAccessConditions(token : String = "", name: String, password : St
             return false
         }
 
-
-            if (tokensUsersList.compareWithString(token)) {   //проверка на наличие токена в списке
-                logger.info("True Access for token = $token name = $name")
-                return true
-            } else {
-                logger.error("False Access for token = $token name = $name")
-                return false
-            }
+        if (tokensUsersList.compareWithString(token)) {   //проверка на наличие токена в списке
+            logger.info("True Access for token = $token name = $name")
+            return true
+        } else {
+            logger.error("False Access for token = $token name = $name")
+            return false
+        }
 
     }
 

@@ -10,6 +10,8 @@ import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 //import com.google.gson.Gson
 
@@ -144,6 +146,66 @@ class ExposedPostgres {
             logger.error("EXEPCTION " + e.message)
         }finally {
             return userId
+        }
+    }
+
+
+    fun checkUserInDatabase (name : String) : Boolean {
+        var result : Boolean = true
+        try {
+            transaction {
+                val tableName : Table = Users
+                val query = tableName.selectAll()
+                query.forEach {
+                    if (name == it.get(Users.name).toString()) {
+                        result = false
+                        return@transaction
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return result
+        }
+    }
+
+    fun addUser (name : String, password : String, email : String, account : String, key : String) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = LocalDate.now().format(formatter).toString()
+        println(currentDate)
+        try {
+            transaction {
+                Users.insert {
+                    it[Users.name] = name
+                    it[Users.password] = password
+                    it[Users.email] = email
+                    it[Users.role] = "user"
+                    it[Users.status] = "active"
+                    it[Users.created_at] = currentDate
+                    it[Users.updated_at] = currentDate
+                }
+            }
+
+            addGanache(name, account, key)
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }
+    }
+
+    fun addGanache (name: String, account : String, key : String) {
+        val userId = searchUserId(name)
+        try {
+            transaction {
+                Ganache.insert {
+                    it[Ganache.customerId] = userId
+                    it[Ganache.account] = account
+                    it[Ganache.key] = key
+                }
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
         }
     }
 }

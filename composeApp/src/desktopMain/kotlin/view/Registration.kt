@@ -1,5 +1,6 @@
 package view
 
+import DATADOWNLOADING
 import WindowsName
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import repository.DownloadJsonData
 import util.checkLoginUser
+import util.createUser
 import view.state.WindowState
 
 
@@ -31,6 +33,13 @@ fun Registration (state: WindowState){
     }
 
     var username by remember {
+        mutableStateOf("")
+    }
+
+    var account by remember {
+        mutableStateOf("")
+    }
+    var key by remember {
         mutableStateOf("")
     }
     var password by remember {
@@ -60,7 +69,7 @@ fun Registration (state: WindowState){
                 modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
             ) {
                 Row() {
-                    // Текстовое поле для ввода email
+                    // Текстовое поле для ввода имени пользователя
                     TextField(
                         shape = RoundedCornerShape(size = 20.dp),//скругление углов
                         value = username,
@@ -77,8 +86,67 @@ fun Registration (state: WindowState){
 
                     )
                 }
+                Spacer(modifier = Modifier.height(1.dp))
+                Row() {
+                    // Текстовое поле для ввода имени email
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = email,
+                        label = {
+                            Text("Электронная почта")
+                        },
 
-                Spacer(modifier = Modifier.height(16.dp))
+                        onValueChange = {
+                            email = it
+                        },
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    )
+                }
+                Spacer(modifier = Modifier.height(1.dp))
+
+
+                Row() {
+                    // Текстовое поле для ввода аккаунта
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = account,
+                        label = {
+                            Text("Адрес ETH аккаунта")
+                        },
+
+                        onValueChange = {
+                            account = it
+                        },
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    )
+                }
+                Spacer(modifier = Modifier.height(1.dp))
+
+                Row() {
+                    // Текстовое поле для ввода имени email
+                    TextField(
+                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        value = key,
+                        label = {
+                            Text("Приватный ключ от аккаунта ETH")
+                        },
+
+                        onValueChange = {
+                            key = it
+                        },
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    )
+                }
+                Spacer(modifier = Modifier.height(1.dp))
 
                 // Текстовое поле для ввода пароля
                 Row (
@@ -109,7 +177,7 @@ fun Registration (state: WindowState){
                         Icon(icon, contentDescription = "Toggle password visibility")
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(1.dp))
 
 
                 // Текстовое поле для ввода пароля
@@ -134,7 +202,7 @@ fun Registration (state: WindowState){
 
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(1.dp))
 
                 // Кнопка регистрации
                 Button(
@@ -144,9 +212,51 @@ fun Registration (state: WindowState){
                         defaultElevation = 20.dp
                     ),
                     onClick = {
-                        state.title = "Login"
-                        WindowsName = "Login"
-                        state.openNewWindow()
+                        if (password != password2) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Пароли не совпадают")
+                            }
+                        } else if (password == "" || password2 == "" || username == "" || email == "" || account == "" || key == "") {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
+                            }
+                        } else if (account.length != 42) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Неверный адрес аккаунта")
+                            }
+                        } else if (key.length != 66) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Неверный приватный ключ")
+                            }
+                        } else {
+                            DATADOWNLOADING = false
+                            scope.launch {
+                                while (true) {
+                                    val data = createUser(username, password, email, account, key)
+                                    while (progress < 1f) {
+                                        progress += 0.1f
+                                        delay(1000L)
+                                        if (data) break
+                                    }
+                                    println("DATA = $data")
+
+                                    if (!data) progress = 0f
+                                    if (data == false) {
+                                        scaffoldState.snackbarHostState.showSnackbar("Ошибка регистрации")
+                                        break
+                                    }else if (data == true) {
+                                        scaffoldState.snackbarHostState.showSnackbar("Пользователь успешно зарегистрирован")
+                                        DATADOWNLOADING = true
+
+                                        state.title = "Login"
+                                        WindowsName = "Login"
+                                        state.openNewWindow()
+
+                                        break
+                                    }
+                                }
+                            }
+                        }
                     }
                 ) {
                     Text("Зарегистрироваться",

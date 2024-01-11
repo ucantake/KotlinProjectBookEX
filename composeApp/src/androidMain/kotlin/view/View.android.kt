@@ -8,6 +8,7 @@ import DATADOWNLOADING
 import WindowsName
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,6 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import repository.DownloadJsonData
 import util.checkLoginUser
+import util.createUser
 import view.bottonNavigation.NavGraph
 
 
@@ -196,8 +198,11 @@ fun MainScreen(function: () -> Unit) {
 fun RegistrationScreen(onLoginClicked: () -> Unit) {
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
+    var account by remember { mutableStateOf("") }
+    var key by remember { mutableStateOf("") }
     val scope = CoroutineScope(Dispatchers.IO)
     val scaffoldState = rememberScaffoldState()
     val scopeRemember = rememberCoroutineScope()
@@ -205,84 +210,176 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
     val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
 
+    var progress by remember { mutableStateOf(0.0f) }
 
-    Scaffold {
-        Column (
-            modifier = Modifier.fillMaxSize().padding(horizontal = 5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center){
-
-            // Текстовое поле для ввода email
-            TextField(
-                value = username,
-                label = {
-                    Text("Имя пользователя")
-                },
-                onValueChange = {
-                    username = it
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            // Текстовое поле для ввода пароля
-            Row (
-                modifier = Modifier.fillMaxWidth()
-            )
-            {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    value = password,
-                    label = {
-                        Text("Пароль")
-                    },
-                    onValueChange = {
-                        password = it
-                    },
-                    visualTransformation = visualTransformation,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Password
-                    )
-                )
-                IconButton(
-                    modifier = Modifier.fillMaxWidth(1f),
-                    onClick = { passwordVisible = !passwordVisible }
-                ) {
-                    val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                    Icon(icon, contentDescription = "Toggle password visibility")
-                }
-            }
-
-            Row (
-                modifier = Modifier.fillMaxWidth()
-            )
-            {
-                // Текстовое поле для ввода пароля
-                TextField(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    value = password2,
-                    label = {
-                        Text("Пароль")
-                    },
-                    onValueChange = {
-                        password2 = it
-                    },
-                    visualTransformation = visualTransformation,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Password
-                    )
-                )
-            }
-
-            Button(
-                onClick = {
-                    WindowsName = "Login"
-                    onLoginClicked()
-                },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+    Scaffold (
+        scaffoldState = scaffoldState,
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("Зарегистрироваться")
+
+                // Текстовое поле для ввода имени пользователя
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = username,
+                    label = {
+                        Text("Имя пользователя")
+                    },
+                    onValueChange = {
+                        username = it
+                    }
+                )
+
+                // Текстовое поле для ввода email
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = email,
+                    label = {
+                        Text("Электронная почта")
+                    },
+                    onValueChange = {
+                        email = it
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                // Текстовое поле для ввода аккаунта
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = account,
+                    label = {
+                        Text("Адрес ETH аккаунта")
+                    },
+
+                    onValueChange = {
+                        account = it
+                    }
+
+                )
+
+                // Текстовое поле для ввода имени email
+                TextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    value = key,
+                    label = {
+                        Text("Приватный ключ от аккаунта ETH")
+                    },
+
+                    onValueChange = {
+                        key = it
+                    }
+
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                // Текстовое поле для ввода пароля
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(0.9f),
+                        value = password,
+                        label = {
+                            Text("Пароль")
+                        },
+                        onValueChange = {
+                            password = it
+                        },
+                        visualTransformation = visualTransformation,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Password
+                        )
+                    )
+                    IconButton(
+                        modifier = Modifier.fillMaxWidth(1f),
+                        onClick = { passwordVisible = !passwordVisible }
+                    ) {
+                        val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                        Icon(icon, contentDescription = "Toggle password visibility")
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
+                    // Текстовое поле для ввода пароля
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(0.9f),
+                        value = password2,
+                        label = {
+                            Text("Пароль")
+                        },
+                        onValueChange = {
+                            password2 = it
+                        },
+                        visualTransformation = visualTransformation,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Password
+                        )
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        if (password != password2) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Пароли не совпадают")
+                            }
+                        } else if (password == "" || password2 == "" || username == "" || email == "" || account == "" || key == "") {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
+                            }
+                        } else if (account.length != 42) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Неверный адрес аккаунта")
+                            }
+                        } else if (key.length != 66) {
+                            scope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar("Неверный приватный ключ")
+                            }
+                        } else {
+                            DATADOWNLOADING = false
+                            scope.launch {
+                                while (true) {
+                                    val data = createUser(username, password, email, account, key)
+                                    while (progress < 1f) {
+                                        progress += 0.1f
+                                        delay(1000L)
+                                        if (data) break
+                                    }
+                                    println("DATA = $data")
+
+                                    if (!data) progress = 0f
+                                    if (data == false) {
+                                        scaffoldState.snackbarHostState.showSnackbar("Ошибка регистрации")
+                                        break
+                                    } else if (data == true) {
+                                        scaffoldState.snackbarHostState.showSnackbar("Пользователь успешно зарегистрирован")
+                                        DATADOWNLOADING = true
+                                        WindowsName = "Login"
+                                        onLoginClicked()
+                                    }
+                                }
+                            }
+                        }
+
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                ) {
+                    Text("Зарегистрироваться")
+                }
+
+                //отображение меню загрузки
+                CircularProgressIndicator(
+                    progress = progress,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
         }
-    }
-
+    )
 }

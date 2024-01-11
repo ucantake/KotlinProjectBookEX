@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Size
 
 class ApplicationWindowsState() {
+
     val windows = mutableStateListOf<WindowState>()
 
 
@@ -42,7 +43,7 @@ class ApplicationWindowsState() {
             ::exit,
             windows::remove,
             "Registration",
-            size = Size(300f, 150f)
+            size = Size(500f, 500f)
         )
     }
 
@@ -54,7 +55,7 @@ class ApplicationWindowsState() {
             ::exit,
             windows::remove,
             "Login",
-            size = Size(30f, 150f)
+            size = Size(300f, 150f)
         )
     }
 
@@ -71,7 +72,7 @@ class ApplicationWindowsState() {
         exit = ::exit,
         windows::remove,
         name = title,
-        size = Size(300f, 150f)
+        size = Size(500f, 300f)
     )
 
 }

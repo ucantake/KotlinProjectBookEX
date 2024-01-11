@@ -103,33 +103,53 @@ fun Application.module() {
             }
 
             /*
-            * создание таблицы в базе данных
-            * нужно было для создания таблицы Ganache
+            * запрос для регистрации пользователя
              */
-//            post("/$BASE_LINK_GET/name/{name}&password/{password}/{token}") {
-//                val name = call.parameters["name"]
-//                val password = call.parameters["password"]
-////                val table = call.parameters["table"]
-//                val token = call.parameters["token"]
-//
-////                if (table == "" || table == null) return@post
-//
-//                //проверка входящих значений
-//                if (!checksUsersAccessConditions(
-//                        name = name.toString(),
-//                        password = password.toString(),
-//                        token = token.toString()
-//                )) return@post
-//
-//                if (name != "admin") return@post
-//
-//                //создание таблицы в базе данных
-//                ExposedPostgres().creteTables(Ganache)
-//
-//                call.respondText("t c")
-//                logger.info("responding to user sign in name = $name")
-//
-//            }
+            get ("/$BASE_LINK_GET/registration/name/{name}/password/{password}/email/{email}/{account}/{key}") {
+                val name = call.parameters["name"]
+                val password = call.parameters["password"]
+                val email = call.parameters["email"]
+                val key = call.parameters["key"]
+                val account = call.parameters["account"]
+
+                println("DATA response name = $name password = $password email = $email")
+                //проверка входящих значений
+                if (!checksUsersAccessConditions(name =  name.toString(), password =  password.toString(), auth = true)) return@get
+
+                if (!BasicOperations().checkData(key.toString(), account.toString())) {
+                    call.respondText("0")
+                    logger.error("account = $account or key = $key is not in blockchain")
+                    return@get
+                }
+
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+
+                //проверка на наличие пользователя в базе данных
+                if (!dbConnect.checkUserInDatabase(name.toString())) {
+                    call.respondText("0")
+                    logger.error("name = $name is already in database")
+                    return@get
+                }
+
+                //добавление пользователя в базу данных
+                dbConnect.addUser(name.toString(), password.toString(), email.toString(), account.toString(), key.toString())
+
+                //возвращаемое значение имени и пароля
+                val data = ""+name+password+""
+
+                //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
+                call.respondText(data.hashCode().toString())
+                logger.info("responding to user registration name = $name")
+            }
+
+            /*
+            * запрос для поиска пользователей
+             */
+
+            /*
+            * запрос для получения списка книг от найденных ранее пользователей
+             */
 
 
         }

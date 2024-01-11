@@ -26,4 +26,8 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     override suspend fun getDataProfile(name: String): String {
         return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/name/$name&token/$PASSWORDUSER/profile").bodyAsText()
     }
+
+    override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
+        return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/registration/name/$name/password/$password/email/$email/$account/$key").bodyAsText()
+    }
 }

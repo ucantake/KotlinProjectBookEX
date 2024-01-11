@@ -6,6 +6,8 @@ interface HttpApiClientInterface {
 
     //отправка данных для страницы Profile
     suspend fun getDataProfile(name : String): String
+
+    suspend fun createUser (name : String, password : String, email : String, account : String, key : String) : String
 }
 
 expect class HttpApiClient() : HttpApiClientInterface
