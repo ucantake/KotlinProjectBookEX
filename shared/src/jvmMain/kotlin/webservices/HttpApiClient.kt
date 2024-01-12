@@ -81,4 +81,16 @@ actual class HttpApiClient : HttpApiClientInterface {
         return getLinkBodyAsText(linkFormatterHttp("registration/name/$name/password/$password/email/$email/$account/$key"))
     }
 
+    override suspend fun addBook(
+        name: String,
+        title: String,
+        author: String,
+        isbn: String,
+        udc: String,
+        bbk: String,
+        price: String
+    ): String {
+        return getLinkBodyAsText(linkFormatterHttp("/name/${name}/addBook/title/${title}/author/${author}/isbn/${isbn}/udc/${udc}/bbk/${bbk}/price/${price}"))
+    }
+
 }

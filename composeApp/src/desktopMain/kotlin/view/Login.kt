@@ -129,6 +129,7 @@ fun Login(state: WindowState){
 
                             //проверка имени и пароля
                             if (checkLoginUser(username, password)) {//корректный ввод, отображение нового окна (авторизация)
+                                println("проверка пройдена")
                                 DownloadJsonData()
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break

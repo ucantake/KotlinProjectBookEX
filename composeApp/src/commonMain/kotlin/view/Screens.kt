@@ -2,6 +2,7 @@ package view
 
 import ACCOUNT
 import BALANCE
+import DATADOWNLOADING
 import JSON
 import NAMEUSER
 import ROLE
@@ -9,6 +10,7 @@ import USER_NAME
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -34,6 +36,8 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.*
 import model.JsonData
 import repository.SynchronizedJsonData
+import util.addBook
+import util.createUser
 import webservices.GetHttpApiClient
 
 class Screens {
@@ -215,6 +219,8 @@ class Screens {
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
 
+        val progress = remember { mutableStateOf(0.0f) }
+
 
         Scaffold (
             modifier = Modifier.padding(6.dp),
@@ -249,51 +255,7 @@ class Screens {
                     }
                     Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
                         if (booksQuality != 0) {
-                            for (i in 0 until booksQuality) {
-                                Column() {
-                                    Row() {
-                                        Text(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight()
-                                                .border(1.dp, MaterialTheme.colors.primary),
-                                            text = json.books.title.toString(),
-                                            textAlign = TextAlign.Start,
-                                            textDecoration = TextDecoration.Underline,
-                                            style = TextStyle(
-                                                fontSize = 14.sp,
-                                                fontWeight = FontWeight.Bold,
-                                            )
-                                        )
-                                        Text(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight()
-                                                .border(1.dp, MaterialTheme.colors.primary),
-                                            text = json.books.author.toString(),
-                                            textAlign = TextAlign.Start,
-                                            textDecoration = TextDecoration.Underline,
-                                            style = TextStyle(
-                                                fontSize = 14.sp,
-                                                fontWeight = FontWeight.Bold,
-                                            )
-                                        )
-                                        Text(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight()
-                                                .border(1.dp, MaterialTheme.colors.primary),
-                                            text = json.books.price.toString().substring(0, 10),
-                                            textAlign = TextAlign.Start,
-                                            textDecoration = TextDecoration.Underline,
-                                            style = TextStyle(
-                                                fontSize = 14.sp,
-                                                fontWeight = FontWeight.Bold,
-                                            )
-                                        )
-                                    }
-                                }
-                            }
+                            //TODO сделать вывод списка книг
                         }
                     }
                     Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
@@ -376,7 +338,7 @@ class Screens {
                                     onValueChange = {
                                         isbn = it
                                     },
-                                    modifier = Modifier.width(200.dp)
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                                 TextField(
                                     shape = RoundedCornerShape(size = 20.dp),//скругление углов
@@ -387,8 +349,7 @@ class Screens {
                                     onValueChange = {
                                         ubc = it
                                     },
-                                    modifier = Modifier
-                                        .width(200.dp)
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                                 TextField(
                                     shape = RoundedCornerShape(size = 20.dp),//скругление углов
@@ -399,7 +360,7 @@ class Screens {
                                     onValueChange = {
                                         bbk = it
                                     },
-                                    modifier = Modifier.width(200.dp)
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                             }
                             Spacer(modifier = Modifier.height(5.dp))
@@ -424,21 +385,47 @@ class Screens {
                                         scope.launch {
                                             scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
                                         }
-                                    }else if (isbn == "" && ubc == "" && bbk == "") {
+                                    }else if (isbn == "" || ubc == "" || bbk == "") {
                                         scope.launch {
-                                            scaffoldState.snackbarHostState.showSnackbar("Заполните хотя бы одно из полей ISBN, УБК, ББК")
+                                            scaffoldState.snackbarHostState.showSnackbar("Заполните поля ISBN, УБК, ББК")
                                         }
                                     }else if (!checkPrice(price)) {
                                         scope.launch {
                                             scaffoldState.snackbarHostState.showSnackbar("Введена не корректная цена")
                                         }
                                     }else {
-                                        switchViewProfile = "profile"
+                                        scope.launch {
+                                            DATADOWNLOADING = false
+                                            while (!DATADOWNLOADING) {
+                                                val data = addBook(NAMEUSER, title, author, isbn, ubc, bbk, price)
+                                                while (progress.value < 1f) {
+                                                    progress.value += 0.1f
+                                                    delay(1000L)
+                                                    if (DATADOWNLOADING) break
+                                                }
+                                                println("DATA = $data")
+
+                                                if (!data) progress.value = 0f
+                                                if (data == false) {
+                                                    scaffoldState.snackbarHostState.showSnackbar("Ошибка")
+                                                    break
+                                                } else if (data == true) {
+                                                    scaffoldState.snackbarHostState.showSnackbar("Книга добавлена")
+                                                    switchViewProfile = "profile"
+                                                }
+                                            }
+                                        }
+
                                     }
                                 },
                             ) {
                                 Text("Добавить книгу")
                             }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            CircularProgressIndicator(
+                                progress.value
+                            )
+
                         }
                     }
                 )
@@ -497,7 +484,7 @@ class Screens {
 
     private fun checkPrice (price : String) :Boolean {
         try {
-            val num = price.toDouble()
+            val num = price.toLong()
         }catch (e : Exception){
             return false
         }

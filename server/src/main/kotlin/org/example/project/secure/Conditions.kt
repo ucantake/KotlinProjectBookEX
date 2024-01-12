@@ -10,6 +10,7 @@ private val logger = LoggerFactory.getLogger("NettyLogger")
 private val tokensUsersList = TokenUsersObject
 
 //TODO сделать проверки на все веб методы от Application
+//TODO переписать функцию под разные запросы
 /*
     * Функция проверок соединения
     * Проверки на :
@@ -33,7 +34,7 @@ fun checksUsersAccessConditions(token : String = "", name: String, password : St
 
     if (auth) {//если данные с формы авторизации то проверка будет без токена
         if (name == null || password == null){
-            logger.error("False Access for is auth form token = $token name = $name")
+            logger.error("False Access for is auth form token = $token name = $name $password")
             return false
         }
         else {

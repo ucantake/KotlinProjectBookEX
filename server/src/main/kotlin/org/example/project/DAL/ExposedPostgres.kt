@@ -269,4 +269,25 @@ class ExposedPostgres {
             return combinedJson
         }
     }
+
+    fun addBook(name : String, title : String, author : String,bbk : String, udc : String, isbn : String, price : String) {
+        println("1111111111111111111111111111111111111111")
+        val userId = searchUserId(name)
+        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        try {
+            transaction {
+                Books.insert {
+                    it[Books.userId] = userId
+                    it[Books.title] = title
+                    it[Books.bbk] = bbk
+                    it[Books.udc] = udc
+                    it[Books.isbn] = isbn
+                    it[Books.author] = author
+                    it[Books.price] = price.toLong()
+                }
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }
+    }
 }

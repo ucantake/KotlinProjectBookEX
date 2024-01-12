@@ -10,5 +10,5 @@ object Books : Table() {
     val udc = varchar("udc", 20)
     val bbk = varchar("bbk", 20)
     val userId = integer("user_id").references(Users.id)
-    val price = integer("price")
+    val price = long("price")
 }

@@ -30,4 +30,16 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
         return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/registration/name/$name/password/$password/email/$email/$account/$key").bodyAsText()
     }
+
+    override suspend fun addBook(
+        name: String,
+        title: String,
+        author: String,
+        isbn: String,
+        udc: String,
+        bbk: String,
+        price: String
+    ): String {
+        return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/name/${name}/addBook/title/${title}/author/${author}/isbn/${isbn}/udc/${udc}/bbk/${bbk}/price/${price}").bodyAsText()
+    }
 }

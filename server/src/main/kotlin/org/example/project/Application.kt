@@ -49,11 +49,17 @@ fun Application.module() {
              */
             get("/$BASE_LINK_GET/name/{name}&token/{token}/profile") {
                 val name = call.parameters["name"]
-                val password = call.parameters["password"]
                 val token = call.parameters["token"]
 
                 //проверка входящих значений
-                if (!checksUsersAccessConditions(token.toString(), name.toString(), password.toString())) return@get
+                if (!tokensUsersList.compareWithString(tokenCreate(name.toString())))
+                {
+                    logger.error("link = " + call.request.uri + " | " + "function get profile" + " | " + " name = $name token = $token is not in tokensUsersList ")
+                    return@get
+                }
+                if (name.toString() == "" || token.toString() == "") {
+                    println("ASD")
+                }else println("DSA")
 
                 //соединение с базой данных
                 val dbConnect = ExposedPostgres()
@@ -77,6 +83,8 @@ fun Application.module() {
                 val balance = BasicOperations().jsonObject(key, account)
                 data.add("balance", balance)
 
+                println(data)
+
                 call.respondText(data.toString(), ContentType.Application.Json) //возвращаемое значение
             }
 
@@ -90,14 +98,14 @@ fun Application.module() {
                 val password = call.parameters["password"]
 
                 //проверка входящих значений (в данном случае только на пустые значения)
-                if (!checksUsersAccessConditions(name = name.toString(), password = password.toString(), auth = true)) return@get
+                if (name == "" || password == "") return@get
 
                 //поиск данных в базе сохраненных пользователей
                 val data = ExposedPostgres().getDataTableUserPassword(name = name!!)
 
                 //добавление токена в список, после проверки на наличие данные в базе данных
                 if (data != null) {
-                    tokensUsersList.addData(tokenCreate(data))
+                    tokensUsersList.addData(tokenCreate(name))
                 }else return@get
 
                 //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
@@ -147,6 +155,51 @@ fun Application.module() {
             }
 
 
+            /*
+            * запрос на добавление книг в базу данных
+             */
+            get("/$BASE_LINK_GET/name/{name}/addBook/title/{title}/author/{author}/isbn/{isbn}/udc/{udc}/bbk/{bbk}/price/{price}") {
+                val name = call.parameters["name"]
+                val title = call.parameters["title"]
+                val author = call.parameters["author"]
+                val isbn = call.parameters["isbn"]
+                val udc = call.parameters["udc"]
+                val bbk = call.parameters["bbk"]
+                val price = call.parameters["price"]
+
+                //проверка входящих значений
+                if (!checksUsersAccessConditions(name =  name.toString(), password =  title.toString(), auth = true)) return@get
+
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+                println("00000000000000000000000000000000000000000")
+                println("toke " + tokenCreate(name!!) + " name $name ")
+                println("tokenList" + tokensUsersList.getAllData())
+                //проверка на наличие пользователя в базе данных
+                if (!tokensUsersList.compareWithString(tokenCreate(name!!))) {
+                    call.respondText("0")
+                    logger.error("name = $name is not in database")
+                    return@get
+                }
+
+                //добавление книги в базу данных
+                dbConnect.addBook(
+                    name = name.toString(),
+                    title = title.toString(),
+                    author = author.toString(),
+                    isbn = isbn.toString(),
+                    udc = udc.toString(),
+                    bbk = bbk.toString(),
+                    price = price.toString()
+                )
+
+                //возвращаемое значение имени и пароля
+                val data = "" + name + title + ""
+
+                //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
+                call.respondText(data.hashCode().toString())
+                logger.info("responding to user add book name = $name")
+            }
 
             /*
             * запрос для поиска пользователей
