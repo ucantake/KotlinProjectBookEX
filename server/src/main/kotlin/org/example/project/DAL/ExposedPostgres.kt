@@ -242,12 +242,19 @@ class ExposedPostgres {
                 var columnData = ""
                 Books.select { Books.userId eq userId }.forEach {
                     Books.columns.forEach { column ->
+
+                        if (column.name == "user_id") {
+                            if (it.get(column).toString() == userId.toString()){
+                                quantity++
+                            }
+                        }
                         //выбранные поля добавляет в json объект возвращаемый в ответе
                         if (column.name == "title" || column.name == "author" || column.name == "price") {
                             columnData = it.get(column).toString()
                             combinedJson.add(column.name, json.toJsonTree(columnData))
-                            quantity++
+
                         }
+
                     }
 
                 }
@@ -260,6 +267,7 @@ class ExposedPostgres {
                 }
 
                 combinedJson.addProperty("quantity", quantity)
+                quantity = 0
 
             }
 
@@ -271,9 +279,7 @@ class ExposedPostgres {
     }
 
     fun addBook(name : String, title : String, author : String,bbk : String, udc : String, isbn : String, price : String) {
-        println("1111111111111111111111111111111111111111")
         val userId = searchUserId(name)
-        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         try {
             transaction {
                 Books.insert {

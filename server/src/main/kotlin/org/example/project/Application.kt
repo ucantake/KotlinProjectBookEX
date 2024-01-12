@@ -58,8 +58,9 @@ fun Application.module() {
                     return@get
                 }
                 if (name.toString() == "" || token.toString() == "") {
-                    println("ASD")
-                }else println("DSA")
+                    logger.error("link = " + call.request.uri + " | " + "function get profile" + " | " + " name = $name token = $token is empty ")
+                    return@get
+                }
 
                 //соединение с базой данных
                 val dbConnect = ExposedPostgres()
