@@ -5,28 +5,17 @@ import BALANCE
 import DATADOWNLOADING
 import JSON
 import NAMEUSER
-import ROLE
-import USER_NAME
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -37,7 +26,6 @@ import kotlinx.serialization.json.*
 import model.JsonData
 import repository.SynchronizedJsonData
 import util.addBook
-import util.createUser
 import webservices.GetHttpApiClient
 
 class Screens {
@@ -65,6 +53,7 @@ class Screens {
     fun SmartContract() {
         val httpsClietn = GetHttpApiClient()
         val scope = rememberCoroutineScope()
+        val scaffoldState = rememberScaffoldState()
         var json : JsonObject
 
         //TODO один экран для создания смарт контрактов, другой для просмотра своих смарт контрактов
@@ -74,9 +63,14 @@ class Screens {
 
         var items = listOf("")
         var selectedValue: String = ""
+        val usersValues = listOf("Пользователь 1", "Пользователь 2", "Пользователь 3", "Пользователь 4")
+        val booksValues = listOf("Книга 1", "Книга 2", "Книга 3", "Книга 4")
 
+        var price by remember {
+            mutableStateOf("0.0")
+        }
 
-        Scaffold (modifier = Modifier.padding(6.dp)) {
+        Scaffold (modifier = Modifier.padding(6.dp), scaffoldState = scaffoldState,bottomBar = {Box (modifier = Modifier.height(40.dp))}) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceAround,
@@ -89,15 +83,55 @@ class Screens {
                         modifier = Modifier.fillMaxWidth().weight(1f),
                         contentAlignment = Alignment.Center){
                             if (switchViewSmartContract) {
+                                Column (
+                                    modifier = Modifier.align(Alignment.Center)
+                                ) {
+                                    Row {
+                                        //выпадающее меню
+                                        DropdownExample(
+                                            onItemSelected = { selectedValue = it },
+                                            items = usersValues,
+                                            text = "Выберете пользователя"
+                                        )
+                                        // здесь можно выполнить дополнительные действия при выборе элемента
 
-                                //выпадающее меню
-                                DropdownExample { selectedItem ->
-                                    selectedValue = selectedItem
-                                    // здесь можно выполнить дополнительные действия при выборе элемента
+                                        //выпадающее меню
+                                        DropdownExample(
+                                            onItemSelected = { selectedValue = it },
+                                            items = booksValues,
+                                            text = "Выберете книгу"
+                                        )
+                                    }
+                                    Row {
+                                        Box {
+                                            TextField(
+                                                shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                                value = price,
+                                                label = {
+                                                    Text("Цена")
+                                                },
+                                                onValueChange = {
+                                                    price = it
+                                                },
+                                                modifier = Modifier
+                                            )
+                                        }
+                                        Box (modifier = Modifier.height(50.dp).padding(16.dp),Alignment.Center){
+                                            Text("ETH",
+                                                style = TextStyle(
+                                                    fontSize = 14.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                )
+                                            )
+                                        }
+
+                                    }
+
                                 }
 
+
                             }else {
-                                Text("Это текст, который может измениться")
+                                Text("Контракт успешно размещен")
                             }
                     }
 
@@ -124,15 +158,16 @@ class Screens {
                                                 progress += 0.1f
                                                 delay(1000L)
                                             }
-                                        }
+
 
                                         progress = 0.0f
-                                        switchViewSmartContract = false
+                                            scaffoldState.snackbarHostState.showSnackbar("Контракт отправлен")
+                                        }
 
                                     }
                                 ) {
                                     Text(
-                                        text = "Get Data2",
+                                        text = "Отправить",
                                         style = TextStyle(
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.Bold,
@@ -167,7 +202,7 @@ class Screens {
                                     }
                                 ) {
                                     Text(
-                                        text = "Get Data",
+                                        text = "Назад",
                                         style = TextStyle(
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.Bold,
@@ -439,15 +474,14 @@ class Screens {
     //контекстное меню
     //TODO этим отрисовывать полученные данные о книгах и пользователях, причем сначала пользователь, потом книга
     @Composable
-    private fun DropdownExample(onItemSelected: (String) -> Unit) {
+    private fun DropdownExample(onItemSelected : (String) -> Unit, items : List<String>, text : String ) {
         var expanded by remember { mutableStateOf(false) }
-        val items = listOf("Item 1", "Item 2", "Item 3", "Item 4")
         var selectedItem by remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text("Selected item: $selectedItem")
+            Text("$text : $selectedItem")
             Spacer(modifier = Modifier.height(16.dp))
             Box(
                 modifier = Modifier
@@ -458,7 +492,7 @@ class Screens {
                     onClick = { expanded = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Select an item")
+                    Text("")
                 }
 
                 DropdownMenu(
