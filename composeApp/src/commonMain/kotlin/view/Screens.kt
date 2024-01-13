@@ -376,8 +376,56 @@ class Screens {
                         )
                     }
                     Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                        Column(
+                            modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary),
+                        ) {
+                            Text(
+                                "Ваши книги",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                            Row {
+                                Text(
+                                    " Название ",
+                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                    style = TextStyle(
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                )
+                                Text(
+                                    " Автор ",
+                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                    style = TextStyle(
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                )
+                                Text(
+                                    " ISBN ",
+                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                    style = TextStyle(
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                )
+                                Text(
+                                    " Цена ",
+                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                    style = TextStyle(
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                )
+                            }
+                        }
                         if (booksQuality != 0) {
                             //TODO сделать вывод списка книг
+                        }else {
+
                         }
                     }
                     Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
