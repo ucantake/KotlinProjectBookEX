@@ -1,6 +1,7 @@
 package view
 
 import DATADOWNLOADING
+import WORKMODE
 import WindowsName
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -126,10 +127,11 @@ fun Login(state: WindowState){
                     onClick = {
                         enabled = false
                         scope.launch {
-
+                            val check = checkLoginUser(username, password)
+                            if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
                             //проверка имени и пароля
-                            if (checkLoginUser(username, password)) {//корректный ввод, отображение нового окна (авторизация)
-                                println("проверка пройдена")
+                            if (check) {//корректный ввод, отображение нового окна (авторизация)
+                                println("access login")
                                 DownloadJsonData()
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break
@@ -137,6 +139,7 @@ fun Login(state: WindowState){
                                         while (progress < 1f) {
                                             progress += 0.1f
                                             delay(1000L)
+                                            println("DATADOWNLOADING = $DATADOWNLOADING")
                                             if (DATADOWNLOADING) break
                                         }
                                         if (!DATADOWNLOADING) progress = 0f

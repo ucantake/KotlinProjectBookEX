@@ -14,9 +14,13 @@ lateinit var NAMEUSER: String
 lateinit var PASSWORDUSER: String
 lateinit var EMAIL : String
 lateinit var ACCOUNT : String
-const val GANACHE_RPC_SERVER : String = "http://127.0.0.1:8545"
+const val GANACHE_RPC_SERVER : String = "http://127.0.0.1:8545" //адрес сервера ganache (блокчейна эфириум)
 lateinit var BALANCE : String
-lateinit var JSON : String
+lateinit var JSON : String //json с данными пользователя получаемыми с сервера
 lateinit var ROLE : String
 var DATADOWNLOADING = false
 lateinit var WindowsName : String
+val LOCALACCESSDATA = "ASDDSA" //авторизационные данные для локального доступа
+val LOCALACCESS = true //локальный доступ для тестирования
+lateinit var WORKMODE : String
+const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user\"},\"wallet\":{\"account\":\"0x0000000000\",\"key\":\"0x0000000000\"},\"books\":{\"title\":\"\",\"author\":\"\",\"price\":\"0\",\"quantity\":0},\"balance\":{\"account\":\"0x0000000000\",\"balanceWei\":\"0\",\"balanceEth\":\"0\"}}"

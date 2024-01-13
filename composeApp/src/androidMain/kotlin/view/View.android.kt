@@ -5,6 +5,7 @@
 package view
 
 import DATADOWNLOADING
+import WORKMODE
 import WindowsName
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -120,6 +121,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                         scope.launch {
                             if (checkLoginUser(username, password)){
                                 DownloadJsonData()
+                                if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break
                                     else {

@@ -1,9 +1,11 @@
 package webservices
 
 import BASE_LINK_GET
+import OFFLINEDATA
 import PASSWORDUSER
 import SERVER_IP
 import SERVER_PORT
+import WORKMODE
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -74,7 +76,13 @@ actual class HttpApiClient : HttpApiClientInterface {
     ) : String = getLinkBodyAsText(linkFormatterHttp("name/$name&password/$password"))
 
     override suspend fun getDataProfile(name: String): String {
-        return getLinkBodyAsText(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile"))
+        try {
+            return getLinkBodyAsText(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile"))
+        }catch (e : Exception) {
+            println("EXEPCTION in getDataProfile in HttpApiClient.kt " + e.message)
+            //TODO написать действительный json
+            return OFFLINEDATA
+        }
     }
 
     override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
