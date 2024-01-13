@@ -34,18 +34,87 @@ class Screens {
 
     @Composable
     fun HomeScreen() {
-        Box (
-          modifier = Modifier
-              .fillMaxSize()
-              .padding(6.dp)
-        ){
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentHeight(),
-                text = "Здравствуйте  у $NAMEUSER  на $ACCOUNT счете $BALANCE  ETH",
-                textAlign = TextAlign.Center
-            )
+        val scaffoldState = rememberScaffoldState()
+        Scaffold (modifier = Modifier.padding(6.dp), scaffoldState = scaffoldState,bottomBar = {Box (modifier = Modifier.height(60.dp))}) {
+            Column {
+                Box(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentHeight(),
+                        text = "Здравствуйте  у $NAMEUSER  на $ACCOUNT счете $BALANCE  ETH",
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Box(
+                    modifier = Modifier.fillMaxWidth().weight(2f),
+                    contentAlignment = Alignment.Center
+                ){
+                    Column(
+                        modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary),
+                    ) {
+                        Text(
+                            "Текущие смарт контракты",
+                            modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        )
+                        Row {
+                            Text(
+                                " Пользователь ",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).fillMaxHeight(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                            Text(
+                                " Книга ",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).fillMaxHeight(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                            Text(
+                                " Цена ",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).fillMaxHeight(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                            Text(
+                                " Окончание ",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).fillMaxHeight(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                            Text(
+                                " Комментарий ",
+                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).fillMaxSize(),
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            )
+                        }
+                    }
+                }
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(0.5f),
+                    contentAlignment = Alignment.Center
+                ){
+
+                }
+            }
         }
     }
 
@@ -70,6 +139,9 @@ class Screens {
             mutableStateOf("0.0")
         }
 
+        var text by remember {
+            mutableStateOf("")
+        }
         Scaffold (modifier = Modifier.padding(6.dp), scaffoldState = scaffoldState,bottomBar = {Box (modifier = Modifier.height(40.dp))}) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -102,6 +174,7 @@ class Screens {
                                             text = "Выберете книгу"
                                         )
                                     }
+
                                     Row {
                                         Box {
                                             TextField(
@@ -116,8 +189,9 @@ class Screens {
                                                 modifier = Modifier
                                             )
                                         }
-                                        Box (modifier = Modifier.height(50.dp).padding(16.dp),Alignment.Center){
-                                            Text("ETH",
+                                        Box(modifier = Modifier.height(50.dp).padding(16.dp), Alignment.Center) {
+                                            Text(
+                                                "ETH",
                                                 style = TextStyle(
                                                     fontSize = 14.sp,
                                                     fontWeight = FontWeight.Bold,
@@ -126,6 +200,19 @@ class Screens {
                                         }
 
                                     }
+
+                                    Spacer(modifier = Modifier.padding(16.dp))
+                                    TextField(
+                                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                        value = text,
+                                        label = {
+                                            Text("Комментарий")
+                                        },
+                                        onValueChange = {
+                                            text = it
+                                        },
+                                        modifier = Modifier.fillMaxHeight()
+                                    )
 
                                 }
 
