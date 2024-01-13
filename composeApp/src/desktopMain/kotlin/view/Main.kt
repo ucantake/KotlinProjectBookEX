@@ -74,7 +74,7 @@ class MainScreen() {
                         }
                     ) {
                         Text(
-                            "Profile",
+                            "Профиль",
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -88,7 +88,7 @@ class MainScreen() {
                         }
                     ) {
                         Text(
-                            "Home",
+                            "Домашняя",
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -102,7 +102,7 @@ class MainScreen() {
                         }
                     ) {
                         Text(
-                            "Smart Contractrs",
+                            "Обмен",
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .fillMaxWidth()
