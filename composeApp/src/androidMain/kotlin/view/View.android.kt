@@ -140,7 +140,8 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                                 }
                             }else {
                                 scopeRemember.launch {
-                                    scaffoldState.snackbarHostState.showSnackbar("Неверный логин или пароль")
+                                    if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
+                                    else scaffoldState.snackbarHostState.showSnackbar("Неверный логин или пароль")
                                 }
                             }
                         }

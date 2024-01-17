@@ -28,17 +28,17 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
             NAMEUSER = username
             PASSWORDUSER = hash //токен пользователя, который генерируется на основе логина и пароля
             WORKMODE = "online"
-
             return true
         }else {
             return false
         }
     }catch (e : Exception) {
         println("EXEPCTION in checkLoginUser in Utils.kt " + e.message)
+        WORKMODE = "offline"
         if (username == LOCALACCESSDATA && password == LOCALACCESSDATA && LOCALACCESS == true) { // локальный доступ для тестирования
             NAMEUSER = username
             PASSWORDUSER = tokenCreate(username+password)
-            WORKMODE = "offline"
+
             return true
         }else return false
     }
