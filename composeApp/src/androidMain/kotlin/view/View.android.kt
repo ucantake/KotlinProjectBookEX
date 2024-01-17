@@ -119,7 +119,8 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                 Button(
                     onClick = {
                         scope.launch {
-                            if (checkLoginUser(username, password)){
+                            val check = checkLoginUser(username, password)
+                            if (check){
                                 DownloadJsonData()
                                 if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
                                 while (!DATADOWNLOADING) {
@@ -140,8 +141,8 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                                 }
                             }else {
                                 scopeRemember.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar("Неверный логин или пароль")
                                     if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
-                                    else scaffoldState.snackbarHostState.showSnackbar("Неверный логин или пароль")
                                 }
                             }
                         }

@@ -355,10 +355,7 @@ class Screens {
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
 
                         Text(
                             modifier = Modifier
@@ -430,21 +427,143 @@ class Screens {
                     }
                     Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
                         Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.End) {
+                            Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    "Управление книгами")
+                                Row() {
+                                    TextButton(
+                                        modifier = Modifier
+                                            .padding(6.dp),
+                                        onClick = {
+                                            switchViewProfile = "removeBook"
+                                        }
+                                    ) {
+                                        Text(
+                                            text = "Удаление",
+                                            style = TextStyle(
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        )
+                                    }
+                                    TextButton(
+                                        modifier = Modifier
+                                            .padding(6.dp),
+                                        onClick = {
+                                            title = ""
+                                            author = ""
+                                            price = ""
+                                            isbn = ""
+                                            ubc = ""
+                                            bbk = ""
+                                            switchViewProfile = "addBook"
+                                        }
+                                    ) {
+                                        Text(
+                                            text = "Добавить",
+                                            style = TextStyle(
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        )
+                                    }
+                                    TextButton(
+                                        modifier = Modifier
+                                            .padding(6.dp),
+                                        onClick = {
+                                            switchViewProfile = "updateBook"
+                                        }
+                                    ) {
+                                        Text(
+                                            text = "Обновить",
+                                            style = TextStyle(
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            } else if (switchViewProfile == "Book") {
+                var bookView by remember { mutableStateOf("viewBook") }
+                //TODO страница с показом книг и кнопками для выбора остальных экранов
+                Column()
+                {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center){
+                        Row (){
                             TextButton(
                                 modifier = Modifier
                                     .padding(6.dp),
                                 onClick = {
-                                    title = ""
-                                    author = ""
-                                    price = ""
-                                    isbn = ""
-                                    ubc = ""
-                                    bbk = ""
+                                    switchViewProfile = "profile"
+                                }
+                            ) {
+                                Text(
+                                    text = "Профиль",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                )
+                            }
+
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(6.dp),
+                                onClick = {
+                                    switchViewProfile = "removeBook"
+                                }
+                            ) {
+                                Text(
+                                    text = "Удаление",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                )
+                            }
+
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(6.dp),
+                                onClick = {
                                     switchViewProfile = "addBook"
                                 }
                             ) {
                                 Text(
-                                    text = "Книги",
+                                    text = "Добавить",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                )
+                            }
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(6.dp),
+                                onClick = {
+                                    switchViewProfile = "updateBook"
+                                }
+                            ) {
+                                Text(
+                                    text = "Обновить",
                                     style = TextStyle(
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold,
@@ -453,158 +572,243 @@ class Screens {
                                 )
                             }
                         }
+
+
                     }
-
-
                 }
-            } else if (switchViewProfile == "addBook") {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    content = {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
+
+            }
+            else if (switchViewProfile == "removeBook") {
+                Column() {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                        Text("remove")
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
+                        Button(
+                            modifier = Modifier
+                                .padding(6.dp),
+                            onClick = {
+                                switchViewProfile = "profile"
+                            }
                         ) {
-                            Row() {
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = title,
-                                    label = {
-                                        Text("Название книги")
-                                    },
-                                    onValueChange = {
-                                        title = it
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
+                            Text(
+                                text = "Профиль",
+                                style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
                                 )
-                            }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Row() {
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = author,
-                                    label = {
-                                        Text("Автор книги")
-                                    },
-                                    onValueChange = {
-                                        author = it
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = isbn,
-                                    label = {
-                                        Text("ISBN")
-                                    },
-                                    onValueChange = {
-                                        isbn = it
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = ubc,
-                                    label = {
-                                        Text("УБК")
-                                    },
-                                    onValueChange = {
-                                        ubc = it
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = bbk,
-                                    label = {
-                                        Text("ББК")
-                                    },
-                                    onValueChange = {
-                                        bbk = it
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Row() {
-                                TextField(
-                                    shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                    value = price,
-                                    label = {
-                                        Text("Цена книги в ETH")
-                                    },
-                                    onValueChange = {
-                                        price = it
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Button(
-                                onClick = {
-                                    if (title == "" || author == "" || price == "") {
-                                        scope.launch {
-                                            scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
-                                        }
-                                    }else if (isbn == "" || ubc == "" || bbk == "") {
-                                        scope.launch {
-                                            scaffoldState.snackbarHostState.showSnackbar("Заполните поля ISBN, УБК, ББК")
-                                        }
-                                    }else if (!checkPrice(price)) {
-                                        scope.launch {
-                                            scaffoldState.snackbarHostState.showSnackbar("Введена не корректная цена")
-                                        }
-                                    }else {
-                                        scope.launch {
-                                            DATADOWNLOADING = false
-                                            while (!DATADOWNLOADING) {
-                                                val data = addBook(NAMEUSER, title, author, isbn, ubc, bbk, price)
-                                                while (progress.value < 1f) {
-                                                    progress.value += 0.1f
-                                                    delay(1000L)
-                                                    if (DATADOWNLOADING) break
-                                                }
-                                                println("DATA = $data")
-
-                                                if (!data) progress.value = 0f
-                                                if (data == false) {
-                                                    scaffoldState.snackbarHostState.showSnackbar("Ошибка")
-                                                    break
-                                                } else if (data == true) {
-                                                    scaffoldState.snackbarHostState.showSnackbar("Книга добавлена")
-                                                    switchViewProfile = "profile"
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                },
-                            ) {
-                                Text("Добавить книгу")
-                            }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            CircularProgressIndicator(
-                                progress.value
                             )
-
                         }
                     }
-                )
+                }
             }
+            else if (switchViewProfile == "addBook") {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
+                ) {
+                    Row() {
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = title,
+                            label = {
+                                Text("Название книги")
+                            },
+                            onValueChange = {
+                                title = it
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row() {
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = author,
+                            label = {
+                                Text("Автор книги")
+                            },
+                            onValueChange = {
+                                author = it
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = isbn,
+                            label = {
+                                Text("ISBN")
+                            },
+                            onValueChange = {
+                                isbn = it
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = ubc,
+                            label = {
+                                Text("УБК")
+                            },
+                            onValueChange = {
+                                ubc = it
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = bbk,
+                            label = {
+                                Text("ББК")
+                            },
+                            onValueChange = {
+                                bbk = it
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row() {
+                        TextField(
+                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                            value = price,
+                            label = {
+                                Text("Цена книги в ETH")
+                            },
+                            onValueChange = {
+                                price = it
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row () {
+                        Button(
+                            modifier = Modifier
+                                .padding(6.dp),
+                            onClick = {
+                                switchViewProfile = "profile"
+                            }
+                        ) {
+                            Text(
+                                text = "Профиль"
+                                )
+                        }
+                        Button(
+                            modifier = Modifier
+                                .padding(6.dp),
+                            onClick = {
+                                if (title == "" || author == "" || price == "") {
+                                    scope.launch {
+                                        scaffoldState.snackbarHostState.showSnackbar("Заполните все поля")
+                                    }
+                                } else if (isbn == "" || ubc == "" || bbk == "") {
+                                    scope.launch {
+                                        scaffoldState.snackbarHostState.showSnackbar("Заполните поля ISBN, УБК, ББК")
+                                    }
+                                } else if (!checkPrice(price)) {
+                                    scope.launch {
+                                        scaffoldState.snackbarHostState.showSnackbar("Введена не корректная цена")
+                                    }
+                                } else {
+                                    scope.launch {
+                                        DATADOWNLOADING = false
+                                        while (!DATADOWNLOADING) {
+                                            val data = addBook(NAMEUSER, title, author, isbn, ubc, bbk, price)
+                                            while (progress.value < 1f) {
+                                                progress.value += 0.1f
+                                                delay(1000L)
+                                                if (DATADOWNLOADING) break
+                                            }
+                                            println("DATA = $data")
 
+                                            if (!data) progress.value = 0f
+                                            if (data == false) {
+                                                scaffoldState.snackbarHostState.showSnackbar("Ошибка")
+                                                break
+                                            } else if (data == true) {
+                                                scaffoldState.snackbarHostState.showSnackbar("Книга добавлена")
+                                                switchViewProfile = "profile"
+                                            }
+                                        }
+                                    }
+
+                                }
+                            },
+                        ) {
+                            Text("Добавить книгу")
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    CircularProgressIndicator(
+                        progress.value
+                    )
+
+                }
+
+
+            }
+            else if (switchViewProfile == "updateBook") {
+                Column()
+                {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+                        Text("update")
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center){
+                        Button(
+                            modifier = Modifier
+                                .padding(6.dp),
+                            onClick = {
+                                switchViewProfile = "profile"
+                            }
+                        ) {
+                            Text(
+                                text = "Профиль",
+                                style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            )
+                        }
+                    }
+                }
+            }
 
         }
 
     }
+    /*
+    шаблон страниц
+    Column()
+            {
+                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+
+                }
+                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
+
+                }
+                Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center){
+
+                }
+            }
+     */
 
     //контекстное меню
     //TODO этим отрисовывать полученные данные о книгах и пользователях, причем сначала пользователь, потом книга
