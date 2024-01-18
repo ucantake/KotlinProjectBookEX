@@ -5,10 +5,11 @@ import OFFLINEDATA
 import PASSWORDUSER
 import SERVER_IP
 import SERVER_PORT
-import WORKMODE
+import crypto.EncryptionUtils
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import javax.net.ssl.TrustManager
@@ -28,6 +29,19 @@ actual class HttpApiClient : HttpApiClientInterface {
                 trustManager = getSslSettings().getTrustManager() as TrustManager?
             }
         }
+        // Установка кодировки UTF-8 для запросов
+        defaultRequest {
+            charset(Charsets.UTF_8.toString())
+        }
+
+        // Установка кодировки UTF-8 для ответов
+        HttpResponseValidator {
+            charset(Charsets.UTF_8.toString())
+        }
+        Charsets {
+            Charsets.UTF_8
+        }
+
     }
 
     /*
@@ -41,7 +55,9 @@ actual class HttpApiClient : HttpApiClientInterface {
     private suspend fun getLinkBody (
         link: String,
         client: HttpClient = this.client
-    ) : HttpResponse = client.get(link).body()
+    ) : HttpResponse {
+     return client.get(link).body()
+    }
 
     /*
     * Функция получения тела в текст ответа на запрос
@@ -55,6 +71,21 @@ actual class HttpApiClient : HttpApiClientInterface {
         link: String,
         client: HttpClient = this.client
     ) : String = client.get(link).bodyAsText()
+
+    private suspend fun getLinkBodyAsTextCrypt (
+        link : String,
+        client: HttpClient = this.client
+    ) : String {
+        val clientGet = client.get(link).bodyAsText()
+
+//        val jsonBytes = clientGet.toByteArray(Charset.forName("UTF-8"))
+//        val data = String(jsonBytes, Charset.forName("UTF-8"))
+        println("clientGet = = $clientGet")
+        val data = EncryptionUtils.decrypt(clientGet)
+        println("response = $data")
+
+        return data
+    }
 
     /*
     * Функция форматирования базовой ссылки
@@ -77,7 +108,7 @@ actual class HttpApiClient : HttpApiClientInterface {
 
     override suspend fun getDataProfile(name: String): String {
         try {
-            return getLinkBodyAsText(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile"))
+            return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile")).toString()
         }catch (e : Exception) {
             println("EXEPCTION in getDataProfile in HttpApiClient.kt " + e.message)
             //TODO написать действительный json

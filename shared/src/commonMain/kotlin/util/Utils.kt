@@ -90,3 +90,31 @@ suspend fun addBook ( name : String, title : String, author : String, isbn : Str
     }
 
 }
+
+fun hexToString(hexString: String): String {
+    val result = StringBuilder()
+
+    for (i in 0 until hexString.length step 2) {
+        val hex = hexString.substring(i, i + 2)
+        val decimal = hex.toInt(16)
+        result.append(decimal.toChar())
+    }
+
+    return result.toString()
+}
+
+
+fun stringToHex(input: String): String {
+    val hexChars = "0123456789ABCDEF"
+    val result = StringBuilder()
+
+    for (char in input.toCharArray()) {
+        val highNibble = char.toInt() ushr 4 and 0xF
+        val lowNibble = char.toInt() and 0xF
+
+        result.append(hexChars[highNibble])
+        result.append(hexChars[lowNibble])
+    }
+
+    return result.toString()
+}

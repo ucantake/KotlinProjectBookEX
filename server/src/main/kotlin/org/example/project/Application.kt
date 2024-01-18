@@ -10,7 +10,9 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.*
 import org.example.project.DAL.ExposedPostgres
+import org.example.project.secure.EncryptionUtils
 import org.example.project.secure.checksUsersAccessConditions
 import org.example.project.web3j.BasicOperations
 import org.slf4j.LoggerFactory
@@ -18,9 +20,11 @@ import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.http.HttpService
+import util.stringToHex
 import util.tokenCreate
 import webservices.TokenUsersObject
 import java.math.BigInteger
+import java.nio.charset.Charset
 
 private val logger = LoggerFactory.getLogger("NettyLogger")
 
@@ -33,8 +37,11 @@ fun main (args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(arg
 //TODO обработка исключений SSL (когда кто-то пытается получить доступ без сертификата)
 
 //TODO может шифровать сами сообщения? (просто для интереса) ?оконечное шифрование?
+
 fun Application.module() {
     try {
+
+
         routing {
             /*
             * регистрация в логе запросов на сервер, которые не входят в оставшиеся роутинг
@@ -84,9 +91,10 @@ fun Application.module() {
                 val balance = BasicOperations().jsonObject(key, account)
                 data.add("balance", balance)
 
-                println(data)
+                println(data.toString())
+                println(EncryptionUtils.encrypt(data.toString()))
 
-                call.respondText(data.toString(), ContentType.Application.Json) //возвращаемое значение
+                call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
 
 

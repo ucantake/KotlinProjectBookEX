@@ -24,3 +24,12 @@ val LOCALACCESSDATA = "ASDDSA" //авторизационные данные д�
 val LOCALACCESS = true //локальный доступ для тестирования
 lateinit var WORKMODE : String
 const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user\"},\"wallet\":{\"account\":\"0x0000000000\",\"key\":\"0x0000000000\"},\"books\":{\"title\":\"\",\"author\":\"\",\"price\":\"0\",\"quantity\":0},\"balance\":{\"account\":\"0x0000000000\",\"balanceWei\":\"0\",\"balanceEth\":\"0\"}}"
+lateinit var TITLE : String
+
+
+const val ALGORITHM = "AES"
+const val TRANSFORMATION = "AES/CBC/PKCS5Padding"
+
+// Замените на свой секретный ключ и вектор инициализации
+const val SECRET_KEY = "YourSecretKeyHere"
+const val IV = "YourInitializationVector"
