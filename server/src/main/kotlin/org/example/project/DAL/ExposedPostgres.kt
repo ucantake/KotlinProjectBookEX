@@ -340,30 +340,73 @@ class ExposedPostgres {
         }
     }
 
-    fun getUsersJsonNotCurrentUser (name : String) : JsonObject{
+    fun getUsersJsonNotCurrentUser(name: String): List<JsonObject> {
+        val result = mutableListOf<JsonObject>()//TODO хорошее решение, применить везде
+
+        try {
+            transaction {
+                Users.selectAll().forEach { userRow ->
+                    if (userRow[Users.name].toString() == name) return@forEach
+                    val combinedJson = JsonObject()
+                    Users.columns.forEach { column ->
+                        if (column.name == "name" || column.name == "id") {
+                            combinedJson.addProperty(column.name, userRow[column].toString())
+                        }
+                    }
+                    result.add(combinedJson)
+                }
+            }
+        } catch (e: Exception) {
+            logger.error("EXCEPTION " + e.message)
+        } finally {
+            return result
+        }
+    }
+
+
+    fun getBooksJsonNotCurrentUser (name: String, combinedJson: List<JsonObject>) : JsonObject {
         val userId = searchUserId(name)
         val combinedJson = JsonObject()
 
         try {
             transaction {
-                Users.selectAll().forEach { userRow ->
-                    val userObject = JsonObject()
+                val json = Gson()
+                val booksArray = JsonArray()
+                var quantity = 0
 
-                    Users.columns.forEach { column ->
-                        if (userRow[column].toString() == name) return@forEach
-                        if (column.name == "name") {
-                            userObject.addProperty(column.name, userRow[column].toString())
+                Books.selectAll().forEach { bookRow ->
+                    if (bookRow[Books.userId].toString() == userId.toString()) return@forEach
+                    val bookObject = JsonObject()
+
+
+                    Books.columns.forEach { column ->
+                        when (column.name) {//TODO хорошее решение, применить везде
+                            "user_id" -> {
+                                if (bookRow[column].toString() != userId.toString()) {
+                                    val columnData = bookRow[column].toString()
+                                    bookObject.addProperty(column.name, columnData)
+                                    quantity++
+                                }
+                            }
+                            "title", "author", "price"-> {
+                                val columnData = bookRow[column].toString()
+                                bookObject.addProperty(column.name, columnData)
+                            }
                         }
                     }
-                    combinedJson.add("user", userObject)
-                }
-            }
 
+                    booksArray.add(bookObject)
+                }
+
+                combinedJson.add("books", booksArray)
+                combinedJson.addProperty("quantity", quantity)
+            }
         }catch (e : Exception) {
             logger.error("EXEPCTION " + e.message)
         }finally {
             return combinedJson
         }
+
     }
 
 }

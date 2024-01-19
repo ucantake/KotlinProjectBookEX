@@ -1,6 +1,7 @@
 package org.example.project
 
 import BASE_LINK_GET
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
@@ -202,9 +203,30 @@ fun Application.module() {
             }
 
             /*
-            * запрос для поиска пользователей
+            * запрос для поиска пользователей готовых меняться книгами
              */
+            get("/$BASE_LINK_GET/name/{name}/search") {
+                val name = call.parameters["name"]
 
+                //проверка входящих значений
+                if (name == null || name.toString() == "") return@get
+
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+
+                val data = JsonObject()
+
+                val usersData = dbConnect.getUsersJsonNotCurrentUser(name!!.toString())
+                val booksData = dbConnect.getBooksJsonNotCurrentUser(name!!.toString(), usersData)
+
+                data.add("users", Gson().toJsonTree(usersData))
+                data.add("books", booksData)
+                println("\n DATA users = $data\n")
+                println(EncryptionUtils.encrypt(data.toString()))
+
+                call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
+
+            }
             /*
             * запрос для получения списка книг от найденных ранее пользователей
              */
