@@ -443,7 +443,7 @@ class Screens {
                                         Text(
                                             text = "Удаление",
                                             style = TextStyle(
-                                                fontSize = 20.sp,
+                                                fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold,
                                                 textAlign = TextAlign.Center
                                             )
@@ -465,7 +465,7 @@ class Screens {
                                         Text(
                                             text = "Добавить",
                                             style = TextStyle(
-                                                fontSize = 20.sp,
+                                                fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold,
                                                 textAlign = TextAlign.Center
                                             )
@@ -481,7 +481,7 @@ class Screens {
                                         Text(
                                             text = "Обновить",
                                             style = TextStyle(
-                                                fontSize = 20.sp,
+                                                fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold,
                                                 textAlign = TextAlign.Center
                                             )
