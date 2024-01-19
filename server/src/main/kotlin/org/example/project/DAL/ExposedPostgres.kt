@@ -340,4 +340,30 @@ class ExposedPostgres {
         }
     }
 
+    fun getUsersJsonNotCurrentUser (name : String) : JsonObject{
+        val userId = searchUserId(name)
+        val combinedJson = JsonObject()
+
+        try {
+            transaction {
+                Users.selectAll().forEach { userRow ->
+                    val userObject = JsonObject()
+
+                    Users.columns.forEach { column ->
+                        if (userRow[column].toString() == name) return@forEach
+                        if (column.name == "name") {
+                            userObject.addProperty(column.name, userRow[column].toString())
+                        }
+                    }
+                    combinedJson.add("user", userObject)
+                }
+            }
+
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
+        }
+    }
+
 }
