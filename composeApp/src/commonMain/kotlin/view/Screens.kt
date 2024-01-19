@@ -4,6 +4,7 @@ import ACCOUNT
 import BALANCE
 import DATADOWNLOADING
 import JSON
+import JSON_PROFILE
 import NAMEUSER
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.*
+import model.BooksResponse
 import model.JsonData
 import repository.SynchronizedJsonData
 import util.addBook
@@ -316,6 +318,7 @@ class Screens {
         var switchViewProfile by remember { mutableStateOf("profile") }
 
         val json = Json.decodeFromString<JsonData>(JSON)
+        val jsonProfile = Json.decodeFromString<BooksResponse>(JSON_PROFILE)
         val booksQuality = json.books.quantity.toInt()
 
         var title by remember {
@@ -385,14 +388,18 @@ class Screens {
                                 )
                             )
                             Row {
-                                Text(
-                                    " Название ",
-                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
+                                Column {
+                                    Text(
+                                        " Название ",
+                                        modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
                                     )
-                                )
+                                    //TODO вот тут сделать вывод списка книг
+                                    Text("${jsonProfile.booksContainer.books.getOrNull(0)?.title}")
+                                }
                                 Text(
                                     " Автор ",
                                     modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),

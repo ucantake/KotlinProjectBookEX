@@ -9,7 +9,7 @@
 
 package model
 
-expect interface Book {
+expect interface BookItem {
     val id: String              //уникальный идентификатор в системе
     val title: String           //название книги
     val author: String          //автор книги

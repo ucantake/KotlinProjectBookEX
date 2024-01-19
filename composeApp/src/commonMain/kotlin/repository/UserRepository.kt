@@ -1,6 +1,6 @@
 package repository
 
-import model.Book
+import model.BookItem
 import model.User
 
 expect interface UserRepository {
@@ -12,5 +12,5 @@ expect interface UserRepository {
     suspend fun searchUsersByFirstName(firstName: String): List<User>
     suspend fun searchUsersByLastName(lastName: String): List<User>
     suspend fun searchUsersByUsername(username: String): List<User>
-    suspend fun searchUsersByBooks(books: List<Book>): List<User>
+    suspend fun searchUsersByBooks(bookItems: List<BookItem>): List<User>
 }

@@ -4,20 +4,20 @@
  */
 package repository
 
-import model.Book
+import model.BookItem
 
 expect interface BookRepository {
-    suspend fun getBooks(): List<Book>
-    suspend fun getBook(id: Int): Book
-    suspend fun addBook(book: Book): Book
+    suspend fun getBooks(): List<BookItem>
+    suspend fun getBook(id: Int): BookItem
+    suspend fun addBook(bookItem: BookItem): BookItem
     suspend fun removeBook(id: Int): Boolean
-    suspend fun updateBook(book: Book): Book
-    suspend fun searchBooksByTitle(title: String): List<Book>
-    suspend fun searchBooksByAuthor(author: String): List<Book>
-    suspend fun searchBooksByGenre(genre: String): List<Book>
-    suspend fun searchBooksByYear(year: Int): List<Book>
-    suspend fun searchBooksByRating(rating: Int): List<Book>
-    suspend fun searchBooksByPrice(price: Int): List<Book>
-    suspend fun searchBooksByOwner(owner: String): List<Book>
+    suspend fun updateBook(bookItem: BookItem): BookItem
+    suspend fun searchBooksByTitle(title: String): List<BookItem>
+    suspend fun searchBooksByAuthor(author: String): List<BookItem>
+    suspend fun searchBooksByGenre(genre: String): List<BookItem>
+    suspend fun searchBooksByYear(year: Int): List<BookItem>
+    suspend fun searchBooksByRating(rating: Int): List<BookItem>
+    suspend fun searchBooksByPrice(price: Int): List<BookItem>
+    suspend fun searchBooksByOwner(owner: String): List<BookItem>
 
 }

@@ -5,6 +5,7 @@ import BALANCE
 import DATADOWNLOADING
 import EMAIL
 import JSON
+import JSON_PROFILE
 import LOCALACCESS
 import LOCALACCESSDATA
 import NAMEUSER
@@ -13,10 +14,9 @@ import PASSWORDUSER
 import ROLE
 import WORKMODE
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.*
+import model.BooksResponse
+import model.JsonData
 import webservices.GetHttpApiClient
 
 
@@ -37,6 +37,10 @@ fun DownloadJsonData () {
         CoroutineScope(Dispatchers.Default).launch {
             val httpsClietn = GetHttpApiClient()
             var json = Json.parseToJsonElement((httpsClietn.getDataProfile(NAMEUSER)))
+
+//            JSON_PROFILE = Json.decodeFromString<BooksResponse>(httpsClietn.getJsonBooks(NAMEUSER)).toString()
+            JSON_PROFILE = httpsClietn.getJsonBooks(NAMEUSER)
+            println("JSON_PROFILE = ${JSON_PROFILE}")
 
             EMAIL = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull.toString()
             ACCOUNT = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull.toString()

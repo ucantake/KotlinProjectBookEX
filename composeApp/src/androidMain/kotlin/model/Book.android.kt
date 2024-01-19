@@ -1,6 +1,6 @@
 package model
 
-actual interface Book {
+actual interface BookItem {
     actual val id: String
     actual val title: String
     actual val author: String

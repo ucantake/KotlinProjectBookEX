@@ -1,6 +1,6 @@
 package repository
 
-import model.Book
+import model.BookItem
 import model.User
 
 actual interface UserRepository {
@@ -12,5 +12,5 @@ actual interface UserRepository {
     actual suspend fun searchUsersByFirstName(firstName: String): List<User>
     actual suspend fun searchUsersByLastName(lastName: String): List<User>
     actual suspend fun searchUsersByUsername(username: String): List<User>
-    actual suspend fun searchUsersByBooks(books: List<Book>): List<User>
+    actual suspend fun searchUsersByBooks(bookItems: List<BookItem>): List<User>
 }

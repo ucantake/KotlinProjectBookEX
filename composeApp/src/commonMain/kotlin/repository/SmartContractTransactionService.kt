@@ -1,6 +1,6 @@
 package repository
 
-import model.Book
+import model.BookItem
 import model.User
 
 expect interface SmartContractTransactionService {
@@ -19,48 +19,48 @@ expect interface SmartContractTransactionService {
     suspend fun searchUsersBySmartContractStatus(smartContractStatus: String): User
     suspend fun searchUsersBySmartContractType(smartContractType: String): User
 
-    suspend fun searchBooksByStatus(status: String): List<Book>
-    suspend fun searchBooksByBuyer(buyer: String): List<Book>
-    suspend fun searchBooksBySeller(seller: String): List<Book>
-    suspend fun searchBooksByTransaction(transaction: String): List<Book>
-    suspend fun searchBooksBySmartContract(smartContract: String): List<Book>
+    suspend fun searchBooksByStatus(status: String): List<BookItem>
+    suspend fun searchBooksByBuyer(buyer: String): List<BookItem>
+    suspend fun searchBooksBySeller(seller: String): List<BookItem>
+    suspend fun searchBooksByTransaction(transaction: String): List<BookItem>
+    suspend fun searchBooksBySmartContract(smartContract: String): List<BookItem>
 
-    suspend fun searchBooksByTransactionId(transactionId: String): Book
-    suspend fun searchBooksBySmartContractId(smartContractId: String): Book
-    suspend fun searchBooksBySmartContractAddress(smartContractAddress: String): Book
-    suspend fun searchBooksBySmartContractSender(smartContractSender: String): Book
-    suspend fun searchBooksBySmartContractReceiver(smartContractReceiver: String): Book
-    suspend fun searchBooksBySmartContractAmount(smartContractAmount: String): Book
-    suspend fun searchBooksBySmartContractDate(smartContractDate: String): Book
-    suspend fun searchBooksBySmartContractTime(smartContractTime: String): Book
-    suspend fun searchBooksBySmartContractDateTime(smartContractDateTime: String): Book
-    suspend fun searchBooksBySmartContractStatus(smartContractStatus: String): Book
-    suspend fun searchBooksBySmartContractType(smartContractType: String): Book
-    suspend fun searchBooksBySmartContractTransaction(smartContractTransaction: String): Book
-    suspend fun searchBooksBySmartContractTransactionId(smartContractTransactionId: String): Book
-    suspend fun searchBooksBySmartContractTransactionDate(smartContractTransactionDate: String): Book
-    suspend fun searchBooksBySmartContractTransactionTime(smartContractTransactionTime: String): Book
-    suspend fun searchBooksBySmartContractTransactionDateTime(smartContractTransactionDateTime: String): Book
-    suspend fun searchBooksBySmartContractTransactionStatus(smartContractTransactionStatus: String): Book
-    suspend fun searchBooksBySmartContractTransactionType(smartContractTransactionType: String): Book
-    suspend fun searchBooksBySmartContractTransactionAmount(smartContractTransactionAmount: String): Book
-    suspend fun searchBooksBySmartContractTransactionSender(smartContractTransactionSender: String): Book
-    suspend fun searchBooksBySmartContractTransactionReceiver(smartContractTransactionReceiver: String): Book
-    suspend fun searchBooksBySmartContractTransactionSmartContract(smartContractTransactionSmartContract: String): Book
-    suspend fun searchBooksBySmartContractTransactionBook(smartContractTransactionBook: String): Book
-    suspend fun searchBooksBySmartContractTransactionSmartContractId(smartContractTransactionSmartContractId: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookId(smartContractTransactionBookId: String): Book
-    suspend fun searchBooksBySmartContractTransactionSmartContractAddress(smartContractTransactionSmartContractAddress: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookTitle(smartContractTransactionBookTitle: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookAuthor(smartContractTransactionBookAuthor: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookYear(smartContractTransactionBookYear: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookRating(smartContractTransactionBookRating: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookPrice(smartContractTransactionBookPrice: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookOwner(smartContractTransactionBookOwner: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookStatus(smartContractTransactionBookStatus: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookBuyer(smartContractTransactionBookBuyer: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookSeller(smartContractTransactionBookSeller: String): Book
-    suspend fun searchBooksBySmartContractTransactionBookTransaction(smartContractTransactionBookTransaction: String): Book
+    suspend fun searchBooksByTransactionId(transactionId: String): BookItem
+    suspend fun searchBooksBySmartContractId(smartContractId: String): BookItem
+    suspend fun searchBooksBySmartContractAddress(smartContractAddress: String): BookItem
+    suspend fun searchBooksBySmartContractSender(smartContractSender: String): BookItem
+    suspend fun searchBooksBySmartContractReceiver(smartContractReceiver: String): BookItem
+    suspend fun searchBooksBySmartContractAmount(smartContractAmount: String): BookItem
+    suspend fun searchBooksBySmartContractDate(smartContractDate: String): BookItem
+    suspend fun searchBooksBySmartContractTime(smartContractTime: String): BookItem
+    suspend fun searchBooksBySmartContractDateTime(smartContractDateTime: String): BookItem
+    suspend fun searchBooksBySmartContractStatus(smartContractStatus: String): BookItem
+    suspend fun searchBooksBySmartContractType(smartContractType: String): BookItem
+    suspend fun searchBooksBySmartContractTransaction(smartContractTransaction: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionId(smartContractTransactionId: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionDate(smartContractTransactionDate: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionTime(smartContractTransactionTime: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionDateTime(smartContractTransactionDateTime: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionStatus(smartContractTransactionStatus: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionType(smartContractTransactionType: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionAmount(smartContractTransactionAmount: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionSender(smartContractTransactionSender: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionReceiver(smartContractTransactionReceiver: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionSmartContract(smartContractTransactionSmartContract: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBook(smartContractTransactionBook: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionSmartContractId(smartContractTransactionSmartContractId: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookId(smartContractTransactionBookId: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionSmartContractAddress(smartContractTransactionSmartContractAddress: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookTitle(smartContractTransactionBookTitle: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookAuthor(smartContractTransactionBookAuthor: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookYear(smartContractTransactionBookYear: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookRating(smartContractTransactionBookRating: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookPrice(smartContractTransactionBookPrice: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookOwner(smartContractTransactionBookOwner: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookStatus(smartContractTransactionBookStatus: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookBuyer(smartContractTransactionBookBuyer: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookSeller(smartContractTransactionBookSeller: String): BookItem
+    suspend fun searchBooksBySmartContractTransactionBookTransaction(smartContractTransactionBookTransaction: String): BookItem
     suspend fun searchUsersByBalance(balance: Any): List<User>
     suspend fun searchUsersByCryptoWalletLink(cryptoWalletLink: String): List<User>
 }

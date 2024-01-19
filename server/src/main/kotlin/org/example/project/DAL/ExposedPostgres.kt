@@ -299,67 +299,45 @@ class ExposedPostgres {
     }
 
 
-    fun getBooksJson (name : String) : JsonObject{
-        var userId = searchUserId(name)
-        var combinedJson = JsonObject()
+    fun getBooksJson(name: String): JsonObject {
+        val userId = searchUserId(name)
+        val combinedJson = JsonObject()
 
         try {
             transaction {
                 val json = Gson()
+                val booksArray = JsonArray()
                 var quantity = 0
 
-                var columnData = ""
-                Books.select { Books.userId eq userId }.forEach {
+                Books.select { Books.userId eq userId }.forEach { bookRow ->
+                    val bookObject = JsonObject()
+
                     Books.columns.forEach { column ->
-
-                        if (column.name == "user_id") {
-                            if (it.get(column).toString() == userId.toString()){
-                                quantity++
-                            }
-                        }
-                        //выбранные поля добавляет в json объект возвращаемый в ответе
-                        if (column.name == "title" || column.name == "author" || column.name == "price") {
-                            val columnData = it.get(column).toString()
-                            // Проверяем, есть ли уже такое поле в combinedJson
-                            if (combinedJson.has(column.name)) {
-                                // Если есть, получаем текущее значение и добавляем новое значение
-                                val existingValue = combinedJson.get(column.name)
-                                if (existingValue.isJsonArray) {
-                                    // Если текущее значение - массив, добавляем новый элемент
-                                    existingValue.asJsonArray.add(json.toJsonTree(columnData))
-                                } else {
-                                    // Если текущее значение не массив, создаем новый массив и добавляем старое и новое значение
-                                    val newArray = JsonArray()
-                                    newArray.add(existingValue)
-                                    newArray.add(json.toJsonTree(columnData))
-                                    combinedJson.add(column.name, newArray)
+                        when (column.name) {
+                            "user_id" -> {
+                                if (bookRow[column].toString() == userId.toString()) {
+                                    quantity++
                                 }
-                            } else {
-                                // Если такого поля еще нет, просто добавляем новое поле и значение
-                                combinedJson.add(column.name, json.toJsonTree(columnData))
+                            }
+                            "title", "author", "price" -> {
+                                val columnData = bookRow[column].toString()
+                                bookObject.addProperty(column.name, columnData)
                             }
                         }
-
                     }
 
+                    booksArray.add(bookObject)
                 }
 
-                if (quantity == 0) {
-                    combinedJson.addProperty("title", "0")
-                    combinedJson.addProperty("author", "0")
-                    combinedJson.addProperty("price", "0")
-                    combinedJson.addProperty("quantity", quantity)
-                }
-
+                combinedJson.add("books", booksArray)
                 combinedJson.addProperty("quantity", quantity)
-                quantity = 0
-
             }
 
-        }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
-        }finally {
+        } catch (e: Exception) {
+            logger.error("EXCEPTION " + e.message)
+        } finally {
             return combinedJson
         }
     }
+
 }
