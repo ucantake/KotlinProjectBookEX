@@ -13,6 +13,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -164,13 +166,11 @@ class Screens {
                                 ) {
                                     Row {
                                         //выпадающее меню
-                                        DropdownExample(
-                                            onItemSelected = { selectedValue = it },
-                                            items = usersValues,
-                                            text = "Выберете пользователя"
-                                        )
-                                        // здесь можно выполнить дополнительные действия при выборе элемента
-
+                                            DropdownExample(
+                                                onItemSelected = { selectedValue = it },
+                                                items = usersValues,
+                                                text = "Выберете пользователя"
+                                            )
                                         //выпадающее меню
                                         DropdownExample(
                                             onItemSelected = { selectedValue = it },
@@ -224,6 +224,7 @@ class Screens {
                             }else {
                                 Text("Контракт успешно размещен")
                             }
+
                     }
 
                     //кнопка для получения данных
@@ -268,7 +269,7 @@ class Screens {
                                 }
                                 Spacer(modifier = Modifier.height(16.dp))
                             }
-
+                            Text(selectedValue)
 
                         }else {
                             Column (modifier = Modifier.padding(6.dp)) {
@@ -815,38 +816,55 @@ class Screens {
         var selectedItem by remember { mutableStateOf("") }
 
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .width(200.dp)
+                .verticalScroll(rememberScrollState())
         ) {
-            Text("$text : $selectedItem")
-            Spacer(modifier = Modifier.height(16.dp))
+            Text("$text : $selectedItem", modifier = Modifier.height(50.dp).align(Alignment.CenterHorizontally),
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            )
             Box(
                 modifier = Modifier
-                    .width(200.dp)
                     .wrapContentSize(Alignment.TopStart)
+                    .padding(16.dp)
             ) {
+
                 OutlinedButton(
                     onClick = { expanded = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().height(70.dp)
                 ) {
-                    Text("")
+                    Column (modifier = Modifier.align(Alignment.CenterVertically)) {
+                        Row(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        {Text("$text")}
+
+                        Row(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        {Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)}
+                    }
                 }
 
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
-                    modifier = Modifier.width(200.dp)
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(150.dp)
                 ) {
+
                     items.forEach { item ->
                         DropdownMenuItem(
                             onClick = {
                                 selectedItem = item
-                                onItemSelected(item) // вызов callback при выборе элемента
+                                onItemSelected(item)
                                 expanded = false
                             }
                         ) {
                             Text(item)
                         }
                     }
+
                 }
             }
         }
