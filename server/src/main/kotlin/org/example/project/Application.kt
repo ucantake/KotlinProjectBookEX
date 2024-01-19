@@ -1,30 +1,21 @@
 package org.example.project
 
 import BASE_LINK_GET
-import GANACHE_RPC_SERVER
-import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
 import io.ktor.http.*
+import io.ktor.serialization.gson.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.*
 import org.example.project.DAL.ExposedPostgres
 import org.example.project.secure.EncryptionUtils
 import org.example.project.secure.checksUsersAccessConditions
 import org.example.project.web3j.BasicOperations
 import org.slf4j.LoggerFactory
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.core.DefaultBlockParameterName
-import org.web3j.protocol.http.HttpService
-import util.stringToHex
 import util.tokenCreate
 import webservices.TokenUsersObject
-import java.math.BigInteger
-import java.nio.charset.Charset
 
 private val logger = LoggerFactory.getLogger("NettyLogger")
 
@@ -40,7 +31,9 @@ fun main (args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(arg
 
 fun Application.module() {
     try {
-
+        install(ContentNegotiation) {
+            gson()
+        }
 
         routing {
             /*
@@ -77,7 +70,7 @@ fun Application.module() {
 
                 val walletData = dbConnect.getUserDataGanache(name!!.toString())
 
-                val booksData = dbConnect.getBooksData(name!!.toString())
+                val booksData = dbConnect.getBookData(name!!.toString())
                 data.add("user", userData)
                 data.add("wallet", walletData)
                 data.add("books", booksData)
@@ -90,9 +83,6 @@ fun Application.module() {
                 //получение баланса с помощью web3j из блокчейна
                 val balance = BasicOperations().jsonObject(key, account)
                 data.add("balance", balance)
-
-                println(data.toString())
-                println(EncryptionUtils.encrypt(data.toString()))
 
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
@@ -167,47 +157,48 @@ fun Application.module() {
             /*
             * запрос на добавление книг в базу данных
              */
-            get("/$BASE_LINK_GET/name/{name}/addBook/title/{title}/author/{author}/isbn/{isbn}/udc/{udc}/bbk/{bbk}/price/{price}") {
-                val name = call.parameters["name"]
-                val title = call.parameters["title"]
-                val author = call.parameters["author"]
-                val isbn = call.parameters["isbn"]
-                val udc = call.parameters["udc"]
-                val bbk = call.parameters["bbk"]
-                val price = call.parameters["price"]
+            post("/$BASE_LINK_GET/name/{name}/addBook") {
+                try {
+                    val name = call.parameters["name"]
+                    // Получаем данные из тела POST-запроса
+                    val bookData = call.receive<BookData>()
+                    logger.info("Received book data: $bookData")
 
-                //проверка входящих значений
-                if (!checksUsersAccessConditions(name =  name.toString(), password =  title.toString(), auth = true)) return@get
+                    //TODO переделать проверку данных
+                    //проверка входящих значений
+                    if (name == null || name == "") {
+                        call.respondText("Access Denied")
+                        return@post
+                    }
 
-                //соединение с базой данных
-                val dbConnect = ExposedPostgres()
-                println("00000000000000000000000000000000000000000")
-                println("toke " + tokenCreate(name!!) + " name $name ")
-                println("tokenList" + tokensUsersList.getAllData())
-                //проверка на наличие пользователя в базе данных
-                if (!tokensUsersList.compareWithString(tokenCreate(name!!))) {
-                    call.respondText("0")
-                    logger.error("name = $name is not in database")
-                    return@get
+                    //соединение с базой данных
+                    val dbConnect = ExposedPostgres()
+
+                    //проверка на наличие пользователя в базе данных
+                    if (!tokensUsersList.compareWithString(tokenCreate(bookData.name))) {
+                        call.respondText("0")
+                        logger.error("name = ${bookData.name} is not in database")
+                        return@post
+                    }
+
+                    //добавление книги в базу данных
+                    dbConnect.addBook(
+                        name = bookData.name,
+                        title = bookData.title,
+                        author = bookData.author,
+                        isbn = bookData.isbn,
+                        udc = bookData.udc,
+                        bbk = bookData.bbk,
+                        price = bookData.price
+                    )
+
+                    //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
+                    call.respondText((bookData.name + bookData.title).hashCode().toString())
+                    logger.info("responding to user add book name = ${bookData.name}")
+                } catch (e: Exception) {
+                    call.respondText("Error processing request")
+                    logger.error("Error processing request: ${e.message}")
                 }
-
-                //добавление книги в базу данных
-                dbConnect.addBook(
-                    name = name.toString(),
-                    title = title.toString(),
-                    author = author.toString(),
-                    isbn = isbn.toString(),
-                    udc = udc.toString(),
-                    bbk = bbk.toString(),
-                    price = price.toString()
-                )
-
-                //возвращаемое значение имени и пароля
-                val data = "" + name + title + ""
-
-                //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
-                call.respondText(data.hashCode().toString())
-                logger.info("responding to user add book name = $name")
             }
 
             /*
@@ -218,9 +209,43 @@ fun Application.module() {
             * запрос для получения списка книг от найденных ранее пользователей
              */
 
+            /*
+            * запрос для получения списка книг текущего пользователя
+             */
+            get("/$BASE_LINK_GET/name/{name}/getBooks") {
+                val name = call.parameters["name"]
+
+                //проверка входящих значений
+                if (name == null || name.toString() == "") return@get
+
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+
+                val data = JsonObject()
+
+                val booksData = dbConnect.getBooksJson(name!!.toString())
+                data.add("books", booksData)
+
+                println(data.toString())
+                println(EncryptionUtils.encrypt(data.toString()))
+
+                call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
+            }
+
 
         }
     }catch (e : Exception){
         logger.error("exception in Application.module() = " + e.printStackTrace())
     }
 }
+
+// Определите класс BookData, который отражает структуру данных вашей книги
+data class BookData(
+    val name: String,
+    val title: String,
+    val author: String,
+    val isbn: String,
+    val udc: String,
+    val bbk: String,
+    val price: String
+)

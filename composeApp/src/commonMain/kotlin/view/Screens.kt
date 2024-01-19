@@ -5,7 +5,6 @@ import BALANCE
 import DATADOWNLOADING
 import JSON
 import NAMEUSER
-import TITLE
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -377,7 +376,6 @@ class Screens {
                         Column(
                             modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary),
                         ) {
-                            Text("TITLE = $TITLE")
                             Text(
                                 "Ваши книги",
                                 modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
@@ -662,7 +660,7 @@ class Screens {
                             shape = RoundedCornerShape(size = 20.dp),//скругление углов
                             value = ubc,
                             label = {
-                                Text("УБК")
+                                Text("УДК")
                             },
                             onValueChange = {
                                 ubc = it

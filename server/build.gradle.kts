@@ -31,4 +31,7 @@ dependencies {
 
     //solidity smart contract and blockchain ethereum
     implementation("org.web3j:web3j-openapi-core:4.10.1")
+
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.1")
+    implementation("io.ktor:ktor-serialization-gson:2.3.1")
 }

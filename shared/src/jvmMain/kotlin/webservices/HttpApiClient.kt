@@ -1,10 +1,12 @@
 package webservices
 
 import BASE_LINK_GET
+import NAMEUSER
 import OFFLINEDATA
 import PASSWORDUSER
 import SERVER_IP
 import SERVER_PORT
+import com.google.gson.Gson
 import crypto.EncryptionUtils
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -12,6 +14,8 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.util.*
 import javax.net.ssl.TrustManager
 
 //отправка данных на сервер
@@ -45,21 +49,6 @@ actual class HttpApiClient : HttpApiClientInterface {
     }
 
     /*
-    * Функция получения тела ответа на запрос
-    * Входные данные :
-    *   ссылка - на которую отправляется запрос
-    *   клиент - клиент который отправляет запрос (по умолчанию созданный в классе)
-    * Выходные данные :
-    *   тело ответа на запрос
-     */
-    private suspend fun getLinkBody (
-        link: String,
-        client: HttpClient = this.client
-    ) : HttpResponse {
-     return client.get(link).body()
-    }
-
-    /*
     * Функция получения тела в текст ответа на запрос
     * Входные данные :
     *   ссылка - на которую отправляется запрос
@@ -77,13 +66,7 @@ actual class HttpApiClient : HttpApiClientInterface {
         client: HttpClient = this.client
     ) : String {
         val clientGet = client.get(link).bodyAsText()
-
-//        val jsonBytes = clientGet.toByteArray(Charset.forName("UTF-8"))
-//        val data = String(jsonBytes, Charset.forName("UTF-8"))
-        println("clientGet = = $clientGet")
         val data = EncryptionUtils.decrypt(clientGet)
-        println("response = $data")
-
         return data
     }
 
@@ -120,6 +103,7 @@ actual class HttpApiClient : HttpApiClientInterface {
         return getLinkBodyAsText(linkFormatterHttp("registration/name/$name/password/$password/email/$email/$account/$key"))
     }
 
+    @OptIn(InternalAPI::class)
     override suspend fun addBook(
         name: String,
         title: String,
@@ -129,7 +113,40 @@ actual class HttpApiClient : HttpApiClientInterface {
         bbk: String,
         price: String
     ): String {
-        return getLinkBodyAsText(linkFormatterHttp("/name/${name}/addBook/title/${title}/author/${author}/isbn/${isbn}/udc/${udc}/bbk/${bbk}/price/${price}"))
+        val gson = Gson()
+
+        // Создаем объект с вашими данными
+        val bookData = BookData(
+            name = name,
+            title = title,
+            author = author,
+            isbn = isbn,
+            udc = udc,
+            bbk = bbk,
+            price = price
+        )
+
+        // Сериализуем объект в JSON
+        val jsonData = gson.toJson(bookData)
+
+        // Отправляем POST запрос с JSON в теле
+        return client.post(linkFormatterHttp("name/${NAMEUSER}/addBook")) {
+            contentType(ContentType.Application.Json)
+            body = jsonData
+        }.bodyAsText()
     }
 
+    override suspend fun getJsonBooks(name: String): String {
+        return  getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name/getBooks"))
+    }
 }
+
+data class BookData(
+    val name: String,
+    val title: String,
+    val author: String,
+    val isbn: String,
+    val udc: String,
+    val bbk: String,
+    val price: String
+)

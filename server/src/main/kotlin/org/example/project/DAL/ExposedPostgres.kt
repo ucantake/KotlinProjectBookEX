@@ -1,9 +1,10 @@
 package org.example.project.DAL
 
 import NAME_DB
-import USER_NAME
+import DB_NAME
 import USER_PASSWORD
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
@@ -29,7 +30,7 @@ class ExposedPostgres {
             val db = Database.connect(
                 "jdbc:postgresql://localhost:5432/"+NAME_DB,
                 driver = "org.postgresql.Driver",
-                user = USER_NAME,
+                user = DB_NAME,
                 password = USER_PASSWORD
             )
             logger.info("Connected is exposed to PostgreSQL database!")
@@ -230,7 +231,7 @@ class ExposedPostgres {
         }
     }
 
-    fun getBooksData (name : String) : JsonObject{
+    fun getBookData (name : String) : JsonObject{
         var userId = searchUserId(name)
         var combinedJson = JsonObject()
 
@@ -294,6 +295,71 @@ class ExposedPostgres {
             }
         }catch (e : Exception) {
             logger.error("EXEPCTION " + e.message)
+        }
+    }
+
+
+    fun getBooksJson (name : String) : JsonObject{
+        var userId = searchUserId(name)
+        var combinedJson = JsonObject()
+
+        try {
+            transaction {
+                val json = Gson()
+                var quantity = 0
+
+                var columnData = ""
+                Books.select { Books.userId eq userId }.forEach {
+                    Books.columns.forEach { column ->
+
+                        if (column.name == "user_id") {
+                            if (it.get(column).toString() == userId.toString()){
+                                quantity++
+                            }
+                        }
+                        //выбранные поля добавляет в json объект возвращаемый в ответе
+                        if (column.name == "title" || column.name == "author" || column.name == "price") {
+                            val columnData = it.get(column).toString()
+                            // Проверяем, есть ли уже такое поле в combinedJson
+                            if (combinedJson.has(column.name)) {
+                                // Если есть, получаем текущее значение и добавляем новое значение
+                                val existingValue = combinedJson.get(column.name)
+                                if (existingValue.isJsonArray) {
+                                    // Если текущее значение - массив, добавляем новый элемент
+                                    existingValue.asJsonArray.add(json.toJsonTree(columnData))
+                                } else {
+                                    // Если текущее значение не массив, создаем новый массив и добавляем старое и новое значение
+                                    val newArray = JsonArray()
+                                    newArray.add(existingValue)
+                                    newArray.add(json.toJsonTree(columnData))
+                                    combinedJson.add(column.name, newArray)
+                                }
+                            } else {
+                                // Если такого поля еще нет, просто добавляем новое поле и значение
+                                combinedJson.add(column.name, json.toJsonTree(columnData))
+                            }
+                        }
+
+                    }
+
+                }
+
+                if (quantity == 0) {
+                    combinedJson.addProperty("title", "0")
+                    combinedJson.addProperty("author", "0")
+                    combinedJson.addProperty("price", "0")
+                    combinedJson.addProperty("quantity", quantity)
+                }
+
+                combinedJson.addProperty("quantity", quantity)
+                quantity = 0
+
+            }
+
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
         }
     }
 }

@@ -1,6 +1,6 @@
 const val SERVER_PORT = 8888
 const val NAME_DB = "gauti"
-const val USER_NAME = "aspasia"
+const val DB_NAME = "aspasia"
 const val USER_PASSWORD = "toJT5GVCF0cgNQqqyVXh"
 const val PRIVATE_PASSWORD = "CklevUWlXkJNi1yB3so1DLJna7mFr1FodNHVA0mES4nyao7jTQ"
 const val ALIAS = "server"
@@ -24,7 +24,7 @@ val LOCALACCESSDATA = "ASDDSA" //авторизационные данные д�
 val LOCALACCESS = true //локальный доступ для тестирования
 lateinit var WORKMODE : String
 const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user\"},\"wallet\":{\"account\":\"0x0000000000\",\"key\":\"0x0000000000\"},\"books\":{\"title\":\"\",\"author\":\"\",\"price\":\"0\",\"quantity\":0},\"balance\":{\"account\":\"0x0000000000\",\"balanceWei\":\"0\",\"balanceEth\":\"0\"}}"
-lateinit var TITLE : String
+const val OFFLINEBOOKSJSON = "{\"books\":{\"title\":[\"title\",\"title\",\"title\",\"title\",\"title\",\"title\\\"title\\\"\"],\"author\":[\"author\",\"author\",\"author\",\"author\",\"author\",\"author\"],\"price\":[\"1\",\"1\",\"1\",\"1\",\"1\",\"1\"],\"quantity\":6}}\n"
 
 
 const val ALGORITHM = "AES"

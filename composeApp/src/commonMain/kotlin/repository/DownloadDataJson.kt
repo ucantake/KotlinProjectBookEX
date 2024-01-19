@@ -11,7 +11,6 @@ import NAMEUSER
 import OFFLINEDATA
 import PASSWORDUSER
 import ROLE
-import TITLE
 import WORKMODE
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
@@ -45,8 +44,6 @@ fun DownloadJsonData () {
             ROLE = json.jsonObject["user"]?.jsonObject?.get("role")?.jsonPrimitive?.contentOrNull.toString()
 
             JSON = json.toString()
-
-            TITLE = json.jsonObject["books"]?.jsonObject?.get("title")?.jsonPrimitive?.contentOrNull.toString()
 
             DATADOWNLOADING = true
             println(JSON)
