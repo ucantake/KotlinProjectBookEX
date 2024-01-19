@@ -9,7 +9,9 @@ import NAMEUSER
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -319,6 +321,7 @@ class Screens {
 
         val json = Json.decodeFromString<JsonData>(JSON)
         val jsonProfile = Json.decodeFromString<BooksResponse>(JSON_PROFILE)
+        val books = jsonProfile.booksContainer.books
         val booksQuality = json.books.quantity.toInt()
 
         var title by remember {
@@ -375,60 +378,47 @@ class Screens {
                             )
                         )
                     }
-                    Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()), contentAlignment = Alignment.Center) {
                         Column(
                             modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
                                 "Ваши книги",
-                                modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
+                                modifier = Modifier,
                                 style = TextStyle(
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
                             )
-                            Row {
-                                Column {
+                            for((index,book) in books.withIndex()) {
+                                Row {
                                     Text(
-                                        " Название ",
-                                        modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
+                                        if (index ==0) " Название \n"+ "${book.title}" else "${book.title}",
+                                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
                                         style = TextStyle(
                                             fontSize = 14.sp,
                                             fontWeight = FontWeight.Bold,
                                         )
                                     )
-                                    //TODO вот тут сделать вывод списка книг
-                                    Text("${jsonProfile.booksContainer.books.getOrNull(0)?.title}")
+                                    Text(
+                                        if (index ==0) " Автор \n"+ "${book.author}" else "${book.author}",
+                                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
+                                    Text(
+                                        if (index ==0) " Цена \n"+ "${book.price}" else "${book.price}",
+                                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
                                 }
-                                Text(
-                                    " Автор ",
-                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                )
-                                Text(
-                                    " ISBN ",
-                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                )
-                                Text(
-                                    " Цена ",
-                                    modifier = Modifier.border(1.dp, MaterialTheme.colors.primary).weight(1f),
-                                    style = TextStyle(
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                )
                             }
-                        }
-                        if (booksQuality != 0) {
-                            //TODO сделать вывод списка книг
-                        }else {
 
                         }
                     }
