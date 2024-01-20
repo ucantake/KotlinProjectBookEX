@@ -364,47 +364,42 @@ class ExposedPostgres {
     }
 
 
-    fun getBooksJsonNotCurrentUser (name: String, combinedJson: List<JsonObject>) : JsonObject {
+    fun getBooksJsonNotCurrentUser (name: String) : List<JsonObject> {
         val userId = searchUserId(name)
-        val combinedJson = JsonObject()
+
+        val result = mutableListOf<JsonObject>()
 
         try {
             transaction {
-                val json = Gson()
                 val booksArray = JsonArray()
                 var quantity = 0
 
                 Books.selectAll().forEach { bookRow ->
                     if (bookRow[Books.userId].toString() == userId.toString()) return@forEach
-                    val bookObject = JsonObject()
-
+                    val combinedJson = JsonObject()
 
                     Books.columns.forEach { column ->
                         when (column.name) {//TODO хорошее решение, применить везде
                             "user_id" -> {
                                 if (bookRow[column].toString() != userId.toString()) {
                                     val columnData = bookRow[column].toString()
-                                    bookObject.addProperty(column.name, columnData)
+                                    combinedJson.addProperty(column.name, columnData)
                                     quantity++
                                 }
                             }
                             "title", "author", "price"-> {
                                 val columnData = bookRow[column].toString()
-                                bookObject.addProperty(column.name, columnData)
+                                combinedJson.addProperty(column.name, columnData)
                             }
                         }
+                        result.add(combinedJson)
                     }
-
-                    booksArray.add(bookObject)
                 }
-
-                combinedJson.add("books", booksArray)
-                combinedJson.addProperty("quantity", quantity)
             }
         }catch (e : Exception) {
             logger.error("EXEPCTION " + e.message)
         }finally {
-            return combinedJson
+            return result
         }
 
     }

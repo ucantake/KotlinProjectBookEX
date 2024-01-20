@@ -217,10 +217,10 @@ fun Application.module() {
                 val data = JsonObject()
 
                 val usersData = dbConnect.getUsersJsonNotCurrentUser(name!!.toString())
-                val booksData = dbConnect.getBooksJsonNotCurrentUser(name!!.toString(), usersData)
+                val booksData = dbConnect.getBooksJsonNotCurrentUser(name!!.toString())
 
                 data.add("users", Gson().toJsonTree(usersData))
-                data.add("books", booksData)
+                data.add("books", Gson().toJsonTree(booksData))
                 println("\n DATA users = $data\n")
                 println(EncryptionUtils.encrypt(data.toString()))
 
