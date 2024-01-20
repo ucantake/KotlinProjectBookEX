@@ -5,6 +5,7 @@ import DB_NAME
 import USER_PASSWORD
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
@@ -340,18 +341,30 @@ class ExposedPostgres {
         }
     }
 
-    fun getUsersJsonNotCurrentUser(name: String): List<JsonObject> {
-        val result = mutableListOf<JsonObject>()//TODO хорошее решение, применить везде
-
+    fun getUsersJsonNotCurrentUser(name: String, booksData : List<JsonObject>): List<JsonObject> {
+        val result = mutableListOf<JsonObject>()
+        val idUsers = booksData.map { it.get("user_id").asInt }.toList()
+        var checkDataForEach = false
+        println("\nlist idUsers = $idUsers\n")
         try {
             transaction {
                 Users.selectAll().forEach { userRow ->
-                    if (userRow[Users.name].toString() == name) return@forEach
+                    if (userRow[Users.name].toString() == name || checkDataForEach) return@forEach
                     val combinedJson = JsonObject()
                     Users.columns.forEach { column ->
                         if (column.name == "name" || column.name == "id") {
-                            combinedJson.addProperty(column.name, userRow[column].toString())
+                            if (column.name == "id" && idUsers.contains(userRow[column])) {
+                                checkDataForEach = true
+                                return@forEach
+                            }
+                            else {
+                                combinedJson.addProperty(column.name, userRow[column].toString())
+                            }
                         }
+                    }
+                    if (userRow[Users.name].toString() == name || checkDataForEach) {
+                        checkDataForEach = false
+                        return@forEach
                     }
                     result.add(combinedJson)
                 }
@@ -368,10 +381,8 @@ class ExposedPostgres {
         val userId = searchUserId(name)
 
         val result = mutableListOf<JsonObject>()
-
         try {
             transaction {
-                val booksArray = JsonArray()
                 var quantity = 0
 
                 Books.selectAll().forEach { bookRow ->
@@ -379,21 +390,20 @@ class ExposedPostgres {
                     val combinedJson = JsonObject()
 
                     Books.columns.forEach { column ->
-                        when (column.name) {//TODO хорошее решение, применить везде
+                        when (column.name) {
                             "user_id" -> {
                                 if (bookRow[column].toString() != userId.toString()) {
-                                    val columnData = bookRow[column].toString()
-                                    combinedJson.addProperty(column.name, columnData)
+                                    combinedJson.addProperty(column.name, bookRow[column].toString())
                                     quantity++
                                 }
                             }
                             "title", "author", "price"-> {
-                                val columnData = bookRow[column].toString()
-                                combinedJson.addProperty(column.name, columnData)
+
+                                combinedJson.addProperty(column.name, bookRow[column].toString())
                             }
                         }
-                        result.add(combinedJson)
                     }
+                    result.add(combinedJson)
                 }
             }
         }catch (e : Exception) {

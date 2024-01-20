@@ -216,8 +216,9 @@ fun Application.module() {
 
                 val data = JsonObject()
 
-                val usersData = dbConnect.getUsersJsonNotCurrentUser(name!!.toString())
                 val booksData = dbConnect.getBooksJsonNotCurrentUser(name!!.toString())
+                val usersData = dbConnect.getUsersJsonNotCurrentUser(name!!.toString(), booksData)
+
 
                 data.add("users", Gson().toJsonTree(usersData))
                 data.add("books", Gson().toJsonTree(booksData))
