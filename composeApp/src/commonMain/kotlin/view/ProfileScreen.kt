@@ -32,6 +32,7 @@ import view.utils.CheckPrice
 
 @Composable
 fun ProfileScreen()     {
+    SynchronizedJsonData()
 
     var switchViewProfile by remember { mutableStateOf("profile") }
 
@@ -72,7 +73,6 @@ fun ProfileScreen()     {
         bottomBar = { Box (modifier = Modifier.height(40.dp)) }
     ) {
         if (switchViewProfile == "profile"){
-            SynchronizedJsonData()
             Column(
                 modifier = Modifier
                     .fillMaxSize()

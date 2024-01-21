@@ -6,7 +6,7 @@ const val PRIVATE_PASSWORD = "CklevUWlXkJNi1yB3so1DLJna7mFr1FodNHVA0mES4nyao7jTQ
 const val ALIAS = "server"
 //const val NAME_CERTIFICATE = "serverStore"
 const val NAME_CERTIFICATE = "keystore.jks"
-const val BASE_LINK_GET = "YdQsW0JUbekCAT86jHb0ZH6FhoCSxEeQa72TFIX1nCpJRecjKX"
+const val BASE_LINK = "YdQsW0JUbekCAT86jHb0ZH6FhoCSxEeQa72TFIX1nCpJRecjKX"
 //const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/keyC/v3/$NAME_CERTIFICATE.jks"
 const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/$NAME_CERTIFICATE"
 const val SERVER_IP = "193.108.114.117"
@@ -26,5 +26,6 @@ lateinit var WORKMODE : String
 const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user\"},\"wallet\":{\"account\":\"0x0000000000\",\"key\":\"0x0000000000\"},\"books\":{\"title\":\"\",\"author\":\"\",\"price\":\"0\",\"quantity\":0},\"balance\":{\"account\":\"0x0000000000\",\"balanceWei\":\"0\",\"balanceEth\":\"0\"}}"
 const val OFFLINEBOOKSJSON = "{\"books\":{\"title\":[\"title\",\"title\",\"title\",\"title\",\"title\",\"title\\\"title\\\"\"],\"author\":[\"author\",\"author\",\"author\",\"author\",\"author\",\"author\"],\"price\":[\"1\",\"1\",\"1\",\"1\",\"1\",\"1\"],\"quantity\":6}}\n"
 lateinit var JSON_PROFILE : String //json с списком книг
+lateinit var JSON_SEARCH_USERS_BOOKS : String //json с списком пользователей и книг готовых к обмену
 
 const val SECRET_KEY = "YourSecretKeyHere"

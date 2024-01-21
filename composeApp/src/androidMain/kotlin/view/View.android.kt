@@ -5,6 +5,7 @@
 package view
 
 import DATADOWNLOADING
+import NAMEUSER
 import WORKMODE
 import WindowsName
 import android.annotation.SuppressLint
@@ -28,6 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import repository.DownloadJsonData
+import repository.SynchronizedJsonData
+import repository.searchBooksUser
 import util.checkLoginUser
 import util.createUser
 import view.bottonNavigation.NavGraph
@@ -121,7 +124,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                         scope.launch {
                             val check = checkLoginUser(username, password)
                             if (check){
-                                DownloadJsonData()
+                                SynchronizedJsonData()
                                 if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break
@@ -136,6 +139,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
 
                                 scopeRemember.launch {
                                     scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
+                                    searchBooksUser(NAMEUSER)
                                     WindowsName = "Main"
                                     onLoginClicked()
                                 }

@@ -5,7 +5,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import view.Screens
+import view.HomeScreen
+import view.ProfileScreen
+import view.SmartContract
 
 @Composable
 fun NavGraph (
@@ -23,9 +25,10 @@ fun NavGraph (
         listItems.forEach { screen ->
             composable(screen.route) {
                 when (screen) {
-                    BottomItem.Home -> Screens().HomeScreen()
-                    BottomItem.SmartContract -> Screens().SmartContract()
-                    BottomItem.Profile -> Screens().ProfileScreen()
+                    BottomItem.Home -> HomeScreen()
+                    BottomItem.SmartContract -> SmartContract()
+                    BottomItem.Profile -> ProfileScreen()
+                    else -> {}
                 }
             }
         }

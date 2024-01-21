@@ -1,13 +1,12 @@
 package webservices
 
-import BASE_LINK_GET
+import BASE_LINK
 import NAMEUSER
 import PASSWORDUSER
 import SERVER_IP
 import com.google.gson.Gson
 import crypto.EncryptionUtils
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -33,15 +32,15 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     }
 
     override suspend fun authLinkForman(name: String, password: String): String {
-        return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/name/$name&password/$password").bodyAsText()
+        return client.get("http://$SERVER_IP:80/$BASE_LINK/name/$name&password/$password").bodyAsText()
     }
 
     override suspend fun getDataProfile(name: String): String {
-        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK_GET/name/$name&token/$PASSWORDUSER/profile")
+        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name&token/$PASSWORDUSER/profile")
     }
 
     override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
-        return client.get("http://$SERVER_IP:80/$BASE_LINK_GET/registration/name/$name/password/$password/email/$email/$account/$key").bodyAsText()
+        return client.get("http://$SERVER_IP:80/$BASE_LINK/registration/name/$name/password/$password/email/$email/$account/$key").bodyAsText()
     }
 
     @OptIn(InternalAPI::class)
@@ -71,14 +70,41 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         val jsonData = gson.toJson(bookData)
 
         // Отправляем POST запрос с JSON в теле
-        return client.post("http://$SERVER_IP:80/$BASE_LINK_GET/name/${NAMEUSER}/addBook") {
+        return client.post("http://$SERVER_IP:80/$BASE_LINK/name/${NAMEUSER}/addBook") {
             contentType(ContentType.Application.Json)
             body = jsonData
         }.bodyAsText()
     }
 
     override suspend fun getJsonBooks(name: String): String {
-        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK_GET/name/${name}/getBooks")
+        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/${name}/getBooks")
+    }
+
+    override suspend fun getJsonBooksUsers(name: String): String {
+        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/search")
+    }
+
+    @OptIn(InternalAPI::class)
+    override suspend fun setSmartContract(
+        name: String,
+        selectedValueUser: String,
+        selectedValueBook: String,
+        price: String,
+        comment: String
+    ): String {
+        val data = CreateSmartContract(
+            userSender = name,
+            userResiver = selectedValueUser,
+            bookTitle = selectedValueBook,
+            price = price,
+            comment = comment
+        )
+        val jsonData = Gson().toJson(data)
+
+        return client.post("http://$SERVER_IP:80/$BASE_LINK/createSmartContract/name/$name/password/$PASSWORDUSER") {
+            contentType(ContentType.Application.Json)
+            body = jsonData
+        }.bodyAsText()
     }
 }
 
@@ -90,4 +116,12 @@ data class BookData(
     val udc: String,
     val bbk: String,
     val price: String
+)
+
+data class CreateSmartContract (
+    val userSender: String,
+    val userResiver: String,
+    val bookTitle: String,
+    val price: String,
+    val comment: String
 )

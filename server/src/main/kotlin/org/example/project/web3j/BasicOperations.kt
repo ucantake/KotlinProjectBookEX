@@ -6,8 +6,12 @@ import org.slf4j.LoggerFactory
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
+import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import java.math.BigInteger
+import java.util.*
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ExecutionException
 
 /*
 * Класс для работы с базовыми операциями с блокчейном
@@ -58,5 +62,20 @@ class BasicOperations (){
         }finally {
             return data
         }
+    }
+
+    /*
+    * проверка статуса транзакции
+     */
+    fun getTransactionReceipt(transactionHash: String): Optional<TransactionReceipt>? {
+        val transactionReceipt: Optional<TransactionReceipt>?
+        try {
+            transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).sendAsync().get().transactionReceipt
+        } catch (e: InterruptedException) {
+            throw RuntimeException(e)
+        } catch (e: ExecutionException) {
+            throw RuntimeException(e)
+        }
+        return transactionReceipt
     }
 }

@@ -6,6 +6,7 @@ import DATADOWNLOADING
 import EMAIL
 import JSON
 import JSON_PROFILE
+import JSON_SEARCH_USERS_BOOKS
 import LOCALACCESS
 import LOCALACCESSDATA
 import NAMEUSER
@@ -17,6 +18,7 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import model.BooksResponse
 import model.JsonData
+import util.tokenCreate
 import webservices.GetHttpApiClient
 
 
@@ -69,7 +71,10 @@ fun DownloadJsonData () {
 
 //функция для синхронизации данных с сервера
 fun SynchronizedJsonData (){
-    CoroutineScope(Dispatchers.IO).async { DownloadJsonData() }
+    CoroutineScope(Dispatchers.IO).async {
+        DownloadJsonData()
+        searchBooksUser(NAMEUSER)
+    }
 }
 
 //TODO доделать получение списка пользователей с сервера
@@ -94,5 +99,22 @@ fun downloadBooks() : List<String>{
     }
 
     return listOf("")
+
+}
+
+fun searchBooksUser(name : String) {
+    DATADOWNLOADING = false
+    try {
+        CoroutineScope(Dispatchers.IO).launch {
+            println("DATADOWNLOADING = ${DATADOWNLOADING}")
+            val httpsClietn = GetHttpApiClient()
+            JSON_SEARCH_USERS_BOOKS = httpsClietn.getJsonBooksUsers(name)
+            DATADOWNLOADING = true
+            println("JSON_SEARCH_USERS_BOOKS = ${JSON_SEARCH_USERS_BOOKS}\n" +
+                    "DATADOWNLOADING = ${DATADOWNLOADING}")
+        }
+    }catch (e : Exception){
+        println("exeption in searchBooksUser in Utils.kt = ${e.message}")
+    }
 
 }

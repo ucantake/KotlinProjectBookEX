@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import util.checkLoginUser
 import view.state.WindowState
-import androidx.compose.material.icons.sharp.Lock
 import kotlinx.coroutines.delay
 import repository.DownloadJsonData
 
@@ -147,7 +145,6 @@ fun Login(state: WindowState){
                                 }
 
                                 scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
-
                                 state.title = "Main"
                                 WindowsName = "Main"
                                 state.openNewWindow()

@@ -42,6 +42,7 @@ class MainScreen() {
 
 
     //TODO отрегулировать ширину окна
+    //TODO при уменьшении ширины, уменьшается длина
     //кажется проблема в передаче скефолда
     @Composable
     fun drawableMenuLeft(onItemClick: (Item) -> Unit, scaffold : ScaffoldState, state : WindowState) {
@@ -123,7 +124,6 @@ class MainScreen() {
         val scaffoldState = rememberScaffoldState() //сохранение состояния Scaffold
         val scope = rememberCoroutineScope()
         val js = JsonObject()
-        val screens = Screens()
 
 
 
@@ -173,12 +173,11 @@ class MainScreen() {
      */
     @Composable
     fun MyScreenContent(currentItem: Item) {
-        val screens = Screens()
 
         when (currentItem) {
-            is Item.Home -> screens.HomeScreen()
-            is Item.SmartContract -> screens.SmartContract()
-            is Item.Profile -> screens.ProfileScreen()
+            is Item.Home -> HomeScreen()
+            is Item.SmartContract -> SmartContract()
+            is Item.Profile -> ProfileScreen()
             else -> {}
         }
     }

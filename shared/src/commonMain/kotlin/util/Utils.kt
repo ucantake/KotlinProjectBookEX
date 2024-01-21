@@ -30,6 +30,7 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
             WORKMODE = "online"
             return true
         }else {
+            WORKMODE = "online"
             return false
         }
     }catch (e : Exception) {
@@ -58,7 +59,7 @@ suspend fun createUser (name : String, password : String, email : String, accoun
     try {
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.createUser(name, password, email, account, key)
-        val hash = tokenCreate(name).toString()
+        val hash = tokenCreate(name+password).toString()
         println("hash = $hash stri= $stri")
         if (stri == hash) {
             DATADOWNLOADING = true
@@ -89,6 +90,24 @@ suspend fun addBook ( name : String, title : String, author : String, isbn : Str
         return false
     }
 
+}
+
+suspend fun setSmartContract (name : String, selectedValueUser: String, selectedValueBook: String, price: String, comment : String) : Boolean {
+    try {
+        val httpsClietn = GetHttpApiClient()
+        val stri = httpsClietn.setSmartContract(name, selectedValueUser, selectedValueBook, price, comment)
+        val hash = tokenCreate(name + PASSWORDUSER)
+        println("hash = $hash stri= $stri")
+        if (stri == hash) {
+            DATADOWNLOADING = true
+            return true
+        }else {
+            return false
+        }
+    }catch (e : Exception){
+        println("exeption in setSmartContract in Utils.kt = ${e.message}")
+        return false
+    }
 }
 
 fun hexToString(hexString: String): String {

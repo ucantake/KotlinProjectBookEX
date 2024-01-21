@@ -39,3 +39,22 @@ data class BooksContainer(
     val books: List<Book>,
     val quantity: Int
 )
+
+@Serializable
+data class JsonSmartContract (
+    val users: List<UserJsonSmartContract>,
+    val books: List<BooksJsonSmartContract>
+)
+
+@Serializable
+data class UserJsonSmartContract (
+    val id: String,
+    val name: String
+)
+@Serializable
+data class BooksJsonSmartContract (
+    val title: String,
+    val author: String,
+    val user_id: String,
+    val price: Int
+)

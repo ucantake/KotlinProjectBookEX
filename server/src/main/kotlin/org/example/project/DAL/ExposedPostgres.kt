@@ -5,10 +5,10 @@ import DB_NAME
 import USER_PASSWORD
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
+import org.example.project.DAL.tables.Transactions
 import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -353,7 +353,7 @@ class ExposedPostgres {
                     val combinedJson = JsonObject()
                     Users.columns.forEach { column ->
                         if (column.name == "name" || column.name == "id") {
-                            if (column.name == "id" && idUsers.contains(userRow[column])) {
+                            if (column.name == "id" && !idUsers.contains(userRow[column])) {
                                 checkDataForEach = true
                                 return@forEach
                             }
@@ -414,4 +414,128 @@ class ExposedPostgres {
 
     }
 
+    /*
+    * функция для получения приватного ключа для ganache
+     */
+    fun getPrivateKey (name : String) : String {
+        var userId = searchUserId(name)
+        var privateKey = ""
+        try {
+            transaction {
+                val tableName: Table = Ganache
+                val query = tableName.selectAll()
+                query.forEach {
+                    if (userId == it.get(Ganache.customerId)) {
+                        privateKey = it.get(Ganache.key).toString()
+                        return@transaction
+                    }
+                }
+
+            }
+        } catch (e: Exception) {
+            logger.error("EXEPCTION " + e.message)
+        } finally {
+            return privateKey
+        }
+    }
+
+    /*
+    * функция получения адреса для ganache
+     */
+    fun getAddress (name : String) : String {
+        var userId = searchUserId(name)
+        var address = ""
+        try {
+            transaction {
+                val tableName: Table = Ganache
+                val query = tableName.selectAll()
+                query.forEach {
+                    if (userId == it.get(Ganache.customerId)) {
+                        address = it.get(Ganache.account).toString()
+                        return@transaction
+                    }
+                }
+
+            }
+        } catch (e: Exception) {
+            logger.error("EXEPCTION " + e.message)
+        } finally {
+            return address
+        }
+    }
+
+    /*
+    * изменение пользовательского id книги но поиск книги по её названию
+     */
+    fun updateIdBook (name : String, title : String) :Boolean {
+        val userId = searchUserId(name)
+        var result = false
+        try {
+            transaction {
+                Books.update({ Books.title eq title }) {
+                    it[Books.userId] = userId
+                }
+            }
+            result = true
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+            result = false
+        }finally {
+            return result
+        }
+    }
+
+    /*
+    * функция поиска id книги по её названию и пользователю
+     */
+    fun searchBookId (name : String, title : String) : Int {
+        val userId = searchUserId(name)
+        var bookId = 0
+        try {
+            transaction {
+                val query = Books.selectAll()
+                query.forEach {
+                    if (userId == it.get(Books.userId) && title == it.get(Books.title)) {
+                        bookId = it.get(Books.bookId)
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return bookId
+        }
+    }
+
+    /*
+    * функция добавления записи в таблицу Transaction для смарт контракта
+     */
+    fun addTransaction (userSender: String,userReceiver: String, valueBook: String) : Boolean {
+        val userSenderId = searchUserId(userSender)
+        val userReceiverid = searchUserId(userReceiver)
+        val bookId = searchBookId(userSender, valueBook)
+        println("\n USER add transaction = user sender = $userSender || " +
+                "userreceiver = $userReceiver ||" +
+                "valuebook = $valueBook ||" +
+                "usersenderID = $userSenderId||" +
+                "userreceiverId = $userReceiverid ||" +
+                "bookid = $bookId\n")
+        var result = false
+        try {
+            transaction {
+                Transactions.insert {
+                    it[Transactions.bookId] = bookId
+                    it[Transactions.userSenderId] = userSenderId
+                    it[Transactions.userReceiverId] = userReceiverid
+                }
+            }
+            result = true
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+            result = false
+        }finally {
+            return result
+        }
+    }
 }

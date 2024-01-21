@@ -1,6 +1,6 @@
 package org.example.project
 
-import BASE_LINK_GET
+import BASE_LINK
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.ktor.http.*
@@ -14,6 +14,7 @@ import org.example.project.DAL.ExposedPostgres
 import org.example.project.secure.EncryptionUtils
 import org.example.project.secure.checksUsersAccessConditions
 import org.example.project.web3j.BasicOperations
+import org.example.project.web3j.Transaction
 import org.slf4j.LoggerFactory
 import util.tokenCreate
 import webservices.TokenUsersObject
@@ -48,7 +49,7 @@ fun Application.module() {
             * возвращает json для страницы профиля
             *
              */
-            get("/$BASE_LINK_GET/name/{name}&token/{token}/profile") {
+            get("/$BASE_LINK/name/{name}&token/{token}/profile") {
                 val name = call.parameters["name"]
                 val token = call.parameters["token"]
 
@@ -93,7 +94,7 @@ fun Application.module() {
             * данные пользователя при входе в приложение
             * возвращает хэш код в качестве проверки на правильность данных
              */
-            get("/$BASE_LINK_GET/name/{name}&password/{password}") {
+            get("/$BASE_LINK/name/{name}&password/{password}") {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
 
@@ -116,7 +117,7 @@ fun Application.module() {
             /*
             * запрос для регистрации пользователя
              */
-            get ("/$BASE_LINK_GET/registration/name/{name}/password/{password}/email/{email}/{account}/{key}") {
+            get ("/$BASE_LINK/registration/name/{name}/password/{password}/email/{email}/{account}/{key}") {
                 val name = call.parameters["name"]
                 val password = call.parameters["password"]
                 val email = call.parameters["email"]
@@ -158,7 +159,7 @@ fun Application.module() {
             /*
             * запрос на добавление книг в базу данных
              */
-            post("/$BASE_LINK_GET/name/{name}/addBook") {
+            post("/$BASE_LINK/name/{name}/addBook") {
                 try {
                     val name = call.parameters["name"]
                     // Получаем данные из тела POST-запроса
@@ -205,7 +206,7 @@ fun Application.module() {
             /*
             * запрос для поиска пользователей готовых меняться книгами
              */
-            get("/$BASE_LINK_GET/name/{name}/search") {
+            get("/$BASE_LINK/name/{name}/search") {
                 val name = call.parameters["name"]
 
                 //проверка входящих значений
@@ -215,7 +216,7 @@ fun Application.module() {
                 val dbConnect = ExposedPostgres()
 
                 val data = JsonObject()
-
+                //TODO книга которая уже в смарт-контракте, не может появится в этом списке
                 val booksData = dbConnect.getBooksJsonNotCurrentUser(name!!.toString())
                 val usersData = dbConnect.getUsersJsonNotCurrentUser(name!!.toString(), booksData)
 
@@ -235,7 +236,7 @@ fun Application.module() {
             /*
             * запрос для получения списка книг текущего пользователя
              */
-            get("/$BASE_LINK_GET/name/{name}/getBooks") {
+            get("/$BASE_LINK/name/{name}/getBooks") {
                 val name = call.parameters["name"]
 
                 //проверка входящих значений
@@ -255,6 +256,50 @@ fun Application.module() {
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
 
+            post ("/$BASE_LINK/createSmartContract/name/{name}/password/{password}"){
+                try {
+                    val name = call.parameters["name"]
+                    val password = call.parameters["password"]
+                    // Получаем данные из тела POST-запроса
+                    val smartContractData = call.receive<CreateSmartContract>()
+                    logger.info("Received book data: $smartContractData")
+                    val userReciver = smartContractData.userResiver
+                    val userSenderPrivateKey = ExposedPostgres().getPrivateKey(name.toString())
+                    val userReciverPublicKey = ExposedPostgres().getAddress(userReciver.toString())
+
+                    println("\n $userSenderPrivateKey $userReciverPublicKey \n")
+                    //TODO написать запрос в базу данных о обновлении данных о книге которую обменяли
+                    //TODO написать вывод базы данных транзакций на экран пользователя
+                    val transaction = Transaction(userSenderPrivateKey, userSenderPrivateKey, smartContractData.price.toBigInteger())
+                    println("\nTRANSACTION = $transaction\n")
+                    if (transaction == null || transaction == "" || transaction == "0x0") {
+                        call.respondText("1")
+                        logger.error("responding ERROR TRANSACTION ($transaction) to user create Smart Contract name = ${smartContractData.userSender}")
+                    }
+                    val updateIdBook = ExposedPostgres().updateIdBook(smartContractData.userSender, smartContractData.bookTitle)
+                    if (updateIdBook == false) {
+                        call.respondText("1")
+                        logger.error("responding ERROR UPDATE BOOK")
+                    }
+                    println("\nDATA\n" +
+                            "userSender = ${smartContractData.userSender}\n" +
+                            "userResiver = ${smartContractData.userResiver}\n" +
+                            "bookTitle = ${smartContractData.bookTitle}\n" +
+                            "price = ${smartContractData.price}\n" +
+                            "comment = ${smartContractData.comment}\n" )
+                    val noteTransaction = ExposedPostgres().addTransaction(smartContractData.userSender, smartContractData.userResiver, smartContractData.bookTitle)
+                    if (noteTransaction == false) {
+                        call.respondText("1")
+                        logger.error("responding ERROR ADD TRANSACTION")
+                    }
+                    //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
+                    call.respondText((name + password).hashCode().toString())
+                }catch (e : Exception) {
+                    call.respondText("Error processing request")
+                    logger.error("exception in Application.module() post create Smart Contract = " + e.printStackTrace())
+                }
+            }
+
 
         }
     }catch (e : Exception){
@@ -271,4 +316,12 @@ data class BookData(
     val udc: String,
     val bbk: String,
     val price: String
+)
+
+data class CreateSmartContract (
+    val userSender: String,
+    val userResiver: String,
+    val bookTitle: String,
+    val price: String,
+    val comment: String
 )

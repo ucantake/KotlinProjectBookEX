@@ -4,7 +4,10 @@ import ACCOUNT
 import BALANCE
 import NAMEUSER
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -17,9 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import repository.SynchronizedJsonData
 
 @Composable
 fun HomeScreen() {
+    SynchronizedJsonData()
     val scaffoldState = rememberScaffoldState()
     Scaffold (modifier = Modifier.padding(6.dp), scaffoldState = scaffoldState,bottomBar = { Box (modifier = Modifier.height(60.dp)) }) {
         Column {
@@ -40,7 +45,8 @@ fun HomeScreen() {
                 contentAlignment = Alignment.Center
             ){
                 Column(
-                    modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary),
+                    modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colors.primary).horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState()
+                    ),
                 ) {
                     Text(
                         "Текущие смарт контракты",
