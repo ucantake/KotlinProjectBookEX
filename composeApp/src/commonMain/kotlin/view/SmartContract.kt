@@ -87,10 +87,17 @@ fun SmartContract() {
                         contentAlignment = Alignment.Center
                     ) {
                         Column(
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center), verticalArrangement = Arrangement.spacedBy(0.dp)
                         ) {
-                            Row {
-                                Box(modifier = Modifier.weight(1f)) {
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.CenterHorizontally), Arrangement.spacedBy(0.dp)
+                            ) {
+                                //эти две кнопки должы разделять между собой пространство равномерно, одинаково на каждый Box, подстраивающееся под разрешение экрана
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                ) {
                                     //выпадающее меню
                                     DropdownExample(
                                         onItemSelected = { selectedValueUser = it },
@@ -98,54 +105,60 @@ fun SmartContract() {
                                         text = "Выберете пользователя"
                                     )
                                 }
-                                Spacer(modifier = Modifier.padding(5.dp))
-                                Box (modifier = Modifier.weight(1f)){
-                                //выпадающее меню
-                                DropdownExample(
-                                    onItemSelected = { selectedValueBook = it },
-                                    items = itemsJsonBooks,
-                                    text = "Выберете книгу"
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                ) {
+                                    //выпадающее меню
+                                    DropdownExample(
+                                        onItemSelected = { selectedValueBook = it },
+                                        items = itemsJsonBooks,
+                                        text = "Выберете книгу"
+                                    )
+                                }
+                            }
+                            Column (modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(0.dp)) {
+                                Row(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(0.dp)) {
+
+                                    Box (modifier = Modifier.fillMaxWidth().weight(1f), Alignment.Center){
+                                        TextField(
+                                            shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                                            value = price,
+                                            label = {
+                                                Text("Цена")
+                                            },
+                                            onValueChange = {
+                                                price = it
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
+                                    Box(modifier = Modifier.fillMaxWidth().weight(0.1f).height(60.dp), Alignment.Center) {
+                                        Text(
+                                            "ETH",
+                                            style = TextStyle(
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        )
                                     }
                             }
-                            Row {
-                                Box {
+
+                                Spacer(modifier = Modifier.padding(16.dp))
+                                Column (modifier = Modifier.fillMaxWidth().weight(1f), Arrangement.Center) {
                                     TextField(
                                         shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                        value = price,
+                                        value = text,
                                         label = {
-                                            Text("Цена")
+                                            Text("Комментарий")
                                         },
                                         onValueChange = {
-                                            price = it
+                                            text = it
                                         },
-                                        modifier = Modifier
+                                        modifier = Modifier.fillMaxSize()
                                     )
                                 }
-                                Box(modifier = Modifier.height(50.dp).padding(16.dp), Alignment.Center) {
-                                    Text(
-                                        "ETH",
-                                        style = TextStyle(
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.Bold,
-                                        )
-                                    )
-                                }
-
                             }
-
-                            Spacer(modifier = Modifier.padding(16.dp))
-                            TextField(
-                                shape = RoundedCornerShape(size = 20.dp),//скругление углов
-                                value = text,
-                                label = {
-                                    Text("Комментарий")
-                                },
-                                onValueChange = {
-                                    text = it
-                                },
-                                modifier = Modifier.fillMaxHeight()
-                            )
 
                         }
 
