@@ -1,0 +1,20 @@
+2023-12-19 11:04:20.483 [main] INFO  NettyLogger - Starting server at port 8888
+2023-12-19 11:04:20.710 [main] INFO  ktor.application - Autoreload is disabled because the development mode is off.
+2023-12-19 11:04:21.569 [main] INFO  ktor.application - Application started in 0.945 seconds.
+2023-12-19 11:04:22.090 [DefaultDispatcher-worker-1] INFO  ktor.application - Responding at http://127.0.0.1:8888
+2023-12-19 11:05:08.216 [eventLoopGroupProxy-4-1] INFO  NettyLogger - responding to /
+2023-12-19 11:21:36.347 [main] INFO  NettyLogger - Starting server at port 8888
+2023-12-19 11:21:36.674 [main] INFO  ktor.application - Autoreload is disabled because the development mode is off.
+2023-12-19 11:21:37.577 [main] INFO  ktor.application - Application started in 1.046 seconds.
+2023-12-19 11:21:38.169 [DefaultDispatcher-worker-1] INFO  ktor.application - Responding at http://127.0.0.1:8888
+2023-12-19 11:21:49.931 [eventLoopGroupProxy-4-1] INFO  NettyLogger - responding to /
+2023-12-19 11:25:26.705 [main] INFO  NettyLogger - Starting server at port 8888
+2023-12-19 11:25:27.898 [main] INFO  ktor.application - Autoreload is disabled because the development mode is off.
+2023-12-19 11:25:29.745 [main] INFO  ktor.application - Application started in 2.21 seconds.
+2023-12-19 11:25:31.274 [DefaultDispatcher-worker-1] INFO  ktor.application - Responding at http://127.0.0.1:8888
+2023-12-19 11:26:01.308 [eventLoopGroupProxy-4-2] INFO  NettyLogger - responding to /
+2023-12-19 11:35:51.835 [main] INFO  NettyLogger - Starting server at port 8888
+2023-12-19 11:35:52.226 [main] INFO  ktor.application - Autoreload is disabled because the development mode is off.
+2023-12-19 11:35:53.309 [main] INFO  ktor.application - Application started in 1.229 seconds.
+2023-12-19 11:35:54.190 [DefaultDispatcher-worker-1] INFO  ktor.application - Responding at http://127.0.0.1:8888
+2023-12-19 11:36:13.284 [eventLoopGroupProxy-4-1] INFO  NettyLogger - responding to else/asd

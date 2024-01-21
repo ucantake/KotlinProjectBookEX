@@ -3,10 +3,12 @@ package repository
 import ACCOUNT
 import BALANCE
 import DATADOWNLOADING
+import DOWNLOAD_DATA_ALL
 import EMAIL
 import JSON
 import JSON_PROFILE
 import JSON_SEARCH_USERS_BOOKS
+import JSON_TRANSACTION_BOOKS
 import LOCALACCESS
 import LOCALACCESSDATA
 import NAMEUSER
@@ -42,7 +44,7 @@ fun DownloadJsonData () {
 
 //            JSON_PROFILE = Json.decodeFromString<BooksResponse>(httpsClietn.getJsonBooks(NAMEUSER)).toString()
             JSON_PROFILE = httpsClietn.getJsonBooks(NAMEUSER)
-            println("JSON_PROFILE = ${JSON_PROFILE}")
+
 
             EMAIL = json.jsonObject["user"]?.jsonObject?.get("email")?.jsonPrimitive?.contentOrNull.toString()
             ACCOUNT = json.jsonObject["wallet"]?.jsonObject?.get("account")?.jsonPrimitive?.contentOrNull.toString()
@@ -52,7 +54,7 @@ fun DownloadJsonData () {
             JSON = json.toString()
 
             DATADOWNLOADING = true
-            println(JSON)
+
         }
     }catch (e : Exception) {
         println("EXEPCTION in DownloadjsonData " + e.message)
@@ -71,50 +73,41 @@ fun DownloadJsonData () {
 
 //функция для синхронизации данных с сервера
 fun SynchronizedJsonData (){
+
     CoroutineScope(Dispatchers.IO).async {
         DownloadJsonData()
         searchBooksUser(NAMEUSER)
+        bookDataSmartContract(NAMEUSER)
     }
-}
-
-//TODO доделать получение списка пользователей с сервера
-fun downloadUsers() : List<String>{
-    val httpsClietn = GetHttpApiClient()
-
-
-    val data = CoroutineScope(Dispatchers.Default).async {
-
-    }
-
-    return listOf("")
-
-}
-
-//TODO доделать получение списка книг с сервера с указанием конкретного пользователя
-fun downloadBooks() : List<String>{
-    val httpsClietn = GetHttpApiClient()
-
-    val data = CoroutineScope(Dispatchers.Default).async {
-
-    }
-
-    return listOf("")
-
+    DOWNLOAD_DATA_ALL = true
 }
 
 fun searchBooksUser(name : String) {
     DATADOWNLOADING = false
     try {
         CoroutineScope(Dispatchers.IO).launch {
-            println("DATADOWNLOADING = ${DATADOWNLOADING}")
+
             val httpsClietn = GetHttpApiClient()
             JSON_SEARCH_USERS_BOOKS = httpsClietn.getJsonBooksUsers(name)
             DATADOWNLOADING = true
-            println("JSON_SEARCH_USERS_BOOKS = ${JSON_SEARCH_USERS_BOOKS}\n" +
-                    "DATADOWNLOADING = ${DATADOWNLOADING}")
+
         }
     }catch (e : Exception){
         println("exeption in searchBooksUser in Utils.kt = ${e.message}")
     }
 
+}
+
+fun bookDataSmartContract (name: String) {
+    DATADOWNLOADING = false
+    try {
+        CoroutineScope(Dispatchers.IO).launch {
+            val httpsClietn = GetHttpApiClient()
+            JSON_TRANSACTION_BOOKS = httpsClietn.getBooksDataSmartContract(name)
+            println("JSON_TRANSACTION_BOOKS = ${JSON_TRANSACTION_BOOKS}")
+            DATADOWNLOADING = true
+        }
+    }catch (e : Exception){
+        println("exeption in bookDataSmartContract in Utils.kt = ${e.message}")
+    }
 }

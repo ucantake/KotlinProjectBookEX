@@ -106,6 +106,10 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
             body = jsonData
         }.bodyAsText()
     }
+
+    override suspend fun getBooksDataSmartContract(name: String): String {
+        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/getTransactions")
+    }
 }
 
 data class BookData(

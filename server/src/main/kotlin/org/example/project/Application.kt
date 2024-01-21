@@ -124,7 +124,6 @@ fun Application.module() {
                 val key = call.parameters["key"]
                 val account = call.parameters["account"]
 
-                println("DATA response name = $name password = $password email = $email")
                 //проверка входящих значений
                 if (!checksUsersAccessConditions(name =  name.toString(), password =  password.toString(), auth = true)) return@get
 
@@ -223,8 +222,6 @@ fun Application.module() {
 
                 data.add("users", Gson().toJsonTree(usersData))
                 data.add("books", Gson().toJsonTree(booksData))
-                println("\n DATA users = $data\n")
-                println(EncryptionUtils.encrypt(data.toString()))
 
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
 
@@ -250,8 +247,6 @@ fun Application.module() {
                 val booksData = dbConnect.getBooksJson(name!!.toString())
                 data.add("books", booksData)
 
-                println(data.toString())
-                println(EncryptionUtils.encrypt(data.toString()))
 
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
@@ -260,34 +255,28 @@ fun Application.module() {
                 try {
                     val name = call.parameters["name"]
                     val password = call.parameters["password"]
+
                     // Получаем данные из тела POST-запроса
                     val smartContractData = call.receive<CreateSmartContract>()
                     logger.info("Received book data: $smartContractData")
                     val userReciver = smartContractData.userResiver
-                    val userSenderPrivateKey = ExposedPostgres().getPrivateKey(name.toString())
-                    val userReciverPublicKey = ExposedPostgres().getAddress(userReciver.toString())
 
-                    println("\n $userSenderPrivateKey $userReciverPublicKey \n")
-                    //TODO написать запрос в базу данных о обновлении данных о книге которую обменяли
-                    //TODO написать вывод базы данных транзакций на экран пользователя
+                    //соединение с базой данных
+                    val dbConnect = ExposedPostgres()
+
+                    val userSenderPrivateKey = dbConnect.getPrivateKey(name.toString())
+
                     val transaction = Transaction(userSenderPrivateKey, userSenderPrivateKey, smartContractData.price.toBigInteger())
-                    println("\nTRANSACTION = $transaction\n")
                     if (transaction == null || transaction == "" || transaction == "0x0") {
                         call.respondText("1")
                         logger.error("responding ERROR TRANSACTION ($transaction) to user create Smart Contract name = ${smartContractData.userSender}")
                     }
-                    val updateIdBook = ExposedPostgres().updateIdBook(smartContractData.userSender, smartContractData.bookTitle)
+                    val updateIdBook = dbConnect.updateIdBook(smartContractData.userSender, smartContractData.bookTitle)
                     if (updateIdBook == false) {
                         call.respondText("1")
                         logger.error("responding ERROR UPDATE BOOK")
                     }
-                    println("\nDATA\n" +
-                            "userSender = ${smartContractData.userSender}\n" +
-                            "userResiver = ${smartContractData.userResiver}\n" +
-                            "bookTitle = ${smartContractData.bookTitle}\n" +
-                            "price = ${smartContractData.price}\n" +
-                            "comment = ${smartContractData.comment}\n" )
-                    val noteTransaction = ExposedPostgres().addTransaction(smartContractData.userSender, smartContractData.userResiver, smartContractData.bookTitle)
+                    val noteTransaction = dbConnect.addTransaction(smartContractData.userSender, smartContractData.userResiver, smartContractData.bookTitle)
                     if (noteTransaction == false) {
                         call.respondText("1")
                         logger.error("responding ERROR ADD TRANSACTION")
@@ -298,6 +287,20 @@ fun Application.module() {
                     call.respondText("Error processing request")
                     logger.error("exception in Application.module() post create Smart Contract = " + e.printStackTrace())
                 }
+            }
+
+            get("/$BASE_LINK/name/{name}/getTransactions") {
+                val name = call.parameters["name"]
+
+                //проверка входящих значений
+                if (name == null || name.toString() == "") return@get
+
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+
+                val transactionsData = EncryptionUtils.encrypt(dbConnect.searchDataTransactionsData(name.toString()).toString())
+
+                call.respondText(transactionsData, ContentType.Application.Json) //возвращаемое значение
             }
 
 

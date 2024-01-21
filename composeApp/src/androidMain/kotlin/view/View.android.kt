@@ -5,6 +5,7 @@
 package view
 
 import DATADOWNLOADING
+import DOWNLOAD_DATA_ALL
 import NAMEUSER
 import WORKMODE
 import WindowsName
@@ -132,6 +133,14 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                                         while (progress < 1f) {
                                             progress += 0.1f
                                             delay(1000L)
+                                            println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
+                                            if (DOWNLOAD_DATA_ALL) break
+                                            if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
+                                                SynchronizedJsonData()
+                                                scaffoldState.snackbarHostState.showSnackbar("Синхронизация данных")
+                                                if (progress == 1f) progress = 0f
+                                            }
+
                                         }
                                         if (!DATADOWNLOADING) progress = 0f
                                     }

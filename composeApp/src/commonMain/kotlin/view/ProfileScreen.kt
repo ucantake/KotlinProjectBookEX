@@ -38,7 +38,7 @@ fun ProfileScreen()     {
 
     val json = Json.decodeFromString<JsonData>(JSON)
     val jsonProfile = Json.decodeFromString<BooksResponse>(JSON_PROFILE)
-    val books = jsonProfile.booksContainer.books
+    val books = jsonProfile.books.books
     val booksQuality = json.books.quantity.toInt()
 
     var title by remember {

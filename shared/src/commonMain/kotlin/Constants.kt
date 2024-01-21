@@ -27,5 +27,7 @@ const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user
 const val OFFLINEBOOKSJSON = "{\"books\":{\"title\":[\"title\",\"title\",\"title\",\"title\",\"title\",\"title\\\"title\\\"\"],\"author\":[\"author\",\"author\",\"author\",\"author\",\"author\",\"author\"],\"price\":[\"1\",\"1\",\"1\",\"1\",\"1\",\"1\"],\"quantity\":6}}\n"
 lateinit var JSON_PROFILE : String //json с списком книг
 lateinit var JSON_SEARCH_USERS_BOOKS : String //json с списком пользователей и книг готовых к обмену
+lateinit var JSON_TRANSACTION_BOOKS : String //json с списком книг транзакций
+var DOWNLOAD_DATA_ALL = false
 
 const val SECRET_KEY = "YourSecretKeyHere"

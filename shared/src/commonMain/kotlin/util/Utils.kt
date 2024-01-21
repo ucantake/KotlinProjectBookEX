@@ -22,7 +22,6 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.authLinkForman(username, password)
         val hash = tokenCreate(username+password)
-        println(stri + " " + hash)
         if (stri == hash) {
             //присваиваются данные константы для дальнейшего использования
             NAMEUSER = username
@@ -59,8 +58,7 @@ suspend fun createUser (name : String, password : String, email : String, accoun
     try {
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.createUser(name, password, email, account, key)
-        val hash = tokenCreate(name+password).toString()
-        println("hash = $hash stri= $stri")
+        val hash = tokenCreate(name+password)
         if (stri == hash) {
             DATADOWNLOADING = true
             return true
@@ -78,7 +76,7 @@ suspend fun addBook ( name : String, title : String, author : String, isbn : Str
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.addBook(name, title, author, isbn, udc, bbk, price)
         val hash = tokenCreate(name + title)
-        println("hash = $hash stri= $stri")
+
         if (stri == hash) {
             DATADOWNLOADING = true
             return true
@@ -97,7 +95,7 @@ suspend fun setSmartContract (name : String, selectedValueUser: String, selected
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.setSmartContract(name, selectedValueUser, selectedValueBook, price, comment)
         val hash = tokenCreate(name + PASSWORDUSER)
-        println("hash = $hash stri= $stri")
+
         if (stri == hash) {
             DATADOWNLOADING = true
             return true
@@ -107,6 +105,21 @@ suspend fun setSmartContract (name : String, selectedValueUser: String, selected
     }catch (e : Exception){
         println("exeption in setSmartContract in Utils.kt = ${e.message}")
         return false
+    }
+}
+
+suspend fun getBookDataSmartContract (name : String) : String {
+    var stri = ""
+    try {
+        val httpsClietn = GetHttpApiClient()
+        val stri = httpsClietn.getBooksDataSmartContract(name)
+
+
+    }catch (e : Exception){
+        println("exeption in getBookDataSmartContract in Utils.kt = ${e.message}")
+        return "0"
+    }finally {
+        return stri
     }
 }
 

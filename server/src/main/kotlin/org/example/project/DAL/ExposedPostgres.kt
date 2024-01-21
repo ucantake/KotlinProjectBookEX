@@ -177,7 +177,6 @@ class ExposedPostgres {
     fun addUser (name : String, password : String, email : String, account : String, key : String) {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val currentDate = LocalDate.now().format(formatter).toString()
-        println(currentDate)
         try {
             transaction {
                 Users.insert {
@@ -345,7 +344,6 @@ class ExposedPostgres {
         val result = mutableListOf<JsonObject>()
         val idUsers = booksData.map { it.get("user_id").asInt }.toList()
         var checkDataForEach = false
-        println("\nlist idUsers = $idUsers\n")
         try {
             transaction {
                 Users.selectAll().forEach { userRow ->
@@ -412,6 +410,46 @@ class ExposedPostgres {
             return result
         }
 
+    }
+
+    fun getBookTitle (bookId : String) : String {
+        var bookTitle = ""
+        try {
+            transaction {
+                val query = Books.selectAll()
+                query.forEach {
+                    if (bookId == it.get(Books.bookId).toString()) {
+                        bookTitle = it.get(Books.title).toString()
+                        return@transaction
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return bookTitle
+        }
+    }
+
+    fun getUserName (userId : String) : String {
+        var userName = ""
+        try {
+            transaction {
+                val query = Users.selectAll()
+                query.forEach {
+                    if (userId == it.get(Users.id).toString()) {
+                        userName = it.get(Users.name).toString()
+                        return@transaction
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return userName
+        }
     }
 
     /*
@@ -515,12 +553,6 @@ class ExposedPostgres {
         val userSenderId = searchUserId(userSender)
         val userReceiverid = searchUserId(userReceiver)
         val bookId = searchBookId(userSender, valueBook)
-        println("\n USER add transaction = user sender = $userSender || " +
-                "userreceiver = $userReceiver ||" +
-                "valuebook = $valueBook ||" +
-                "usersenderID = $userSenderId||" +
-                "userreceiverId = $userReceiverid ||" +
-                "bookid = $bookId\n")
         var result = false
         try {
             transaction {
@@ -536,6 +568,53 @@ class ExposedPostgres {
             result = false
         }finally {
             return result
+        }
+    }
+
+    /*
+    * функция поиска данных из таблицы Transactions
+     */
+    fun searchDataTransactionsData (name : String) : JsonObject {
+        val userId = searchUserId(name)
+        var combinedJson = JsonObject()
+        try {
+            transaction {
+                val booksArray = JsonArray()
+
+                Transactions.select { Transactions.userSenderId eq userId }.forEach { transactionRow ->
+                    val bookObject = JsonObject()
+
+                    Transactions.columns.forEach { column ->
+                        when (column.name) {
+                            "user_sender_id"  -> {
+                                val columnData = transactionRow[column].toString()
+                                val userName = getUserName(columnData)
+                                bookObject.addProperty("user_sender", userName)
+                            }
+                            "user_receiver_id" -> {
+                                val columnData = transactionRow[column].toString()
+                                val userName = getUserName(columnData)
+                                bookObject.addProperty("user_receiver", userName)
+                            }
+                            "book_id" -> {
+                                val bookId = transactionRow[column].toString()
+                                val bookTitle = getBookTitle(bookId)
+                                bookObject.addProperty("book_title", bookTitle)
+
+                            }
+                        }
+                    }
+
+                    booksArray.add(bookObject)
+                }
+
+                combinedJson.add("transactions", booksArray)
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION " + e.message)
+        }finally {
+            return combinedJson
         }
     }
 }

@@ -1,0 +1,345 @@
+2024-01-21 00:02:25.488 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:02:25.495 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:02:25.495 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:02:25.495 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.496 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:02:25.496 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:02:25.533 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (36ms)
+2024-01-21 00:02:25.536 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:02:25.536 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:02:25 GMT
+2024-01-21 00:02:25.536 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:02:25.536 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:02:25.536 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:02:25.537 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.537 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:02:25.537 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:02:25.592 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (1ms)
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:02:25 GMT
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.594 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:02:25.595 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 310
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf874048504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c220900785ee10d5da46d900f436a000000000801ba06b4fd6c0f848569b9fe50683037c5c93fcbb593584e2e26c7a309f0707f5ac83a04a98b761f0d2e97e8992b7a2c8997d7b2e68c1df4dafe5495a4b2c8825cb0e35"],"id":2}
+2024-01-21 00:02:25.617 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (310-byte body)
+2024-01-21 00:02:25.621 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (3ms)
+2024-01-21 00:02:25.621 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:02:25 GMT
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 357
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","error":{"message":"insufficient funds for gas * price + value","stack":"Error: insufficient funds for gas * price + value\n    at TransactionPool.prepareTransaction (C:\\Program Files\\WindowsApps\\GanacheUI_2.7.1.0_x64__rb4352f0jd4m2\\app\\resources\\static\\node\\node_modules\\ganache\\dist\\node\\1.js:2:121341)","code":-32003}}
+2024-01-21 00:02:25.622 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (357-byte body)
+2024-01-21 00:03:03.890 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:03.893 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:03.893 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:03.893 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:03.894 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:03:03.894 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:03.925 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (31ms)
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:03 GMT
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:03.926 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:03.973 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:03.973 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:03.974 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:03.974 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:03.974 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:03:03.974 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:03.976 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (2ms)
+2024-01-21 00:03:03.976 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:03.976 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:03 GMT
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:03.977 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:04.002 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:04.002 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:04.002 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 298
+2024-01-21 00:03:04.002 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:04.002 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86e048504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c2208a021e19e0c9bab2400000801ca0fac7013d96687df89d37150bc1f43db4a6f2c78c7f75d76a9f0df0a335d4720ea045fe38f99757b1703959351db58274079b298ec308931e6409d8b9d400afccde"],"id":2}
+2024-01-21 00:03:04.003 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (298-byte body)
+2024-01-21 00:03:04.008 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (5ms)
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:04 GMT
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 357
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","error":{"message":"insufficient funds for gas * price + value","stack":"Error: insufficient funds for gas * price + value\n    at TransactionPool.prepareTransaction (C:\\Program Files\\WindowsApps\\GanacheUI_2.7.1.0_x64__rb4352f0jd4m2\\app\\resources\\static\\node\\node_modules\\ganache\\dist\\node\\1.js:2:121341)","code":-32003}}
+2024-01-21 00:03:04.009 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (357-byte body)
+2024-01-21 00:03:15.795 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:15.798 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:15.798 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:15.798 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.799 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:03:15.799 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (29ms)
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:15 GMT
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:15.829 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:15.830 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.830 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:15.830 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:15.874 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:15.875 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:15.875 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:15.875 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.875 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:03:15.875 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (1ms)
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:15 GMT
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:15.878 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:15.905 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:15.906 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:15.906 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 296
+2024-01-21 00:03:15.906 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.906 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86d048504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c22089056bc75e2d63100000801ca066eae69b2f83873264d3929b08a6c91d11891df413bda3d9db652ab10557d159a07a72c8256ae91096a1e8e094fd5b3c1f27c8920d9a6296e37f0871b951441ea5"],"id":2}
+2024-01-21 00:03:15.906 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (296-byte body)
+2024-01-21 00:03:15.912 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (5ms)
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:15 GMT
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 357
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","error":{"message":"insufficient funds for gas * price + value","stack":"Error: insufficient funds for gas * price + value\n    at TransactionPool.prepareTransaction (C:\\Program Files\\WindowsApps\\GanacheUI_2.7.1.0_x64__rb4352f0jd4m2\\app\\resources\\static\\node\\node_modules\\ganache\\dist\\node\\1.js:2:121341)","code":-32003}}
+2024-01-21 00:03:15.913 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (357-byte body)
+2024-01-21 00:03:28.712 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:28.715 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:28.715 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:28.715 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.715 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:03:28.716 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:28.748 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (32ms)
+2024-01-21 00:03:28.748 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:28 GMT
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:28.749 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:28.800 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:28.800 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:28.800 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:03:28.801 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.801 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:03:28.801 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (1ms)
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:28 GMT
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x4"}
+2024-01-21 00:03:28.803 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:03:28.824 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:03:28.825 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:03:28.825 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 296
+2024-01-21 00:03:28.825 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.825 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86d048504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c2208902b5e3af16b1880000801ba02911faf2aa16dac7d9a69b855b2e3fe698f33f7b38fe1dbf06cd5e3e66773b6aa0584cf66ebd44203bd01497e3f0b6435fba3532c3a540413da49e60d12ac4042e"],"id":2}
+2024-01-21 00:03:28.825 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (296-byte body)
+2024-01-21 00:03:28.833 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (7ms)
+2024-01-21 00:03:28.833 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:03:28.833 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:03:28 GMT
+2024-01-21 00:03:28.833 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:03:28.833 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:03:28.834 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 102
+2024-01-21 00:03:28.834 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:03:28.834 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","result":"0x6f20dd363a80b4e2fc21d1c85d1b6c63886192963e89af17471fd383710ec583"}
+2024-01-21 00:03:28.834 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (102-byte body)
+2024-01-21 00:05:46.193 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:46.195 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:46.196 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:05:46.196 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.196 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:05:46.196 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:05:46.228 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (31ms)
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:46 GMT
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x5"}
+2024-01-21 00:05:46.229 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:05:46.274 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:46.275 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:46.275 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:05:46.275 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.275 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:05:46.275 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:05:46.277 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (2ms)
+2024-01-21 00:05:46.277 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:46.278 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:46 GMT
+2024-01-21 00:05:46.278 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:46.278 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:46.278 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:05:46.279 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.279 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x5"}
+2024-01-21 00:05:46.279 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:05:46.300 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:46.300 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:46.300 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 296
+2024-01-21 00:05:46.300 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.300 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86d058504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c2208902b5e3af16b1880000801ba0223f33737a0fbeb2ffc86011da45544038946793fd359154fd3574db928ee84aa06496a7303bd79cab76bf1894b01aeeaefec47cc12e39e0f7e54aeea4739c2be5"],"id":2}
+2024-01-21 00:05:46.301 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (296-byte body)
+2024-01-21 00:05:46.333 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (31ms)
+2024-01-21 00:05:46.333 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:46.333 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:46 GMT
+2024-01-21 00:05:46.333 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:46.334 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:46.334 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 102
+2024-01-21 00:05:46.334 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:46.334 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","result":"0x83e5760d8517047dd873fceecfd2d2093bb715946f46fcda817ed59aa554a4f9"}
+2024-01-21 00:05:46.334 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (102-byte body)
+2024-01-21 00:05:52.840 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:52.843 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:52.843 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:05:52.843 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.844 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:05:52.844 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:05:52.876 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (32ms)
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:52 GMT
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x6"}
+2024-01-21 00:05:52.877 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:05:52.925 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:52.926 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:52.926 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:05:52.926 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.926 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:05:52.926 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:05:52.929 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (2ms)
+2024-01-21 00:05:52.929 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:52 GMT
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x6"}
+2024-01-21 00:05:52.930 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 296
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86d068504a817c80082520894cc2f1fd3484659789f1bd588b1a54ba1b1b8c2208902b5e3af16b1880000801ca0353f5a08484f3b9f2c0c55cab8c237bd55a504b33169e995f12b620ef5d671eaa0494224b690ff53d11aea71ff4b2fca345478ac5794cb9ca495933f82452fdeb2"],"id":2}
+2024-01-21 00:05:52.954 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (296-byte body)
+2024-01-21 00:05:52.967 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (12ms)
+2024-01-21 00:05:52.967 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:05:52.967 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:05:52 GMT
+2024-01-21 00:05:52.967 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:05:52.967 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:05:52.968 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 102
+2024-01-21 00:05:52.968 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:05:52.968 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","result":"0xefec231688ef9257939f764d584ce7f3a06601280bbc2cf5c1cb3ca5557113f1"}
+2024-01-21 00:05:52.968 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (102-byte body)
+2024-01-21 00:11:22.633 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:11:22.637 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:11:22.638 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:11:22.638 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.639 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:11:22.640 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:11:22.693 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (53ms)
+2024-01-21 00:11:22.694 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:11:22.694 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:11:22 GMT
+2024-01-21 00:11:22.695 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:11:22.695 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:11:22.695 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:11:22.696 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.696 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x7"}
+2024-01-21 00:11:22.696 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:11:22.770 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:11:22.771 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:11:22.771 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:11:22.771 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.771 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":1}
+2024-01-21 00:11:22.771 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:11:22.775 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (3ms)
+2024-01-21 00:11:22.776 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:11:22.776 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:11:22 GMT
+2024-01-21 00:11:22.776 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:11:22.777 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:11:22.777 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:11:22.777 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.777 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0x7"}
+2024-01-21 00:11:22.777 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:11:22.820 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:11:22.820 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:11:22.821 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 294
+2024-01-21 00:11:22.821 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.821 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86c078504a817c800825208941af510f81fa1c1832db4e3f556bf00300764a61b880de0b6b3a7640000801ca0ed5dd0553da72a7e04895eacb965008353f889e8b89b625401001acef1e3698ea06575ac17bed490588086f0bc9eecbddb112ff0ab47361de3915597a8e81cf184"],"id":2}
+2024-01-21 00:11:22.821 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (294-byte body)
+2024-01-21 00:11:22.851 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (28ms)
+2024-01-21 00:11:22.851 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:11:22.851 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:11:22 GMT
+2024-01-21 00:11:22.851 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:11:22.852 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:11:22.852 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 102
+2024-01-21 00:11:22.852 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:11:22.860 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":2,"jsonrpc":"2.0","result":"0x36401987334c55cd1b13c6f608adc4ff876c3ad67035afd6a676621f34566947"}
+2024-01-21 00:11:22.861 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (102-byte body)
+2024-01-21 00:12:57.028 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:12:57.032 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:12:57.033 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 124
+2024-01-21 00:12:57.033 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:12:57.034 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xcc2f1fd3484659789f1bd588b1a54ba1b1b8c220","latest"],"id":0}
+2024-01-21 00:12:57.034 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (124-byte body)
+2024-01-21 00:12:57.088 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (53ms)
+2024-01-21 00:12:57.088 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:12:57.088 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:12:57 GMT
+2024-01-21 00:12:57.088 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:12:57.089 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:12:57.089 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 39
+2024-01-21 00:12:57.089 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:12:57.089 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":0,"jsonrpc":"2.0","result":"0x8"}
+2024-01-21 00:12:57.089 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (39-byte body)
+2024-01-21 00:12:57.223 [main] DEBUG org.web3j.protocol.http.HttpService - --> POST http://127.0.0.1:7545/
+2024-01-21 00:12:57.223 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json; charset=utf-8
+2024-01-21 00:12:57.223 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 294
+2024-01-21 00:12:57.223 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:12:57.224 [main] DEBUG org.web3j.protocol.http.HttpService - {"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xf86c088504a817c800825208941af510f81fa1c1832db4e3f556bf00300764a61b880de0b6b3a7640000801ca081bd0357ed0c272587491d49687031a7d7c0bfb679c8834bd29668ac1cbd18c2a02737dfbab166df1e1f577f96fa09c6f639cc543800dbc4c87839a5adafa6bbbf"],"id":1}
+2024-01-21 00:12:57.224 [main] DEBUG org.web3j.protocol.http.HttpService - --> END POST (294-byte body)
+2024-01-21 00:12:57.240 [main] DEBUG org.web3j.protocol.http.HttpService - <-- 200 OK http://127.0.0.1:7545/ (15ms)
+2024-01-21 00:12:57.240 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Type: application/json
+2024-01-21 00:12:57.241 [main] DEBUG org.web3j.protocol.http.HttpService - Date: Sat, 20 Jan 2024 18:12:57 GMT
+2024-01-21 00:12:57.241 [main] DEBUG org.web3j.protocol.http.HttpService - Connection: keep-alive
+2024-01-21 00:12:57.241 [main] DEBUG org.web3j.protocol.http.HttpService - Keep-Alive: timeout=5
+2024-01-21 00:12:57.241 [main] DEBUG org.web3j.protocol.http.HttpService - Content-Length: 102
+2024-01-21 00:12:57.241 [main] DEBUG org.web3j.protocol.http.HttpService - 
+2024-01-21 00:12:57.242 [main] DEBUG org.web3j.protocol.http.HttpService - {"id":1,"jsonrpc":"2.0","result":"0xffbc18cc1fc07218a1e58b70c834599fb699ed13eed4ad9ea3d1b08e6f49021d"}
+2024-01-21 00:12:57.242 [main] DEBUG org.web3j.protocol.http.HttpService - <-- END HTTP (102-byte body)

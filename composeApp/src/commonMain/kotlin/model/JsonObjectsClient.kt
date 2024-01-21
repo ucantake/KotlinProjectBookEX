@@ -29,13 +29,11 @@ data class Book(
 
 @Serializable
 data class BooksResponse(
-    @SerialName("books")
-    val booksContainer: BooksContainer
+    val books: BooksContainer
 )
 
 @Serializable
 data class BooksContainer(
-    @SerialName("books")
     val books: List<Book>,
     val quantity: Int
 )
@@ -57,4 +55,17 @@ data class BooksJsonSmartContract (
     val author: String,
     val user_id: String,
     val price: Int
+)
+
+//для истории транзакций
+@Serializable
+data class TransactionsjsonHistory (
+    val transactions: List<Transactions>
+)
+
+@Serializable
+data class Transactions (
+    val book_title : String,
+    val user_sender : String,
+    val user_receiver : String,
 )

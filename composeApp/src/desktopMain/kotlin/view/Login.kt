@@ -1,6 +1,7 @@
 package view
 
 import DATADOWNLOADING
+import DOWNLOAD_DATA_ALL
 import WORKMODE
 import WindowsName
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,7 @@ import util.checkLoginUser
 import view.state.WindowState
 import kotlinx.coroutines.delay
 import repository.DownloadJsonData
+import repository.SynchronizedJsonData
 
 @Composable
 fun Login(state: WindowState){
@@ -137,8 +139,14 @@ fun Login(state: WindowState){
                                         while (progress < 1f) {
                                             progress += 0.1f
                                             delay(1000L)
-                                            println("DATADOWNLOADING = $DATADOWNLOADING")
-                                            if (DATADOWNLOADING) break
+                                            println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
+                                            if (DOWNLOAD_DATA_ALL) break
+                                            if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
+                                                SynchronizedJsonData()
+                                                scaffoldState.snackbarHostState.showSnackbar("Синхронизация данных")
+                                                if (progress == 1f) progress = 0f
+                                            }
+
                                         }
                                         if (!DATADOWNLOADING) progress = 0f
                                     }

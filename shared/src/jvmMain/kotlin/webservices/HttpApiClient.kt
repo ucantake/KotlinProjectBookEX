@@ -165,6 +165,10 @@ actual class HttpApiClient : HttpApiClientInterface {
         }.bodyAsText()
     }
 
+    override suspend fun getBooksDataSmartContract(name: String): String {
+        return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name/getTransactions"))
+    }
+
 }
 
 data class BookData(
