@@ -187,22 +187,6 @@ fun ProfileScreen()     {
                                         )
                                     )
                                 }
-                                TextButton(
-                                    modifier = Modifier
-                                        .padding(6.dp),
-                                    onClick = {
-                                        switchViewProfile = "updateBook"
-                                    }
-                                ) {
-                                    Text(
-                                        text = "Обновить",
-                                        style = TextStyle(
-                                            fontSize = 18.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    )
-                                }
                             }
                         }
                     }
@@ -232,23 +216,6 @@ fun ProfileScreen()     {
                         ) {
                             Text(
                                 text = "Профиль",
-                                style = TextStyle(
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                            )
-                        }
-
-                        TextButton(
-                            modifier = Modifier
-                                .padding(6.dp),
-                            onClick = {
-                                switchViewProfile = "removeBook"
-                            }
-                        ) {
-                            Text(
-                                text = "Удаление",
                                 style = TextStyle(
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
@@ -295,34 +262,6 @@ fun ProfileScreen()     {
                 }
             }
 
-        }
-        else if (switchViewProfile == "removeBook") {
-            Column() {
-                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
-
-                }
-                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
-                    Text("remove")
-                }
-                Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center) {
-                    Button(
-                        modifier = Modifier
-                            .padding(6.dp),
-                        onClick = {
-                            switchViewProfile = "profile"
-                        }
-                    ) {
-                        Text(
-                            text = "Профиль",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        )
-                    }
-                }
-            }
         }
         else if (switchViewProfile == "addBook") {
             Column(
@@ -478,36 +417,6 @@ fun ProfileScreen()     {
             }
 
 
-        }
-        //TODO сначала выпадающий список выбора текущих книг, потом экран с полями от добавления
-        else if (switchViewProfile == "updateBook") {
-            Column()
-            {
-                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
-
-                }
-                Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center){
-                    Text("update")
-                }
-                Box(modifier = Modifier.fillMaxWidth().weight(0.9f), contentAlignment = Alignment.Center){
-                    Button(
-                        modifier = Modifier
-                            .padding(6.dp),
-                        onClick = {
-                            switchViewProfile = "profile"
-                        }
-                    ) {
-                        Text(
-                            text = "Профиль",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        )
-                    }
-                }
-            }
         }
 
     }
