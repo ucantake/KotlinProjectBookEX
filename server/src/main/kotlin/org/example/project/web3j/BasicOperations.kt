@@ -57,7 +57,6 @@ class BasicOperations (){
     fun checkData (key : String, account : String) : Boolean {
         var data = false
         try {
-            println("\nASDASDSADSDASD ${getBalance(key)}\n")
             if (getBalance(key) > BigInteger.ZERO) data = true
         }finally {
             return data

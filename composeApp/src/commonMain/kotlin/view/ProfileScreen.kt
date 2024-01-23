@@ -149,22 +149,7 @@ fun ProfileScreen()     {
                             Text(
                                 "Управление книгами")
                             Row() {
-                                TextButton(
-                                    modifier = Modifier
-                                        .padding(6.dp),
-                                    onClick = {
-                                        switchViewProfile = "removeBook"
-                                    }
-                                ) {
-                                    Text(
-                                        text = "Удаление",
-                                        style = TextStyle(
-                                            fontSize = 18.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    )
-                                }
+
                                 TextButton(
                                     modifier = Modifier
                                         .padding(6.dp),

@@ -17,11 +17,12 @@ import webservices.GetHttpApiClient
 //TODO добавить проверку пароля
 
 suspend fun checkLoginUser(username: String, password : String): Boolean {
-
+    val passwordCrupt = md5(password)
+    println(passwordCrupt)
     try {
         val httpsClietn = GetHttpApiClient()
-        val stri = httpsClietn.authLinkForman(username, password)
-        val hash = tokenCreate(username+password)
+        val stri = httpsClietn.authLinkForman(username, md5(password))
+        val hash = tokenCreate(username+md5(password))
         if (stri == hash) {
             //присваиваются данные константы для дальнейшего использования
             NAMEUSER = username
@@ -57,8 +58,8 @@ fun tokenCreate (string : String) : String {
 suspend fun createUser (name : String, password : String, email : String, account : String, key : String) : Boolean {
     try {
         val httpsClietn = GetHttpApiClient()
-        val stri = httpsClietn.createUser(name, password, email, account, key)
-        val hash = tokenCreate(name+password)
+        val stri = httpsClietn.createUser(name, md5(password), email, account, key)
+        val hash = tokenCreate(name+md5(password))
         if (stri == hash) {
             DATADOWNLOADING = true
             return true
@@ -146,6 +147,19 @@ fun stringToHex(input: String): String {
 
         result.append(hexChars[highNibble])
         result.append(hexChars[lowNibble])
+    }
+
+    return result.toString()
+}
+
+fun md5(input: String): String {
+    val md = java.security.MessageDigest.getInstance("MD5")
+    val byteArray = md.digest(input.toByteArray())
+
+    // Преобразование байтов в шестнадцатеричную строку
+    val result = StringBuilder()
+    for (byte in byteArray) {
+        result.append(String.format("%02x", byte))
     }
 
     return result.toString()

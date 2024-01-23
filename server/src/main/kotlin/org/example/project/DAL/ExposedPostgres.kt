@@ -6,6 +6,7 @@ import USER_PASSWORD
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import crypto.EncryptionUtils.encrypt
 import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
 import org.example.project.DAL.tables.Transactions
@@ -13,8 +14,8 @@ import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import util.md5
+import java.time.LocalDate.now
 
 //import com.google.gson.Gson
 
@@ -174,40 +175,50 @@ class ExposedPostgres {
         }
     }
 
-    fun addUser (name : String, password : String, email : String, account : String, key : String) {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val currentDate = LocalDate.now().format(formatter).toString()
+    fun addUser (name : String, password : String, email : String, account : String, key : String) : Boolean{
+        var result = false
         try {
-            transaction {
+            val transaction = transaction {
                 Users.insert {
                     it[Users.name] = name
                     it[Users.password] = password
                     it[Users.email] = email
                     it[Users.role] = "user"
                     it[Users.status] = "active"
-                    it[Users.created_at] = currentDate
-                    it[Users.updated_at] = currentDate
+                    it[Users.created_at] = now()
+                    it[Users.updated_at] = now()
                 }
-            }
 
+            }
             addGanache(name, account, key)
+            result = true
         }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
+            result = false
+            logger.error("EXEPCTION in addUser " + e.message)
+        }finally {
+            return result
         }
     }
 
-    fun addGanache (name: String, account : String, key : String) {
+    fun addGanache (name: String, account : String, key : String) : Boolean {
         val userId = searchUserId(name)
+        var result = false
         try {
-            transaction {
+            val transation = transaction {
                 Ganache.insert {
                     it[Ganache.customerId] = userId
                     it[Ganache.account] = account
                     it[Ganache.key] = key
                 }
             }
+            if (transation.equals(1)){
+                result = true
+            }
         }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
+            result = false
+            logger.error("EXEPCTION in addGanache " + e.message)
+        }finally {
+            return result
         }
     }
 

@@ -4,9 +4,6 @@ plugins {
 }
 
 kotlin {
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
     
     androidTarget {
         compilations.all {

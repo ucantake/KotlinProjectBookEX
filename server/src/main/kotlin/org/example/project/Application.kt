@@ -3,6 +3,7 @@ package org.example.project
 import BASE_LINK
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import crypto.EncryptionUtils
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 import io.ktor.server.application.*
@@ -11,7 +12,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.example.project.DAL.ExposedPostgres
-import org.example.project.secure.EncryptionUtils
 import org.example.project.secure.checksUsersAccessConditions
 import org.example.project.web3j.BasicOperations
 import org.example.project.web3j.Transaction
@@ -96,13 +96,15 @@ fun Application.module() {
              */
             get("/$BASE_LINK/name/{name}&password/{password}") {
                 val name = call.parameters["name"]
-                val password = call.parameters["password"]
+                val password = call.parameters["password"].toString()
+                println("\n\n$name\n$password\n\n")
 
                 //проверка входящих значений (в данном случае только на пустые значения)
                 if (name == "" || password == "") return@get
 
                 //поиск данных в базе сохраненных пользователей
                 val data = ExposedPostgres().getDataTableUserPassword(name = name!!)
+                println("\n\n\ndata= $data\n\n\n")
 
                 //добавление токена в список, после проверки на наличие данные в базе данных
                 if (data != null) {
@@ -124,14 +126,19 @@ fun Application.module() {
                 val key = call.parameters["key"]
                 val account = call.parameters["account"]
 
+                logger.info("registation in $name $password $email $key $account")
+
+
                 //проверка входящих значений
                 if (!checksUsersAccessConditions(name =  name.toString(), password =  password.toString(), auth = true)) return@get
+                logger.info("registarion data is complete for $name")
 
                 if (!BasicOperations().checkData(key.toString(), account.toString())) {
                     call.respondText("0")
                     logger.error("account = $account or key = $key is not in blockchain")
                     return@get
                 }
+                logger.info("account data for $name")
 
                 //соединение с базой данных
                 val dbConnect = ExposedPostgres()
@@ -142,9 +149,15 @@ fun Application.module() {
                     logger.error("name = $name is already in database")
                     return@get
                 }
+                logger.info("$name not data db")
 
                 //добавление пользователя в базу данных
-                dbConnect.addUser(name.toString(), password.toString(), email.toString(), account.toString(), key.toString())
+                val addDBUser = dbConnect.addUser(name.toString(), password.toString(), email.toString(), account.toString(), key.toString())
+                if(!addDBUser) {
+                    call.respondText("0")
+                    logger.error("name = $name is not add in database")
+                }
+                logger.info("name $name add in database")
 
                 //возвращаемое значение имени и пароля
                 val data = ""+name+password+""
