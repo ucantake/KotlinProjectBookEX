@@ -3,20 +3,24 @@ package view
 import ACCOUNT
 import BALANCE
 import DATADOWNLOADING
+import GENRE_BOOKS
 import JSON
 import JSON_PROFILE
 import NAMEUSER
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,7 @@ import model.JsonData
 import repository.SynchronizedJsonData
 import util.addBook
 import view.utils.CheckPrice
+import view.utils.GroupRadioButton
 
 @Composable
 fun ProfileScreen()     {
@@ -66,6 +71,14 @@ fun ProfileScreen()     {
 
     val progress = remember { mutableStateOf(0.0f) }
 
+    var selectedOption by remember { mutableStateOf("ETH") }
+
+    val visualTransformation = if (price.length <= 20) {
+            VisualTransformation.None
+        } else {
+            price = price.substring(0, 20)
+            VisualTransformation.None
+        }
 
     Scaffold (
         modifier = Modifier.padding(6.dp),
@@ -252,7 +265,7 @@ fun ProfileScreen()     {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
+                modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp).horizontalScroll(rememberScrollState())
             ) {
                 Row() {
                     TextField(
@@ -284,8 +297,9 @@ fun ProfileScreen()     {
                     )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(60.dp).background(Color.DarkGray),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
                         shape = RoundedCornerShape(size = 20.dp),//скругление углов
@@ -296,7 +310,7 @@ fun ProfileScreen()     {
                         onValueChange = {
                             isbn = it
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.weight(1f).fillMaxWidth()
                     )
                     TextField(
                         shape = RoundedCornerShape(size = 20.dp),//скругление углов
@@ -307,7 +321,7 @@ fun ProfileScreen()     {
                         onValueChange = {
                             ubc = it
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.weight(1f).fillMaxWidth()
                     )
                     TextField(
                         shape = RoundedCornerShape(size = 20.dp),//скругление углов
@@ -318,24 +332,36 @@ fun ProfileScreen()     {
                         onValueChange = {
                             bbk = it
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.weight(1f).fillMaxWidth()
                     )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Row() {
+                Row(
+                    modifier = Modifier.fillMaxWidth().background(Color.Blue),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     TextField(
-                        shape = RoundedCornerShape(size = 20.dp),//скругление углов
+                        shape = RoundedCornerShape(size = 20.dp),
                         value = price,
                         label = {
-                            Text("Цена книги в ETH")
+                            Text("Цена книги")
                         },
                         onValueChange = {
                             price = it
                         },
-                        modifier = Modifier
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().background(Color.Red),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                            keyboardType = KeyboardType.Number,
+                        ),
+                        visualTransformation = visualTransformation,
+                        maxLines = 1
                     )
                 }
+                GroupRadioButton(
+                    dataRadioButton = listOf("eth", "finney", "szado", "wei"),
+                    onItemSelected = { selectedOption = it }
+                )
                 Spacer(modifier = Modifier.height(5.dp))
                 Row () {
                     Button(
