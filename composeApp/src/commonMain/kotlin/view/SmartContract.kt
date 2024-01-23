@@ -32,8 +32,8 @@ fun SmartContract() {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    var selectedValueUser: String = ""
-    var selectedValueBook: String = ""
+    var selectedValueUser by remember { mutableStateOf("") }
+    var selectedValueBook by remember { mutableStateOf("") }
     var itemsJsonUsers by remember { mutableStateOf(mutableStateListOf<String>()) }
     var itemsJsonBooks by remember { mutableStateOf(mutableStateListOf<String>()) }
     val data = LaunchedEffect(Unit) {
@@ -94,10 +94,17 @@ fun SmartContract() {
                                     .align(Alignment.CenterHorizontally), Arrangement.spacedBy(0.dp)
                             ) {
                                 //эти две кнопки должы разделять между собой пространство равномерно, одинаково на каждый Box, подстраивающееся под разрешение экрана
-                                Box(
+                                Column(
                                     modifier = Modifier
-                                        .weight(1f)
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.Top
                                 ) {
+                                    Text("Выбранный пользователь : $selectedValueUser", modifier = Modifier.height(50.dp),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
                                     //выпадающее меню
                                     DropdownExample(
                                         onItemSelected = { selectedValueUser = it },
@@ -105,10 +112,17 @@ fun SmartContract() {
                                         text = "Выберете пользователя"
                                     )
                                 }
-                                Box(
+                                Column(
                                     modifier = Modifier
-                                        .weight(1f)
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.Top
                                 ) {
+                                    Text("Выбранная книга : $selectedValueBook", modifier = Modifier.height(50.dp),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
                                     //выпадающее меню
                                     DropdownExample(
                                         onItemSelected = { selectedValueBook = it },
