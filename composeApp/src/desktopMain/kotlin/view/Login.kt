@@ -6,6 +6,7 @@ import WORKMODE
 import WindowsName
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -19,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Density
@@ -76,7 +79,10 @@ fun Login(state: WindowState){
                         onValueChange = {
                             username = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done
+                        ),
+                        maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
 
@@ -101,7 +107,11 @@ fun Login(state: WindowState){
                         onValueChange = {
                             password = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                            keyboardType = KeyboardType.Password,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth(0.9f)
 
 

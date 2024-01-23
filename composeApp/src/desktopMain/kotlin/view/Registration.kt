@@ -4,6 +4,7 @@ import DATADOWNLOADING
 import WindowsName
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -80,7 +82,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             username = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
 
@@ -99,7 +104,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             email = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
 
@@ -120,7 +128,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             account = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
 
@@ -140,7 +151,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             key = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
 
@@ -164,7 +178,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             password = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth(0.9f)
 
 
@@ -196,7 +213,10 @@ fun Registration (state: WindowState){
                         onValueChange = {
                             password2 = it
                         },
-
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        ),
+                        maxLines = 1,
                         modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth(0.9f)
 
 
