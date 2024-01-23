@@ -30,11 +30,6 @@ fun contenTopBar (state: WindowState, scaffoldState: ScaffoldState)  {
             Icon(Icons.Default.Info, contentDescription = "Help")
         }
         Spacer(modifier = Modifier.width(16.dp))
-        IconButton(onClick = {
-            state.close()
-        }) {
-            Icon(Icons.Default.Close, contentDescription = "Close")
-        }
     }
 }
 

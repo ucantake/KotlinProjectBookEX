@@ -36,8 +36,7 @@ private fun ApplicationScope.MyWindow(
 ) = Window(
     onCloseRequest = state::close,
     title = state.title,
-    icon = painterResource("icons/books-svgrepo-com.svg"),
-    undecorated = true,
+    icon = painterResource("icons/books-svgrepo-com.svg")
 
 ) {
     //вот тут переключается окно, перезаписью
