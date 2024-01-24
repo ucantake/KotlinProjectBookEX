@@ -20,7 +20,6 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import model.JsonSmartContract
 import repository.SynchronizedJsonData
-import repository.searchBooksUser
 import util.setSmartContract
 import view.utils.DropdownExample
 

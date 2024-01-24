@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -29,9 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import repository.DownloadJsonData
 import repository.SynchronizedJsonData
-import repository.searchBooksUser
 import util.checkLoginUser
 import util.createUser
 import view.bottonNavigation.NavGraph
@@ -81,6 +80,10 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             label = {
                                 Text("Имя пользователя")
                             },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done
+                            ),
+                            maxLines = 1,
                             onValueChange = {
                                 username = it
                             }
@@ -99,8 +102,10 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                             onValueChange = {
                                 password = it
                             },
+                            maxLines = 1,
                             visualTransformation = visualTransformation,
                             keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done,
                                 keyboardType = KeyboardType.Password
                             )
                         )
@@ -132,7 +137,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
                                             progress += 0.1f
                                             delay(1000L)
                                             println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
-                                            if (DOWNLOAD_DATA_ALL) break
+                                            if (DOWNLOAD_DATA_ALL && DATADOWNLOADING) break
                                             if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
                                                 SynchronizedJsonData()
                                                 scaffoldState.snackbarHostState.showSnackbar("Синхронизация данных")
@@ -146,7 +151,7 @@ fun LoginScreen(onLoginClicked: () -> Unit){
 
                                 scopeRemember.launch {
                                     scaffoldState.snackbarHostState.showSnackbar("Добро пожаловать $username")
-                                    searchBooksUser(NAMEUSER)
+                                    SynchronizedJsonData()
                                     WindowsName = "Main"
                                     onLoginClicked()
                                 }
@@ -243,6 +248,10 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                     label = {
                         Text("Имя пользователя")
                     },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    maxLines = 1,
                     onValueChange = {
                         username = it
                     }
@@ -255,6 +264,10 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                     label = {
                         Text("Электронная почта")
                     },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    maxLines = 1,
                     onValueChange = {
                         email = it
                     }
@@ -268,7 +281,10 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                     label = {
                         Text("Адрес ETH аккаунта")
                     },
-
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    maxLines = 1,
                     onValueChange = {
                         account = it
                     }
@@ -282,7 +298,10 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                     label = {
                         Text("Приватный ключ от аккаунта ETH")
                     },
-
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    maxLines = 1,
                     onValueChange = {
                         key = it
                     }
@@ -301,11 +320,13 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                         label = {
                             Text("Пароль")
                         },
+                        maxLines = 1,
                         onValueChange = {
                             password = it
                         },
                         visualTransformation = visualTransformation,
                         keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
                             keyboardType = KeyboardType.Password
                         )
                     )
@@ -332,8 +353,10 @@ fun RegistrationScreen(onLoginClicked: () -> Unit) {
                         onValueChange = {
                             password2 = it
                         },
+                        maxLines = 1,
                         visualTransformation = visualTransformation,
                         keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
                             keyboardType = KeyboardType.Password
                         )
                     )

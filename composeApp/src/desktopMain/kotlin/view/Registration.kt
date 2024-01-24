@@ -20,8 +20,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import repository.DownloadJsonData
-import util.checkLoginUser
 import util.createUser
 import view.state.WindowState
 

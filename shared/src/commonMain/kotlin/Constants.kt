@@ -1,3 +1,6 @@
+import java.time.LocalDate
+import kotlin.properties.Delegates
+
 const val SERVER_PORT = 8888
 const val NAME_DB = "gauti"
 const val DB_NAME = "aspasia"
@@ -20,14 +23,14 @@ lateinit var JSON : String //json с данными пользователя п�
 lateinit var ROLE : String
 var DATADOWNLOADING = false
 lateinit var WindowsName : String
-val LOCALACCESSDATA = "ASDDSA" //авторизационные данные для локального доступа
-val LOCALACCESS = true //локальный доступ для тестирования
-lateinit var WORKMODE : String
-const val OFFLINEDATA = "{\"user\":{\"name\":\"\",\"email\":\"\",\"role\":\"user\"},\"wallet\":{\"account\":\"0x0000000000\",\"key\":\"0x0000000000\"},\"books\":{\"title\":\"\",\"author\":\"\",\"price\":\"0\",\"quantity\":0},\"balance\":{\"account\":\"0x0000000000\",\"balanceWei\":\"0\",\"balanceEth\":\"0\"}}"
-const val OFFLINEBOOKSJSON = "{\"books\":{\"title\":[\"title\",\"title\",\"title\",\"title\",\"title\",\"title\\\"title\\\"\"],\"author\":[\"author\",\"author\",\"author\",\"author\",\"author\",\"author\"],\"price\":[\"1\",\"1\",\"1\",\"1\",\"1\",\"1\"],\"quantity\":6}}\n"
+var WORKMODE = "offline"
 lateinit var JSON_PROFILE : String //json с списком книг
 lateinit var JSON_SEARCH_USERS_BOOKS : String //json с списком пользователей и книг готовых к обмену
 lateinit var JSON_TRANSACTION_BOOKS : String //json с списком книг транзакций
 var DOWNLOAD_DATA_ALL = false
+var HASH_DATA_DOWNLOAD = ""
 
 const val SECRET_KEY = "YourSecretKeyHere"
+val DATE_PUBLICHED = LocalDate.now().year.toString()
+
+val GENRE_BOOKS : List<String> = listOf("Комедия","Проза","Научная","Детская","Детектив", "Роман", "Поэзия", "Приключения","Ужасы","Биография", "Философия","Другое")

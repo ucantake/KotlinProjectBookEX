@@ -1,6 +1,8 @@
 package org.example.project
 
 import BASE_LINK
+import JsonDataObjects.BookData
+import JsonDataObjects.CreateSmartContract
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import crypto.EncryptionUtils
@@ -16,6 +18,7 @@ import org.example.project.secure.checksUsersAccessConditions
 import org.example.project.web3j.BasicOperations
 import org.example.project.web3j.Transaction
 import org.slf4j.LoggerFactory
+import util.md5
 import util.tokenCreate
 import webservices.TokenUsersObject
 
@@ -53,6 +56,8 @@ fun Application.module() {
                 val name = call.parameters["name"]
                 val token = call.parameters["token"]
 
+                println("data in profile = $name $token")
+
                 //проверка входящих значений
                 if (!tokensUsersList.compareWithString(tokenCreate(name.toString())))
                 {
@@ -63,7 +68,6 @@ fun Application.module() {
                     logger.error("link = " + call.request.uri + " | " + "function get profile" + " | " + " name = $name token = $token is empty ")
                     return@get
                 }
-
                 //соединение с базой данных
                 val dbConnect = ExposedPostgres()
 
@@ -96,8 +100,7 @@ fun Application.module() {
              */
             get("/$BASE_LINK/name/{name}&password/{password}") {
                 val name = call.parameters["name"]
-                val password = call.parameters["password"].toString()
-                println("\n\n$name\n$password\n\n")
+                val password = md5(call.parameters["password"].toString())
 
                 //проверка входящих значений (в данном случае только на пустые значения)
                 if (name == "" || password == "") return@get
@@ -196,15 +199,18 @@ fun Application.module() {
                     }
 
                     //добавление книги в базу данных
-                    dbConnect.addBook(
+                    val result = dbConnect.addBook(
                         name = bookData.name,
                         title = bookData.title,
                         author = bookData.author,
-                        isbn = bookData.isbn,
-                        udc = bookData.udc,
                         bbk = bookData.bbk,
-                        price = bookData.price
+                        udc = bookData.udc,
+                        isbn = bookData.isbn,
+                        price = bookData.price,
+                        genre = bookData.genre,
+                        datePublished = bookData.datePublished
                     )
+                    if (!result) call.respondText("0")
 
                     //возвращаемое значение в виде хэш кода в качестве проверки на правильность данных
                     call.respondText((bookData.name + bookData.title).hashCode().toString())
@@ -236,6 +242,7 @@ fun Application.module() {
                 data.add("users", Gson().toJsonTree(usersData))
                 data.add("books", Gson().toJsonTree(booksData))
 
+                println("\n\n\ndata search = ${data.toString()}\ndata crypt = ${EncryptionUtils.encrypt(data.toString())}\n\n\n")
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
 
             }
@@ -267,7 +274,7 @@ fun Application.module() {
             post ("/$BASE_LINK/createSmartContract/name/{name}/password/{password}"){
                 try {
                     val name = call.parameters["name"]
-                    val password = call.parameters["password"]
+                    val password = md5(call.parameters["password"].toString())
 
                     // Получаем данные из тела POST-запроса
                     val smartContractData = call.receive<CreateSmartContract>()
@@ -322,22 +329,3 @@ fun Application.module() {
         logger.error("exception in Application.module() = " + e.printStackTrace())
     }
 }
-
-// Определите класс BookData, который отражает структуру данных вашей книги
-data class BookData(
-    val name: String,
-    val title: String,
-    val author: String,
-    val isbn: String,
-    val udc: String,
-    val bbk: String,
-    val price: String
-)
-
-data class CreateSmartContract (
-    val userSender: String,
-    val userResiver: String,
-    val bookTitle: String,
-    val price: String,
-    val comment: String
-)

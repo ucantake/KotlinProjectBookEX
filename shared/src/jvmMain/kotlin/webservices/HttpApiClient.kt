@@ -1,8 +1,9 @@
 package webservices
 
 import BASE_LINK
+import JsonDataObjects.BookData
+import JsonDataObjects.CreateSmartContract
 import NAMEUSER
-import OFFLINEDATA
 import PASSWORDUSER
 import SERVER_IP
 import SERVER_PORT
@@ -92,9 +93,8 @@ actual class HttpApiClient : HttpApiClientInterface {
         try {
             return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name&token/$PASSWORDUSER/profile")).toString()
         }catch (e : Exception) {
-            println("EXEPCTION in getDataProfile in HttpApiClient.kt " + e.message)
-            //TODO написать действительный json
-            return OFFLINEDATA
+            println("EXEPCTION in getDataProfile Desktop in in HttpApiClient.kt " + e.message)
+            return "{}"
         }
     }
 
@@ -110,7 +110,9 @@ actual class HttpApiClient : HttpApiClientInterface {
         isbn: String,
         udc: String,
         bbk: String,
-        price: String
+        price: String,
+        genre: String,
+        datePublished : String
     ): String {
 
         val bookData = BookData(
@@ -120,7 +122,9 @@ actual class HttpApiClient : HttpApiClientInterface {
             isbn = isbn,
             udc = udc,
             bbk = bbk,
-            price = price
+            price = price,
+            datePublished = datePublished,
+            genre = genre
         )
 
         // Сериализуем объект в JSON
@@ -170,20 +174,3 @@ actual class HttpApiClient : HttpApiClientInterface {
     }
 
 }
-
-data class BookData(
-    val name: String,
-    val title: String,
-    val author: String,
-    val isbn: String,
-    val udc: String,
-    val bbk: String,
-    val price: String
-)
-data class CreateSmartContract (
-    val userSender: String,
-    val userResiver: String,
-    val bookTitle: String,
-    val price: String,
-    val comment: String
-)

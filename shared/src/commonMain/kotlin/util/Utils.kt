@@ -1,8 +1,6 @@
 package util
 
 import DATADOWNLOADING
-import LOCALACCESSDATA
-import LOCALACCESS
 import NAMEUSER
 import PASSWORDUSER
 import WORKMODE
@@ -26,6 +24,7 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
         if (stri == hash) {
             //присваиваются данные константы для дальнейшего использования
             NAMEUSER = username
+
             PASSWORDUSER = hash //токен пользователя, который генерируется на основе логина и пароля
             WORKMODE = "online"
             return true
@@ -35,13 +34,7 @@ suspend fun checkLoginUser(username: String, password : String): Boolean {
         }
     }catch (e : Exception) {
         println("EXEPCTION in checkLoginUser in Utils.kt " + e.message)
-        WORKMODE = "offline"
-        if (username == LOCALACCESSDATA && password == LOCALACCESSDATA && LOCALACCESS == true) { // локальный доступ для тестирования
-            NAMEUSER = username
-            PASSWORDUSER = tokenCreate(username+password)
-
-            return true
-        }else return false
+        return false
     }
 }
 
@@ -72,10 +65,10 @@ suspend fun createUser (name : String, password : String, email : String, accoun
     }
 }
 
-suspend fun addBook ( name : String, title : String, author : String, isbn : String, udc : String, bbk : String, price : String) : Boolean {
+suspend fun addBook ( name : String, title : String, author : String, isbn : String, udc : String, bbk : String, price : String, datePublished : String, genre : String) : Boolean {
     try {
         val httpsClietn = GetHttpApiClient()
-        val stri = httpsClietn.addBook(name, title, author, isbn, udc, bbk, price)
+        val stri = httpsClietn.addBook(name, title, author, isbn, udc, bbk, price, datePublished, genre)
         val hash = tokenCreate(name + title)
 
         if (stri == hash) {

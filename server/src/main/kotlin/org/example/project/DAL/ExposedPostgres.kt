@@ -6,7 +6,6 @@ import USER_PASSWORD
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import crypto.EncryptionUtils.encrypt
 import org.example.project.DAL.tables.Books
 import org.example.project.DAL.tables.Ganache
 import org.example.project.DAL.tables.Transactions
@@ -14,7 +13,7 @@ import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
-import util.md5
+import java.math.BigDecimal
 import java.time.LocalDate.now
 
 //import com.google.gson.Gson
@@ -290,7 +289,7 @@ class ExposedPostgres {
         }
     }
 
-    fun addBook(name : String, title : String, author : String,bbk : String, udc : String, isbn : String, price : String) {
+    fun addBook(name : String, title : String, author : String,bbk : String, udc : String, isbn : String, price : String, genre : String, datePublished : String) : Boolean{
         val userId = searchUserId(name)
         try {
             transaction {
@@ -302,10 +301,14 @@ class ExposedPostgres {
                     it[Books.isbn] = isbn
                     it[Books.author] = author
                     it[Books.price] = price.toLong()
+                    it[Books.genre] = genre
+                    it[Books.datePublished] = datePublished.toInt()
                 }
             }
+            return true
         }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
+            logger.error("EXEPCTION in addBook" + e.message)
+            return false
         }
     }
 

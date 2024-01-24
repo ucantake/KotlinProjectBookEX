@@ -1,6 +1,8 @@
 package webservices
 
 import BASE_LINK
+import JsonDataObjects.BookData
+import JsonDataObjects.CreateSmartContract
 import NAMEUSER
 import PASSWORDUSER
 import SERVER_IP
@@ -36,7 +38,12 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     }
 
     override suspend fun getDataProfile(name: String): String {
-        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name&token/$PASSWORDUSER/profile")
+        try {
+            return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name&token/$PASSWORDUSER/profile")
+        }catch (e : Exception) {
+            println("EXEPCTION in getDataProfile in Android in HttpApiClient.kt " + e.message)
+            return "{}"
+        }
     }
 
     override suspend fun createUser(name: String, password: String, email: String, account : String, key : String): String {
@@ -51,7 +58,9 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         isbn: String,
         udc: String,
         bbk: String,
-        price: String
+        price: String,
+        genre: String,
+        datePublished : String
     ): String {
         val gson = Gson()
 
@@ -63,7 +72,9 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
             isbn = isbn,
             udc = udc,
             bbk = bbk,
-            price = price
+            price = price,
+            datePublished = datePublished,
+            genre = genre
         )
 
         // Сериализуем объект в JSON
@@ -111,21 +122,3 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/getTransactions")
     }
 }
-
-data class BookData(
-    val name: String,
-    val title: String,
-    val author: String,
-    val isbn: String,
-    val udc: String,
-    val bbk: String,
-    val price: String
-)
-
-data class CreateSmartContract (
-    val userSender: String,
-    val userResiver: String,
-    val bookTitle: String,
-    val price: String,
-    val comment: String
-)

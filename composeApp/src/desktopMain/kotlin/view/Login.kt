@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import util.checkLoginUser
 import view.state.WindowState
 import kotlinx.coroutines.delay
-import repository.DownloadJsonData
 import repository.SynchronizedJsonData
 
 @Composable
@@ -142,7 +141,7 @@ fun Login(state: WindowState){
                             //проверка имени и пароля
                             if (check) {//корректный ввод, отображение нового окна (авторизация)
                                 println("access login")
-                                DownloadJsonData()
+                                SynchronizedJsonData()
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break
                                     else {
@@ -150,7 +149,7 @@ fun Login(state: WindowState){
                                             progress += 0.1f
                                             delay(1000L)
                                             println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
-                                            if (DOWNLOAD_DATA_ALL) break
+                                            if (DOWNLOAD_DATA_ALL && DATADOWNLOADING) break
                                             if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
                                                 SynchronizedJsonData()
                                                 scaffoldState.snackbarHostState.showSnackbar("Синхронизация данных")
