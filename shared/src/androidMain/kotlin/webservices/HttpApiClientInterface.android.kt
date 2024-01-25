@@ -3,6 +3,7 @@ package webservices
 import BASE_LINK
 import JsonDataObjects.BookData
 import JsonDataObjects.CreateSmartContract
+import JsonDataObjects.TwoFactorTransactionData
 import NAMEUSER
 import PASSWORDUSER
 import SERVER_IP
@@ -134,7 +135,20 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/getTransactions")
     }
 
+    @OptIn(InternalAPI::class)
     override suspend fun twoFactorTransaction(name: String, selectedValueBook: String, state: Boolean): String {
-        TODO("Not yet implemented")
+        val data = TwoFactorTransactionData(
+            nameSender =  NAMEUSER,
+            nameResiver = name,
+            bookTitle = selectedValueBook,
+            state = state
+        )
+
+        val jsonData = Gson().toJson(data)
+
+        return client.post("http://$SERVER_IP:80/$BASE_LINK/name/$NAMEUSER/password/$PASSWORDUSER/twoFactorTransaction"){
+            contentType(ContentType.Application.Json)
+            body = jsonData
+        }.bodyAsText()
     }
 }
