@@ -2,6 +2,7 @@ package view
 
 import DATADOWNLOADING
 import DOWNLOAD_DATA_ALL
+import JSON_TRANSACTION_BOOKS
 import WORKMODE
 import WindowsName
 import androidx.compose.foundation.layout.*
@@ -140,7 +141,7 @@ fun Login(state: WindowState){
                             if (WORKMODE == "offline") scaffoldState.snackbarHostState.showSnackbar("Работа в оффлайн режиме")
                             //проверка имени и пароля
                             if (check) {//корректный ввод, отображение нового окна (авторизация)
-                                println("access login")
+                                scaffoldState.snackbarHostState.showSnackbar("Синхронизация данных")
                                 SynchronizedJsonData()
                                 while (!DATADOWNLOADING) {
                                     if (DATADOWNLOADING) break
@@ -149,6 +150,7 @@ fun Login(state: WindowState){
                                             progress += 0.1f
                                             delay(1000L)
                                             println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
+                                            println("JSON JSON_TRANSACTION_BOOKS = $JSON_TRANSACTION_BOOKS")
                                             if (DOWNLOAD_DATA_ALL && DATADOWNLOADING) break
                                             if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
                                                 SynchronizedJsonData()

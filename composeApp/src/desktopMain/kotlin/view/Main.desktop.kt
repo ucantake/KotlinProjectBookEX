@@ -1,10 +1,5 @@
 package view
 
-import ACCOUNT
-import BALANCE
-import EMAIL
-import JSON
-import NAMEUSER
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -16,20 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import model.BalanceJson
-import model.JsonData
-import model.UserJson
-import model.WalletJson
 import view.navigation.Item
 import view.state.WindowState
-import webservices.GetHttpApiClient
 
 class MainScreen() {
     private val listItems = listOf(
