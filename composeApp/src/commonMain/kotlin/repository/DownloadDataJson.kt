@@ -36,6 +36,9 @@ suspend private fun DownloadJsonData () {
             JSON = json.toString()
             DATADOWNLOADING = true
 
+        searchBooksUser(NAMEUSER)
+        bookDataSmartContract(NAMEUSER)
+
     }catch (e : Exception) {
         println("EXEPCTION in DownloadjsonData " + e.message)
         EMAIL = ""
@@ -48,30 +51,29 @@ suspend private fun DownloadJsonData () {
 }
 
 //функция для синхронизации данных с сервера
+//TODO придумать как работать только с одним GlobalScope
 fun SynchronizedJsonData (){
     DOWNLOAD_DATA_ALL = false
     println("HASHDATA = $HASH_DATA_DOWNLOAD")
 
     //первый запуск программы, загрузка всех данных
     if (HASH_DATA_DOWNLOAD == "") {
-        GlobalScope.launch {
+        runBlocking {
             DownloadJsonData()
-            searchBooksUser(NAMEUSER)
-            bookDataSmartContract(NAMEUSER)
-            HASH_DATA_DOWNLOAD = md5(JSON+JSON_PROFILE)
+            HASH_DATA_DOWNLOAD = md5(JSON+JSON_PROFILE+JSON_SEARCH_USERS_BOOKS+JSON_TRANSACTION_BOOKS)
+            println("JSON JSON_PROFILE = $JSON_PROFILE")
         }
+
 
     } else {//последующие запуски
 
-        if (HASH_DATA_DOWNLOAD != md5(JSON+JSON_PROFILE)) {//запуск только в случае изменения данных на сервере
-            runBlocking {
-                async {
+        if (HASH_DATA_DOWNLOAD != md5(JSON+JSON_PROFILE+JSON_SEARCH_USERS_BOOKS+JSON_TRANSACTION_BOOKS)) {//запуск только в случае изменения данных на сервере
+            GlobalScope.launch {
                     DownloadJsonData()
                     searchBooksUser(NAMEUSER)
                     bookDataSmartContract(NAMEUSER)
-                    HASH_DATA_DOWNLOAD = md5(JSON + JSON_PROFILE)
+                    HASH_DATA_DOWNLOAD = md5(JSON+JSON_PROFILE+JSON_SEARCH_USERS_BOOKS+JSON_TRANSACTION_BOOKS)
                 }
-            }
         }else{//запуск изменения данных для формирования сигнатуры данных
             GlobalScope.launch {
                 DownloadJsonData()
@@ -94,7 +96,7 @@ suspend private fun searchBooksUser(name : String) {
 suspend private fun bookDataSmartContract (name: String) {
     try {
             val httpsClietn = GetHttpApiClient()
-            JSON_TRANSACTION_BOOKS = httpsClietn.getBooksDataSmartContract(name)
+            JSON_TRANSACTION_BOOKS = httpsClietn.getTransactionsBooksDataSmartContract(name)
     }catch (e : Exception){
         println("exeption in bookDataSmartContract in Utils.kt = ${e.message}")
     }

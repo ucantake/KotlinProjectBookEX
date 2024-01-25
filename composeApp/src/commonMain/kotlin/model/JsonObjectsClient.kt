@@ -1,6 +1,5 @@
 package model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
@@ -63,9 +62,11 @@ data class TransactionsjsonHistory (
     val transactions: List<Transactions>
 )
 
-@Serializable
-data class Transactions (
+@Serializable //изменить на лист данных от таблицы транзакции
+data class Transactions(
     val book_title : String,
     val user_sender : String,
     val user_receiver : String,
+    val comment : String,
+    val successful : Boolean
 )

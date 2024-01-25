@@ -6,6 +6,7 @@ import JsonDataObjects.CreateSmartContract
 import NAMEUSER
 import PASSWORDUSER
 import SERVER_IP
+import SERVER_PORT
 import com.google.gson.Gson
 import crypto.EncryptionUtils
 import io.ktor.client.*
@@ -32,6 +33,17 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         val data = EncryptionUtils.decrypt(clientGet)
         return data
     }
+
+    /*
+    * Функция форматирования базовой ссылки
+    * выходные данные передаются в функцию getLinkBodyAsText или getLinkBody как ссылка
+    * Входные данные :
+    *   берутся из констант
+    *   ссылка - на которую отправляется запрос
+    * Выходные данные :
+    *   ссылка в формате https://ip:port/baseLinkGet/link
+     */
+    private fun linkFormatterHttp (link : String) : String = "https://$SERVER_IP:$SERVER_PORT/$BASE_LINK/$link"
 
     override suspend fun authLinkForman(name: String, password: String): String {
         return client.get("http://$SERVER_IP:80/$BASE_LINK/name/$name&password/$password").bodyAsText()
@@ -96,7 +108,7 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     }
 
     @OptIn(InternalAPI::class)
-    override suspend fun setSmartContract(
+    override suspend fun createSmartContract(
         name: String,
         selectedValueUser: String,
         selectedValueBook: String,
@@ -118,7 +130,11 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
         }.bodyAsText()
     }
 
-    override suspend fun getBooksDataSmartContract(name: String): String {
+    override suspend fun getTransactionsBooksDataSmartContract(name: String): String {
         return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/getTransactions")
+    }
+
+    override suspend fun twoFactorTransaction(name: String, selectedValueBook: String, state: Boolean): String {
+        TODO("Not yet implemented")
     }
 }

@@ -3,6 +3,7 @@ package webservices
 import BASE_LINK
 import JsonDataObjects.BookData
 import JsonDataObjects.CreateSmartContract
+import JsonDataObjects.TwoFactorTransactionData
 import NAMEUSER
 import PASSWORDUSER
 import SERVER_IP
@@ -146,7 +147,7 @@ actual class HttpApiClient : HttpApiClientInterface {
     }
 
     @OptIn(InternalAPI::class)
-    override suspend fun setSmartContract(
+    override suspend fun createSmartContract(
         name: String,
         selectedValueUser: String,
         selectedValueBook: String,
@@ -169,8 +170,28 @@ actual class HttpApiClient : HttpApiClientInterface {
         }.bodyAsText()
     }
 
-    override suspend fun getBooksDataSmartContract(name: String): String {
+    override suspend fun getTransactionsBooksDataSmartContract(name: String): String {
         return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name/getTransactions"))
+    }
+
+    @OptIn(InternalAPI::class)
+    override suspend fun twoFactorTransaction(name: String, selectedValueBook: String, state: Boolean): String {
+        val data = TwoFactorTransactionData(
+            nameSender =  NAMEUSER,
+            nameResiver = name,
+            bookTitle = selectedValueBook,
+            state = state
+        )
+
+        val jsonData = Gson().toJson(data)
+
+        return client.post(linkFormatterHttp("name/$NAMEUSER/password/$PASSWORDUSER/twoFactorTransaction")){
+            contentType(ContentType.Application.Json)
+            body = jsonData
+        }.bodyAsText()
+
+
+
     }
 
 }

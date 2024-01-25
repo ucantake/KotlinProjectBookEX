@@ -11,9 +11,9 @@ import org.example.project.DAL.tables.Ganache
 import org.example.project.DAL.tables.Transactions
 import org.example.project.DAL.tables.Users
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
-import java.math.BigDecimal
 import java.time.LocalDate.now
 
 //import com.google.gson.Gson
@@ -43,7 +43,7 @@ class ExposedPostgres {
         }
     }
 
-    fun creteTables(name : Table) {
+    private fun creteTables(name : Table) {
         try {
             transaction { SchemaUtils.create(name) }
         }catch (e : Exception) {
@@ -131,7 +131,6 @@ class ExposedPostgres {
         }
     }
 
-
     fun searchUserId (name : String) : Int {
         var userId = 0
         try {
@@ -151,7 +150,6 @@ class ExposedPostgres {
             return userId
         }
     }
-
 
     fun checkUserInDatabase (name : String) : Boolean {
         var result : Boolean = true
@@ -311,8 +309,6 @@ class ExposedPostgres {
             return false
         }
     }
-
-
     fun getBooksJson(name: String): JsonObject {
         val userId = searchUserId(name)
         val combinedJson = JsonObject()
@@ -387,7 +383,6 @@ class ExposedPostgres {
             return result
         }
     }
-
 
     fun getBooksJsonNotCurrentUser (name: String) : List<JsonObject> {
         val userId = searchUserId(name)
@@ -554,16 +549,39 @@ class ExposedPostgres {
 
             }
         }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
+            logger.error("EXEPCTION searchBookId " + e.message)
         }finally {
             return bookId
         }
     }
 
     /*
+    * проверка книги, на принадлежность к пользователю
+     */
+    fun checkBookInUser (name : String, title : String) : Boolean {
+        val userId = searchUserId(name)
+        var result = false
+        try {
+            transaction {
+                val query = Books.selectAll()
+                query.forEach {
+                    if (userId == it.get(Books.userId) && title == it.get(Books.title)) {
+                        result = true
+                    }
+                }
+
+            }
+        }catch (e : Exception) {
+            logger.error("EXEPCTION in checkBookInUser " + e.message)
+        }finally {
+            return result
+        }
+    }
+
+    /*
     * функция добавления записи в таблицу Transaction для смарт контракта
      */
-    fun addTransaction (userSender: String,userReceiver: String, valueBook: String) : Boolean {
+    fun addTransaction (userSender: String,userReceiver: String, valueBook: String, comment : String, successful : Boolean = false) : Boolean {
         val userSenderId = searchUserId(userSender)
         val userReceiverid = searchUserId(userReceiver)
         val bookId = searchBookId(userSender, valueBook)
@@ -574,6 +592,8 @@ class ExposedPostgres {
                     it[Transactions.bookId] = bookId
                     it[Transactions.userSenderId] = userSenderId
                     it[Transactions.userReceiverId] = userReceiverid
+                    it[Transactions.comment] = comment
+                    it[Transactions.successful] = successful
                 }
             }
             result = true
@@ -616,6 +636,14 @@ class ExposedPostgres {
                                 bookObject.addProperty("book_title", bookTitle)
 
                             }
+                            "comment" -> {
+                                val comment = transactionRow[column].toString()
+                                bookObject.addProperty("comment", comment)
+                            }
+                            "successful" -> {
+                                val successful = transactionRow[column].toString()
+                                bookObject.addProperty("successful", successful.toBoolean())
+                            }
                         }
                     }
 
@@ -626,9 +654,65 @@ class ExposedPostgres {
 
             }
         }catch (e : Exception) {
-            logger.error("EXEPCTION " + e.message)
+            logger.error("EXEPCTION in searchDataTransactionsData" + e.message)
         }finally {
             return combinedJson
         }
     }
+
+    /*
+    * фнукция удаления строки из таблицы Transaction, который ищет записи с значением successful = false
+     */
+    private fun deleteTransaction (senderName : String, receiverName : String, bookTitle : String) : Boolean {
+        val userSenderId = searchUserId(senderName)
+        val userReceiverId = searchUserId(receiverName)
+        val bookId = searchBookId(senderName, bookTitle)
+        var result = false
+        try {
+            transaction {
+                Transactions.deleteWhere {
+                    Transactions.userSenderId eq userSenderId and
+                            (Transactions.bookId eq bookId) and
+                            (Transactions.userReceiverId eq userReceiverId)  and
+                            (Transactions.successful eq false)
+                }
+            }
+            result = true
+        } catch (e: Exception) {
+            logger.error("EXEPCTION in deleteTransaction" + e.message)
+            result = false
+        } finally {
+            return result
+        }
+    }
+
+    /*
+    * функция изменения значения поля successful таблицы Transaction, на true при получении state = true, иначе вызвать функцию deleteTransaction
+     */
+    fun manageTransactionInTwoFactor (senderName : String, receiverName : String, bookTitle : String, state : Boolean) : Boolean {
+        val userSenderId = searchUserId(senderName)
+        val userReceiverId = searchUserId(receiverName)
+        val bookId = searchBookId(senderName, bookTitle)
+        var result = false
+        try {
+            transaction {
+                Transactions.update({ Transactions.userSenderId eq userSenderId and
+                        (Transactions.bookId eq bookId) and
+                        (Transactions.userReceiverId eq userReceiverId)  and
+                        (Transactions.successful eq false) }) {
+                    it[Transactions.successful] = state
+                }
+            }
+            result = true
+        } catch (e: Exception) {
+            logger.error("EXEPCTION in manageTransactionInTwoFactor" + e.message)
+            result = false
+        } finally {
+            if (!state) {
+                deleteTransaction(senderName, receiverName, bookTitle)
+            }
+            return result
+        }
+    }
+
 }

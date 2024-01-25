@@ -3,6 +3,7 @@ package org.example.project
 import BASE_LINK
 import JsonDataObjects.BookData
 import JsonDataObjects.CreateSmartContract
+import JsonDataObjects.TwoFactorTransactionData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import crypto.EncryptionUtils
@@ -271,6 +272,7 @@ fun Application.module() {
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
 
+            //TODO проверить на каком моменте книга меняет хранителя и сделать должное изменение при отмене второго фактора подтверждения
             post ("/$BASE_LINK/createSmartContract/name/{name}/password/{password}"){
                 try {
                     val name = call.parameters["name"]
@@ -279,7 +281,6 @@ fun Application.module() {
                     // Получаем данные из тела POST-запроса
                     val smartContractData = call.receive<CreateSmartContract>()
                     logger.info("Received book data: $smartContractData")
-                    val userReciver = smartContractData.userResiver
 
                     //соединение с базой данных
                     val dbConnect = ExposedPostgres()
@@ -296,7 +297,7 @@ fun Application.module() {
                         call.respondText("1")
                         logger.error("responding ERROR UPDATE BOOK")
                     }
-                    val noteTransaction = dbConnect.addTransaction(smartContractData.userSender, smartContractData.userResiver, smartContractData.bookTitle)
+                    val noteTransaction = dbConnect.addTransaction(smartContractData.userSender, smartContractData.userResiver, smartContractData.bookTitle, smartContractData.comment)
                     if (noteTransaction == false) {
                         call.respondText("1")
                         logger.error("responding ERROR ADD TRANSACTION")
@@ -321,6 +322,44 @@ fun Application.module() {
                 val transactionsData = EncryptionUtils.encrypt(dbConnect.searchDataTransactionsData(name.toString()).toString())
 
                 call.respondText(transactionsData, ContentType.Application.Json) //возвращаемое значение
+            }
+
+            //подтреждение другим пользователем транзакции
+            post("/$BASE_LINK/name/{name}/password/{password}/twoFactorTransaction"){
+                val name = call.parameters["name"]
+                val password = md5(call.parameters["password"].toString())
+
+                println("TWO FACTOR = $name $password")
+
+                val dataTwoFactorTransactionData = call.receive<TwoFactorTransactionData>()
+                logger.info("Received two factor transatcion data: $dataTwoFactorTransactionData")
+                //соединение с базой данных
+                val dbConnect = ExposedPostgres()
+
+                if (!dbConnect.checkBookInUser(
+                        name = dataTwoFactorTransactionData.nameSender,
+                        title = dataTwoFactorTransactionData.bookTitle
+                    )) {
+                    call.respondText("0")
+                    logger.error("responding ERROR SEARCH BOOK ID")
+                    return@post
+                }
+                logger.info("complite search book : ${dataTwoFactorTransactionData.bookTitle} id in ${dataTwoFactorTransactionData.nameSender}")
+
+                if (dbConnect.manageTransactionInTwoFactor(
+                    dataTwoFactorTransactionData.nameSender,
+                    dataTwoFactorTransactionData.nameResiver,
+                    dataTwoFactorTransactionData.bookTitle,
+                    dataTwoFactorTransactionData.state
+                )) {
+                    println("\ndata in = ${dataTwoFactorTransactionData.nameSender + dataTwoFactorTransactionData.bookTitle + dataTwoFactorTransactionData.nameResiver + dataTwoFactorTransactionData.state}\n")
+                    val dataRespond = "" + dataTwoFactorTransactionData.nameSender + dataTwoFactorTransactionData.bookTitle + dataTwoFactorTransactionData.nameResiver + dataTwoFactorTransactionData.state+ ""
+                    call.respondText (md5(dataRespond))
+                    return@post
+                }else {
+                    call.respondText("1")
+                    return@post
+                }
             }
 
 

@@ -13,20 +13,20 @@ const val BASE_LINK = "YdQsW0JUbekCAT86jHb0ZH6FhoCSxEeQa72TFIX1nCpJRecjKX"
 //const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/keyC/v3/$NAME_CERTIFICATE.jks"
 const val KEY_FILE_PATH = "/var/sftp/uploads/shared/src/commonMain/resources/$NAME_CERTIFICATE"
 const val SERVER_IP = "193.108.114.117"
-lateinit var NAMEUSER: String
-lateinit var PASSWORDUSER: String
-lateinit var EMAIL : String
-lateinit var ACCOUNT : String
+var NAMEUSER: String = ""
+var PASSWORDUSER: String = ""
+var EMAIL : String = ""
+var ACCOUNT : String = ""
 const val GANACHE_RPC_SERVER : String = "http://127.0.0.1:8545" //адрес сервера ganache (блокчейна эфириум)
-lateinit var BALANCE : String
-lateinit var JSON : String //json с данными пользователя получаемыми с сервера
-lateinit var ROLE : String
+var BALANCE : String = ""
+var JSON : String = ""//json с данными пользователя получаемыми с сервера
+var ROLE : String = ""
 var DATADOWNLOADING = false
-lateinit var WindowsName : String
+var WindowsName : String = ""
 var WORKMODE = "offline"
-lateinit var JSON_PROFILE : String //json с списком книг
-lateinit var JSON_SEARCH_USERS_BOOKS : String //json с списком пользователей и книг готовых к обмену
-lateinit var JSON_TRANSACTION_BOOKS : String //json с списком книг транзакций
+var JSON_PROFILE : String = ""//json с списком книг
+var JSON_SEARCH_USERS_BOOKS : String = ""//json с списком пользователей и книг готовых к обмену
+var JSON_TRANSACTION_BOOKS : String = ""//json с списком книг транзакций
 var DOWNLOAD_DATA_ALL = false
 var HASH_DATA_DOWNLOAD = ""
 

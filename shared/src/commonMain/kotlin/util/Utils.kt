@@ -87,7 +87,7 @@ suspend fun addBook ( name : String, title : String, author : String, isbn : Str
 suspend fun setSmartContract (name : String, selectedValueUser: String, selectedValueBook: String, price: String, comment : String) : Boolean {
     try {
         val httpsClietn = GetHttpApiClient()
-        val stri = httpsClietn.setSmartContract(name, selectedValueUser, selectedValueBook, price, comment)
+        val stri = httpsClietn.createSmartContract(name, selectedValueUser, selectedValueBook, price, comment)
         val hash = tokenCreate(name + PASSWORDUSER)
 
         if (stri == hash) {
@@ -102,11 +102,38 @@ suspend fun setSmartContract (name : String, selectedValueUser: String, selected
     }
 }
 
+suspend fun twoFactorTransaction (name : String, selectedValueBook: String, state : Boolean = false) : Boolean{
+    try {
+        println("name = $name selectedValueBook = $selectedValueBook")
+        val httpsClietn = GetHttpApiClient().twoFactorTransaction(name, selectedValueBook,state)
+        println("httpsCleitn = $httpsClietn\n${NAMEUSER+selectedValueBook+name}")
+        println("hash local create"+md5(""+NAMEUSER+selectedValueBook+name+state+""))
+
+        if (httpsClietn == "0" || httpsClietn == "1"){
+            println("twoFactorTransaction web return error is server")
+            return false
+        }else {
+            if (httpsClietn == md5(""+NAMEUSER+selectedValueBook+name+state+"")) {
+                println("complite")
+                return true
+            }else {
+                println("error in the md")
+                return false
+            }
+        }
+
+
+    }catch (e : Exception){
+        println("exeption in cancelTransaction in Utils.kt = ${e.message}")
+        return false
+    }
+}
+
 suspend fun getBookDataSmartContract (name : String) : String {
     var stri = ""
     try {
         val httpsClietn = GetHttpApiClient()
-        val stri = httpsClietn.getBooksDataSmartContract(name)
+        val stri = httpsClietn.getTransactionsBooksDataSmartContract(name)
 
 
     }catch (e : Exception){

@@ -15,9 +15,12 @@ interface HttpApiClientInterface {
 
     suspend fun getJsonBooksUsers (name : String) : String
 
-    suspend fun setSmartContract (name: String, selectedValueUser: String, selectedValueBook: String, price: String, comment: String) : String
+    suspend fun createSmartContract (name: String, selectedValueUser: String, selectedValueBook: String, price: String, comment: String) : String
 
-    suspend fun getBooksDataSmartContract (name: String) : String
+    suspend fun getTransactionsBooksDataSmartContract (name: String) : String
+
+    suspend fun twoFactorTransaction (name : String, selectedValueBook: String, state : Boolean = false) : String
+
 }
 
 expect class HttpApiClient() : HttpApiClientInterface
