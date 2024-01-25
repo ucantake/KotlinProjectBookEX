@@ -24,9 +24,9 @@ var ROLE : String = ""
 var DATADOWNLOADING = false
 var WindowsName : String = ""
 var WORKMODE = "offline"
-var JSON_PROFILE : String = ""//json с списком книг
-var JSON_SEARCH_USERS_BOOKS : String = ""//json с списком пользователей и книг готовых к обмену
-var JSON_TRANSACTION_BOOKS : String = ""//json с списком книг транзакций
+var JSON_PROFILE : String = ""//json с списком книг, используется на странице профиля, для отображения таблицы книг содержащийся у пользователя
+var JSON_SEARCH_USERS_BOOKS : String = ""//json с списком пользователей и книг готовых к обмену, используется на странице создания смарт транзакций
+var JSON_TRANSACTION_BOOKS : String = ""//json с списком книг транзакций, используется на домашней странице для подтверждения транзакций
 var DOWNLOAD_DATA_ALL = false
 var HASH_DATA_DOWNLOAD = ""
 

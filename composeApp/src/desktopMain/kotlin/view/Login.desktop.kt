@@ -2,7 +2,6 @@ package view
 
 import DATADOWNLOADING
 import DOWNLOAD_DATA_ALL
-import JSON_TRANSACTION_BOOKS
 import WORKMODE
 import WindowsName
 import androidx.compose.foundation.layout.*
@@ -149,8 +148,6 @@ fun Login(state: WindowState){
                                         while (progress < 1f) {
                                             progress += 0.1f
                                             delay(1000L)
-                                            println("DATADOWNLOADING = $DATADOWNLOADING + DOWNLOAD_DATA_ALL = $DOWNLOAD_DATA_ALL")
-                                            println("JSON JSON_TRANSACTION_BOOKS = $JSON_TRANSACTION_BOOKS")
                                             if (DOWNLOAD_DATA_ALL && DATADOWNLOADING) break
                                             if (DATADOWNLOADING && !DOWNLOAD_DATA_ALL) {
                                                 SynchronizedJsonData()
