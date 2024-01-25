@@ -88,7 +88,7 @@ suspend fun setSmartContract (name : String, selectedValueUser: String, selected
     try {
         val httpsClietn = GetHttpApiClient()
         val stri = httpsClietn.createSmartContract(name, selectedValueUser, selectedValueBook, price, comment)
-        val hash = tokenCreate(name + PASSWORDUSER)
+        val hash = tokenCreate(name + md5(PASSWORDUSER))
         println("setSmartContranct hash = $hash || stri = $stri")
         if (stri == hash) {
             DATADOWNLOADING = true
