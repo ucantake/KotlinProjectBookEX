@@ -636,7 +636,7 @@ class ExposedPostgres {
             transaction {
                 val booksArray = JsonArray()
 
-                Transactions.select { Transactions.userSenderId eq userId }.forEach { transactionRow ->
+                Transactions.select { Transactions.userReceiverId eq userId }.forEach { transactionRow ->
                     val bookObject = JsonObject()
 
                     Transactions.columns.forEach { column ->
