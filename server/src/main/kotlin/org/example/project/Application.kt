@@ -225,7 +225,7 @@ fun Application.module() {
             /*
             * запрос для поиска пользователей готовых меняться книгами
              */
-            get("/$BASE_LINK/name/{name}/search") {
+            get("/$BASE_LINK/name/{name}/getJsonBooksUsers") {
                 val name = call.parameters["name"]
 
                 //проверка входящих значений
@@ -243,7 +243,7 @@ fun Application.module() {
                 data.add("users", Gson().toJsonTree(usersData))
                 data.add("books", Gson().toJsonTree(booksData))
 
-                println("\n\n\ndata search = ${data.toString()}\ndata crypt = ${EncryptionUtils.encrypt(data.toString())}\n\n\n")
+                println("\n\n\ndata search for smart contract view = ${data.toString()}\ndata crypt = ${EncryptionUtils.encrypt(data.toString())}\n\n\n")
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
 
             }
@@ -272,7 +272,7 @@ fun Application.module() {
                 call.respondText(EncryptionUtils.encrypt(data.toString()), ContentType.Application.Json) //возвращаемое значение
             }
 
-            //TODO проверить на каком моменте книга меняет хранителя и сделать должное изменение при отмене второго фактора подтверждения
+
             post ("/$BASE_LINK/createSmartContract/name/{name}/password/{password}"){
                 try {
                     val name = call.parameters["name"]

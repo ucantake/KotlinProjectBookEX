@@ -105,7 +105,7 @@ actual class HttpApiClient actual constructor() : HttpApiClientInterface {
     }
 
     override suspend fun getJsonBooksUsers(name: String): String {
-        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/search")
+        return getLinkBodyAsTextCrypt("http://$SERVER_IP:80/$BASE_LINK/name/$name/getJsonBooksUsers")
     }
 
     @OptIn(InternalAPI::class)

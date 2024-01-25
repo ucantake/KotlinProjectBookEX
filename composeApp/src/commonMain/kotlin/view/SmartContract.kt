@@ -33,22 +33,34 @@ fun SmartContract() {
 
     var selectedValueUser by remember { mutableStateOf("") }
     var selectedValueBook by remember { mutableStateOf("") }
+    var selectedValueGenre by remember { mutableStateOf("") }
+    var selectedValueDatePubliched by remember { mutableStateOf("") }
     var itemsJsonUsers by remember { mutableStateOf(mutableStateListOf<String>()) }
     var itemsJsonBooks by remember { mutableStateOf(mutableStateListOf<String>()) }
-    val data = LaunchedEffect(Unit) {
+    var itemJsonGenre by remember { mutableStateOf(mutableStateListOf<String>())}
+    var itemJsonDatePublished by remember { mutableStateOf(mutableStateListOf<String>())}
+
+    var jsonPostDecode : JsonSmartContract? = null
+    //TODO убрать в модель, сделать проверку на наличие данных
+    LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             //TODO сделать проверку на наличие данных
             val json = Json.decodeFromString<JsonSmartContract>(JSON_SEARCH_USERS_BOOKS)
 
             for (i in json.books) {
                 itemsJsonBooks += i.title
+                itemJsonGenre += i.genre
+                itemJsonDatePublished += i.date_published
             }
             for (i in json.users) {
                 itemsJsonUsers += i.name
             }
+
+            jsonPostDecode = json
         }
         loading = false
     }
+
 
     var price by remember {
         mutableStateOf("0.0")
@@ -130,6 +142,49 @@ fun SmartContract() {
                                     )
                                 }
                             }
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.CenterHorizontally), Arrangement.spacedBy(0.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.Top
+                                ) {
+                                    Text(
+                                        "Выбранный жанр : $selectedValueGenre", modifier = Modifier.height(50.dp),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
+                                    //выпадающее меню
+                                    DropdownExample(
+                                        onItemSelected = { selectedValueGenre = it },
+                                        items = itemJsonGenre,
+                                        text = "Выберете жанр"
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.Top
+                                ) {
+                                    Text(
+                                        "Год издания : $selectedValueDatePubliched", modifier = Modifier.height(50.dp),
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    )
+                                    //выпадающее меню
+                                    DropdownExample(
+                                        onItemSelected = { selectedValueDatePubliched = it },
+                                        items = itemJsonDatePublished,
+                                        text = "Выберете год"
+                                    )
+                                }
+                            }
                             Column (modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(0.dp)) {
                                 Row(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(0.dp)) {
 
@@ -180,7 +235,7 @@ fun SmartContract() {
 
                     //кнопка для получения данных
                     Box(
-                        modifier = Modifier.fillMaxWidth().weight(0.5f),
+                        modifier = Modifier.fillMaxWidth().weight(0.4f),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(modifier = Modifier.padding(6.dp)) {

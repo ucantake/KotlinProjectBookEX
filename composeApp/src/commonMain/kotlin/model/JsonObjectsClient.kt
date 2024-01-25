@@ -53,7 +53,9 @@ data class BooksJsonSmartContract (
     val title: String,
     val author: String,
     val user_id: String,
-    val price: String
+    val price: String,
+    val genre : String,
+    val date_published : String
 )
 
 //для истории транзакций

@@ -143,7 +143,7 @@ actual class HttpApiClient : HttpApiClientInterface {
     }
 
     override suspend fun getJsonBooksUsers(name: String): String {
-        return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name/search"))
+        return getLinkBodyAsTextCrypt(linkFormatterHttp("name/$name/getJsonBooksUsers"))
     }
 
     @OptIn(InternalAPI::class)

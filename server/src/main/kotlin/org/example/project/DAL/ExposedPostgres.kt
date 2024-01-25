@@ -44,6 +44,7 @@ class ExposedPostgres {
     }
 
     private fun creteTables(name : Table) {
+        logger.info("createTables")
         try {
             transaction { SchemaUtils.create(name) }
         }catch (e : Exception) {
@@ -53,6 +54,7 @@ class ExposedPostgres {
 
     //возвращает значение имени пользователя
     fun getTableDataUsersAsJson(name : String) : JsonObject {
+        logger.info("getTableDataUsersAsJson")
         var userId = searchUserId(name)
         var combinedJson = JsonObject()
 
@@ -82,6 +84,7 @@ class ExposedPostgres {
     }
 
     fun getUserDataGanache (name : String) : JsonObject {
+        logger.info("getUserDataGanache")
         var userId = searchUserId(name)
         var combinedJson = JsonObject()
 
@@ -111,7 +114,7 @@ class ExposedPostgres {
     }
 
     fun getDataTableUserPassword(tableName: Table = Users, name : String): String? {
-
+        logger.info("getDataTableUserPassword")
         try {
             transaction {
                 val query = tableName.selectAll()
@@ -132,6 +135,7 @@ class ExposedPostgres {
     }
 
     fun searchUserId (name : String) : Int {
+        logger.info("searchUserId")
         var userId = 0
         try {
             transaction {
@@ -152,6 +156,7 @@ class ExposedPostgres {
     }
 
     fun checkUserInDatabase (name : String) : Boolean {
+        logger.info("chechkUserInDatabase")
         var result : Boolean = true
         try {
             transaction {
@@ -173,6 +178,7 @@ class ExposedPostgres {
     }
 
     fun addUser (name : String, password : String, email : String, account : String, key : String) : Boolean{
+        logger.info("addUser")
         var result = false
         try {
             val transaction = transaction {
@@ -198,6 +204,7 @@ class ExposedPostgres {
     }
 
     fun addGanache (name: String, account : String, key : String) : Boolean {
+        logger.info("addGanache")
         val userId = searchUserId(name)
         var result = false
         try {
@@ -220,6 +227,7 @@ class ExposedPostgres {
     }
 
     fun searchBookQuantity(name : String) : Int {
+        logger.info("searchBookQuantity")
         val userId = searchUserId(name).toString()
         var bookQuantity = 0
         try {
@@ -240,6 +248,7 @@ class ExposedPostgres {
     }
 
     fun getBookData (name : String) : JsonObject{
+        logger.info("getBookData")
         var userId = searchUserId(name)
         var combinedJson = JsonObject()
 
@@ -288,6 +297,7 @@ class ExposedPostgres {
     }
 
     fun addBook(name : String, title : String, author : String,bbk : String, udc : String, isbn : String, price : String, genre : String, datePublished : String) : Boolean{
+        logger.info("addBook")
         val userId = searchUserId(name)
         try {
             transaction {
@@ -310,6 +320,7 @@ class ExposedPostgres {
         }
     }
     fun getBooksJson(name: String): JsonObject {
+        logger.info("getBooksJson")
         val userId = searchUserId(name)
         val combinedJson = JsonObject()
 
@@ -351,6 +362,7 @@ class ExposedPostgres {
     }
 
     fun getUsersJsonNotCurrentUser(name: String, booksData : List<JsonObject>): List<JsonObject> {
+        logger.info("getUsersJsonNotCuttentUser")
         val result = mutableListOf<JsonObject>()
         val idUsers = booksData.map { it.get("user_id").asInt }.toList()
         var checkDataForEach = false
@@ -385,6 +397,7 @@ class ExposedPostgres {
     }
 
     fun getBooksJsonNotCurrentUser (name: String) : List<JsonObject> {
+        logger.info("getBooksJsonNotCurrentUser")
         val userId = searchUserId(name)
 
         val result = mutableListOf<JsonObject>()
@@ -404,8 +417,7 @@ class ExposedPostgres {
                                     quantity++
                                 }
                             }
-                            "title", "author", "price"-> {
-
+                            "title", "author", "price", "genre","date_published"-> {
                                 combinedJson.addProperty(column.name, bookRow[column].toString())
                             }
                         }
@@ -422,6 +434,7 @@ class ExposedPostgres {
     }
 
     fun getBookTitle (bookId : String) : String {
+        logger.info("getBooksTitle")
         var bookTitle = ""
         try {
             transaction {
@@ -442,6 +455,7 @@ class ExposedPostgres {
     }
 
     fun getUserName (userId : String) : String {
+        logger.info("getUserName")
         var userName = ""
         try {
             transaction {
@@ -465,6 +479,7 @@ class ExposedPostgres {
     * функция для получения приватного ключа для ganache
      */
     fun getPrivateKey (name : String) : String {
+        logger.info("getPrivateKey")
         var userId = searchUserId(name)
         var privateKey = ""
         try {
@@ -490,6 +505,7 @@ class ExposedPostgres {
     * функция получения адреса для ganache
      */
     fun getAddress (name : String) : String {
+        logger.info("getAddress")
         var userId = searchUserId(name)
         var address = ""
         try {
@@ -515,6 +531,7 @@ class ExposedPostgres {
     * изменение пользовательского id книги но поиск книги по её названию
      */
     fun updateIdBook (name : String, title : String) :Boolean {
+        logger.info("updateBook")
         val userId = searchUserId(name)
         var result = false
         try {
@@ -536,6 +553,7 @@ class ExposedPostgres {
     * функция поиска id книги по её названию и пользователю
      */
     fun searchBookId (name : String, title : String) : Int {
+        logger.info("searchBookId")
         val userId = searchUserId(name)
         var bookId = 0
         try {
@@ -559,6 +577,7 @@ class ExposedPostgres {
     * проверка книги, на принадлежность к пользователю
      */
     fun checkBookInUser (name : String, title : String) : Boolean {
+        logger.info("checkBookInUser")
         val userId = searchUserId(name)
         var result = false
         try {
@@ -582,6 +601,7 @@ class ExposedPostgres {
     * функция добавления записи в таблицу Transaction для смарт контракта
      */
     fun addTransaction (userSender: String,userReceiver: String, valueBook: String, comment : String, successful : Boolean = false) : Boolean {
+        logger.info("addTransaction")
         val userSenderId = searchUserId(userSender)
         val userReceiverid = searchUserId(userReceiver)
         val bookId = searchBookId(userSender, valueBook)
@@ -609,6 +629,7 @@ class ExposedPostgres {
     * функция поиска данных из таблицы Transactions
      */
     fun searchDataTransactionsData (name : String) : JsonObject {
+        logger.info("searchDataTransactionData")
         val userId = searchUserId(name)
         var combinedJson = JsonObject()
         try {
@@ -664,6 +685,7 @@ class ExposedPostgres {
     * фнукция удаления строки из таблицы Transaction, который ищет записи с значением successful = false
      */
     private fun deleteTransaction (senderName : String, receiverName : String, bookTitle : String) : Boolean {
+        logger.info("deleteTransaction")
         val userSenderId = searchUserId(senderName)
         val userReceiverId = searchUserId(receiverName)
         val bookId = searchBookId(senderName, bookTitle)
@@ -690,6 +712,7 @@ class ExposedPostgres {
     * функция изменения значения поля successful таблицы Transaction, на true при получении state = true, иначе вызвать функцию deleteTransaction
      */
     fun manageTransactionInTwoFactor (senderName : String, receiverName : String, bookTitle : String, state : Boolean) : Boolean {
+        logger.info("manageTransactionTwoFactor")
         val userSenderId = searchUserId(senderName)
         val userReceiverId = searchUserId(receiverName)
         val bookId = searchBookId(senderName, bookTitle)

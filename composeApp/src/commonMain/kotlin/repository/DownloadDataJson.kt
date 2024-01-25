@@ -54,14 +54,17 @@ suspend private fun DownloadJsonData () {
 //TODO придумать как работать только с одним GlobalScope
 fun SynchronizedJsonData (){
     DOWNLOAD_DATA_ALL = false
-    println("HASHDATA = $HASH_DATA_DOWNLOAD")
 
     //первый запуск программы, загрузка всех данных
     if (HASH_DATA_DOWNLOAD == "") {
         runBlocking {
             DownloadJsonData()
             HASH_DATA_DOWNLOAD = md5(JSON+JSON_PROFILE+JSON_SEARCH_USERS_BOOKS+JSON_TRANSACTION_BOOKS)
-            println("JSON JSON_PROFILE = $JSON_PROFILE")
+            println("JSON_SEARCH_USERS_BOOKS = $JSON_SEARCH_USERS_BOOKS" +
+                    "\nJSON_TRANSACTION_BOOKS = $JSON_TRANSACTION_BOOKS" +
+                    "\nJSON_PROFILE = $JSON_PROFILE" +
+                    ""
+            )
         }
 
 
